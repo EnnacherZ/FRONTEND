@@ -4,11 +4,12 @@ import Header from "./header";
 import { TbRosetteDiscount } from "react-icons/tb";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { FaCartPlus, FaShirt, FaStar, } from "react-icons/fa6";
-import "swiper/css";
-import 'swiper/css/bundle';
-import "swiper/css/navigation";
-import "swiper/css/free-mode";
-import "swiper/css/thumbs";
+
+import 'swiper/css';             // Importation du CSS principal
+import 'swiper/css/bundle';      // Si tu veux les styles pour les fonctionnalités comme les boutons, pagination, etc.
+import 'swiper/css/navigation'; // Si tu utilises la navigation
+import 'swiper/css/free-mode';  // Si tu utilises le mode libre (dragging)
+import 'swiper/css/thumbs';     // Si tu utilises les vignettes (thumbs)
 import {Swiper, SwiperSlide} from "swiper/react";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import {type Swiper as SwiperType} from "swiper";
