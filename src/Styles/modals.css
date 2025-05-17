@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.parentCartConf {
+    box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+    margin: auto;
+    width:500px;
+    aspect-ratio:6;
+    z-index:120000;
+    margin-top:40px;
+}
+
+.parentCartConfAll{
+    box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+    margin: auto;
+    width:500px;
+    aspect-ratio:4;
+    z-index:100;
+    margin-top:80px;
+}
+
+
+.imgCartConf{
+    position: relative;
+    padding: 0;
+    left:0.5%;
+    width:35%;
+    height:60%;
+    overflow: hidden;
+
+}
+.imgCartImgConf{
+    width: 100% ;
+    height: 100%;
+    object-fit: fill;
+}
+.cartPriceConf1{
+    position:relative;
+    padding: 0%;
+    top:0;
+    width:33%;
+    height:60%;
+    left : 0.7%
+}
+.cartPriceConf2{
+    position:relative;
+    padding: 0%;
+    top:0;
+    margin: 0;
+    width:32%;
+    height:60%;
+    left : 1.5%
+}
+
+#inPr{
+    color:green
+}
+
+#delPr{
+    font-weight: 500;
+    text-decoration: line-through;
+    text-decoration-color: red;
+}
+
+.BackDrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 110000; 
+    overflow: auto;
+    resize: vertical;
+  }
+
+.adding-div{
+    width: 70%;
+    margin: auto;
+    overflow: auto;
+    resize: vertical;
+}
+.review-adding-close{
+    position: absolute;
+    right:10px;
+    top:10px;
+    color:red;
+    font-size: 25px;
+    cursor: pointer;
+}
+.star-cont{
+    width:40px;
+    aspect-ratio: 1;
+    border : 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease-in;
+}
+.star-cont.clicked{
+    width:40px;
+    aspect-ratio: 1;
+    border : 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease-in;
+    color:#ffd700;
+    background-color: rgb(47, 46, 46);
+}
+
+@media(max-width:599px){
+    .adding-div{
+        width: 90%;     
+    }
+
+    .parentCartConf {
+        box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+        margin: auto;
+        width:335px;
+        aspect-ratio:4;
+        z-index:100;
+        margin-top:40px;
+    }
+    
+    .parentCartConfAll{
+        box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+        margin: auto;
+        width:300px;
+        aspect-ratio:4;
+        z-index:100;
+        margin-top:180px;
+    }
+    .cartPriceConf1{
+        width:50%
+    }
+    .cartPriceConf2{
+        width:50%
+    }
+    .imgCartConf{
+        position: relative;
+        padding: 0;
+        left:0.5%;
+        width:50%;
+        height:70%;
+        overflow: hidden;
+    
+    }
+    
+
+
+}

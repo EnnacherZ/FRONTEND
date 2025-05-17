@@ -1,0 +1,110 @@
+import React, { useEffect, useState } from "react";
+import Header from "./header";
+import "../Styles/Shoes.css";
+import { DataToFilter } from "./FilterSection";
+import Products from "./products";
+import Footer from "./footer.tsx";
+import { LiaShoePrintsSolid } from "react-icons/lia";
+import Marquee from "react-fast-marquee"
+import { FaCircleDot } from "react-icons/fa6";
+import useShoesData from "../Server/shoesData.tsx";
+import { Product } from "../Contexts/ProductsContext.tsx";
+import Loading from "./loading.tsx";
+import shoes from '../assets/shoes.png'
+
+
+const Shoes: React.FC = () => {
+  const {shoesData, shoesDataDetails} = useShoesData();
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]);
+  const [selectedCriteria, setSelectedCriteria] = useState<DataToFilter>(
+    {product : '',
+    category : '',
+    ref : '',
+    name : ''}
+  )
+  
+
+  useEffect(() => {
+    const show = () =>{
+        const filtredStreamedShoes = filterData(shoesData, selectedCriteria);
+        setFilteredProduct(filtredStreamedShoes); 
+      };
+      show();
+  }, [selectedCriteria, shoesData]);
+
+  const filterData = (data: Product[], criterias: DataToFilter) => {
+    return data.filter((item) => {
+      if(criterias.category===""&& criterias.name===""&& criterias.ref===""){return true}
+      const categoryMatch = criterias.category
+      ? item.category.replace(/\s/g, "").toLowerCase().includes(criterias.category.replace(/\s/g, "").toLowerCase())
+      : false;
+
+    const refMatch = criterias.ref
+      ? item.ref.replace(/\s/g, "").toLowerCase().includes(criterias.ref.replace(/\s/g, "").toLowerCase())
+      : false;
+
+    const nameMatch = criterias.name
+      ? item.name.replace(/\s/g, "").toLowerCase().includes(criterias.name.replace(/\s/g, "").toLowerCase())
+      : false;
+
+    return categoryMatch || refMatch || nameMatch;
+    });
+  };
+
+  const handleProductSearch = (criterias: DataToFilter) => {
+    setSelectedCriteria(criterias);
+    const filteredShoes = filterData(shoesData, criterias);
+    setFilteredProduct(filteredShoes);
+  };
+  const handleReset = ()=>{
+    setSelectedCriteria(
+      {product : '',
+        category : '',
+        ref : '',
+        name : ''}
+    )
+  };
+  return (<>
+
+    <Header/>
+    <div className="" style={{width:'100%', height:"15rem"}}>
+      <img src={shoes} alt="" style={{width:'100%', height:'100%'}}/>
+    </div>
+    <div className="ShoesTitle fw-bold rounded">
+      <LiaShoePrintsSolid className="ShoesTitleIcon" /> 
+      Shoes models 
+      <LiaShoePrintsSolid className="ShoesTitleIcon" /> 
+    </div>
+    <div className="ShoesAnnouncement ">
+      <Marquee speed={50} gradient={false} >
+        <span>
+        <FaCircleDot /> Mocassins 
+        </span>
+        <span>
+        <FaCircleDot /> Classics
+        </span>
+        <span>
+        <FaCircleDot /> Baskets
+        </span>
+        <span>
+        <FaCircleDot /> Medical
+        </span>
+
+      </Marquee>
+    </div>
+    {shoesData.length>0?<Products pData={filteredProduct} 
+              pDataDetails={shoesDataDetails} 
+              productShowed="Shoe" 
+              handleFilter={handleProductSearch}
+              handleReset={handleReset}/>
+            :<Loading message="Loading ..."/>}
+
+    <Footer/>
+
+ 
+
+    </>
+  );
+};
+
+export default Shoes;

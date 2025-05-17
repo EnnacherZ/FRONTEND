@@ -1,0 +1,143 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.filter-section{
+    background-color: rgb(247, 246, 246);
+    width:170px;
+    height:480px;
+    position: sticky;
+    top:115px;
+    z-index: 100000;
+    border: 1px solid #bcb8b8;
+
+
+}
+.filter-title{
+    width: 80px;
+    height: auto;
+    font-size: 18px;
+    font-weight: bold;
+}
+.fafilter{
+    top:10px;
+    width:40px;
+    aspect-ratio: 1;
+    left: 0%;
+}
+.fafilter-title{
+    position: absolute;
+    top:5px;
+    left:40px;
+}
+.filter-inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width:99%;
+    left: 1%;
+    bottom: 1%;
+    padding: 0px 4px;
+}
+
+.inputs-button{
+    width: 160px;
+}
+
+@media(max-width:800px){
+    .filter-section{
+        width: 100%;
+        height:105px;
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        position: sticky;
+        top: 70px;
+        background-color: rgb(202, 197, 197);
+        border-bottom: 3px solid black;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    
+    }
+    .filter-inputs{
+        width: 100%;
+        height: 85px;
+        margin:0;
+        padding: 0px 2px;
+        display: flex;
+        flex-direction: row;
+        gap: 1px;
+        align-items: end;
+        position: absolute;
+        left: 0%;
+    }
+    .inputs-button{width:100%;}
+
+}
+
+@media(max-width:650px){
+    .filter-section{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 85px;
+        transition: 700ms ease;
+        background-color: #fefefe;
+    }
+    .toDropFilter, .closeDrppedFilter{
+        width: 50px;
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 500ms ease;
+        background-color: black;
+        color: white;
+    }
+    .toDropFilter:hover, .closeDrppedFilter:hover{
+        background-color: #838383;
+    }
+
+    .filter-dropped-inputs{
+        width: 100%;
+        height:0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: 700ms ease;
+    }
+    .FDI-S1, .FDI-S2{
+        width: 100%;
+        height: 0;
+        display: flex;
+        gap: 2%;
+        margin: 2% 0px;
+        align-items: end;
+        transition: 700ms ease;
+    }
+    .filter-dropped-inputs div div label,
+    .filter-dropped-inputs div div input,
+    .filter-dropped-inputs div div button,
+    .filter-dropped-inputs div div select{
+        display: none;
+    }
+
+    .toDropFilter.closed, .closeDrppedFilter.closed{
+        width:0
+    }
+    .filter-dropped-inputs.active div div label,
+    .filter-dropped-inputs.active div div input,
+    .filter-dropped-inputs.active div div button,
+    .filter-dropped-inputs.active div div select{
+        display: initial;
+    }
+    .filter-dropped-inputs.active, .FDI-S1.active, .FDI-S2.active{
+        height: auto;
+    }
+    .filter-section.extended{
+        height: auto;
+    }
+}
