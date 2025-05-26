@@ -1,10 +1,11 @@
 import React, {useState } from "react";
 import Select from "react-select";
-import { connecter } from "../Server/connecter";
 import "./Styles/prodForm.css"
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import { OptionType } from "./pages/ProductsManager";
+import apiInstance from "./api";
 
+const connecter = apiInstance;
 
 const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> = ({productType, AllOptions}) => {
     const [size, setSize] = useState<string | number >('');

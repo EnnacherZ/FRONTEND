@@ -9,9 +9,10 @@ import ProdDetailsForm from "../prodDetailsForm";
 import ProdDelete from "../prodDelete";
 import ProdModif from "../prodModif";
 import { Product } from "../../Contexts/ProductsContext";
-import { connecter } from "../../Server/connecter";
 import { IoSettings } from "react-icons/io5";
 import { GiSettingsKnobs } from "react-icons/gi";
+import ProtectedRoute from "../ProtectedRoute";
+import apiInstance from "../api";
 
 export interface OptionType {
     label:string,
@@ -20,6 +21,7 @@ export interface OptionType {
 
 let AllOptions : OptionType[] = [];
 
+const connecter = apiInstance;
 
 const ProductsManager : React.FC = () => {
     const {productType} = useParams<{productType:string}>();
@@ -57,6 +59,7 @@ const ProductsManager : React.FC = () => {
     }}, [products])
 
     return(<>
+    <ProtectedRoute>
         <Sidebar/>
         <div className="db-home">
             <DbHeader/>
@@ -70,6 +73,8 @@ const ProductsManager : React.FC = () => {
               <GiSettingsKnobs  size={20}/> <span className="mx-3">Settings of {productType} products</span>
             </div>
         </div>
+    </ProtectedRoute>
+
     </>)
 };
 

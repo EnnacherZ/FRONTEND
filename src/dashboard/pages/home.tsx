@@ -10,6 +10,7 @@ import { MdOutlineFileDownloadDone } from "react-icons/md";
 import Modals from "../modals";
 import { AnimatePresence } from "framer-motion";
 import getDeficiencies from "../../Server/dashboard/deficiencies";
+import ProtectedRoute from "../ProtectedRoute";
 
 
 
@@ -34,6 +35,9 @@ const DBHome : React.FC = () => {
     }
 
     return(<>
+<ProtectedRoute>
+
+
         <Sidebar/>
         <div className="db-home">
             <DbHeader/>
@@ -116,8 +120,10 @@ const DBHome : React.FC = () => {
         </AnimatePresence>
 
 
-    </>
+  
 
+</ProtectedRoute>
+  </>
     )
 }
 export default DBHome;

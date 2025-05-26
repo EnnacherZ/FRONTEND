@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { connecter } from "../connecter";
+import apiInstance from "../../dashboard/api";
 
-
+const connecter = apiInstance;
 
 const getDeficiencies = () => {
     const [deficiencies, setDeficiencies] = useState<Array<any>>([]);

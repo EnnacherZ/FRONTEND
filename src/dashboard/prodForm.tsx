@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { connecter } from '../Server/connecter';
 import "./Styles/prodForm.css";
+import apiInstance from './api';
+
+
+const connecter = apiInstance;
 
 const ProductForm: React.FC<{productType:string}> = ({productType}) => {
     const [ref, setRef] = useState<number>(0);

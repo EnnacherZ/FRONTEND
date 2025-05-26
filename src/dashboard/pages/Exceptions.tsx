@@ -5,6 +5,7 @@ import "../Styles/deficiency.css";
 import { FaSortAmountDown } from "react-icons/fa";
 import getDeficiencies from "../../Server/dashboard/deficiencies";
 import { hideInfos } from "./home";
+import ProtectedRoute from "../ProtectedRoute";
 
 
 const ExceptionsPage : React.FC= () => {
@@ -12,6 +13,7 @@ const ExceptionsPage : React.FC= () => {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
 return(<>
+<ProtectedRoute>
 <Sidebar/>
 <div className="db-deficiency">
     <DbHeader/>
@@ -48,6 +50,8 @@ return(<>
                     </button>
                 </div>
 </div>
+</ProtectedRoute>
+
 
 </>)
 

@@ -3,9 +3,11 @@ import { toast, ToastContainer, Zoom } from "react-toastify";
 import Modals from "./modals";
 import { AnimatePresence } from "framer-motion";
 import Select from "react-select";
-import { connecter } from "../Server/connecter";
 import { OptionType } from "./pages/ProductsManager";
+import apiInstance from "./api";
 
+
+const connecter = apiInstance;
 
 const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({productType, AllOptions}) => {
     const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);

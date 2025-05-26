@@ -1,15 +1,15 @@
 import React, {useState } from "react";
 import Select from "react-select";
-import { connecter } from "../Server/connecter";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import Modals from "./modals";
 import "../Styles/modals.css";
 import { AnimatePresence } from "framer-motion";
 import { OptionType } from "./pages/ProductsManager";
+import apiInstance from "./api";
 
 
 
-
+const connecter = apiInstance;
 
 const ProdDelete : React.FC<{productType:string, AllOptions:OptionType[]}> = ({productType, AllOptions}) => {
     const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
