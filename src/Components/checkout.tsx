@@ -11,7 +11,6 @@ import { FaCity,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
 import { MdAlternateEmail, MdRemoveShoppingCart} from 'react-icons/md';
 import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
-import { v4 as uuidv4 } from 'uuid';
 import { useLangContext, selectedLang } from "../Contexts/languageContext"; 
 import {ToastContainer } from "react-toastify";
 import { useCart } from "../Contexts/cartContext";
@@ -42,8 +41,8 @@ const Checkout :  React.FC = () => {
     const [tokenId, setTokenId] = useState<string|null>(null);
     const [isModify, setIsModify] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [orderId, setOrderId] =useState<string>();
     const wait = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
-    const flN = () => {if(clientForm){return  clientForm?.FirstName+' '+clientForm?.LastName}else{return ''}}
     const Clientform = useForm<FormValues>({
       defaultValues:clientForm
     })
@@ -87,7 +86,6 @@ const Checkout :  React.FC = () => {
            Tel : getValues('Tel'),
            City : getValues('City'),
            Address : getValues('Address'),
-           OrderId : uuidv4(),
            Amount : total,
            Currency : 'MAD',
          }
@@ -130,12 +128,12 @@ const Checkout :  React.FC = () => {
                 amount: clientForm?.Amount*100 , // Montant requis
                 currency: 'MAD', // Devise requise
                 customer_ip: '10.25.28.35', // IP du client requise
-                order_id: clientForm?.OrderId || '', // ID de commande requis
                 success_url: 'https://google.com/', // URL de succès requise
                 error_url: 'https://youtube.com/', // URL d'erreur optionnelle
             };
             const customer= {
-              name: flN(), 
+              first_name: clientForm.FirstName,
+              last_name: clientForm.LastName, 
               address: clientForm?.Address, 
               zip_code: '', 
               city: clientForm?.City, 
@@ -148,7 +146,8 @@ const Checkout :  React.FC = () => {
              {tokenParams : tokenParams,
               customer : customer})
             const tokenRespo = respo.data.token
-            console.log(respo)
+            console.log(respo);
+            setOrderId(respo.data.order_id);
             setTokenId(tokenRespo);
             }catch(err){console.log(err)}  
         }else{return}      
@@ -226,7 +225,7 @@ const Checkout :  React.FC = () => {
               sandals_order : allItems.Sandals,
               shirts_order : allItems.Shirts,
               pants_order : allItems.Pants,
-              client_data : clientForm,
+              orderId: orderId,
               transaction_id : trans,
               date : date
             });
@@ -234,6 +233,7 @@ const Checkout :  React.FC = () => {
             setSuccessTransItems(response.data.ordered_products||[]);
             setIsLoading(false);
             clearCart();
+            goTo("/Trans")
             console.log(response.data.ordered_products||[]);
         } catch (error) {
             console.error('Error during payment:', error);

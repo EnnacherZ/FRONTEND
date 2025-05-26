@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { connecter } from './Server/connecter';
-import "./Styles/prodForm.css"
+import { connecter } from '../Server/connecter';
+import "./Styles/prodForm.css";
 
 const ProductForm: React.FC<{productType:string}> = ({productType}) => {
     const [ref, setRef] = useState<number>(0);
@@ -50,7 +50,6 @@ const ProductForm: React.FC<{productType:string}> = ({productType}) => {
         formData.append('newest', newest ? 'true' : 'false');
         formData.append('promo', promo.toString());
         formData.append('productType', 'Shoe');
-        formData.append('category', 'Mocassin');
         formData.append('image', imageP || '')
         
         
@@ -147,7 +146,6 @@ const ProductForm: React.FC<{productType:string}> = ({productType}) => {
               onChange={(e) => setPromo(Number(e.target.value))}
               min="0"
               max="100"
-              required
             />
           </div>
           <div className="mb-3">
@@ -168,8 +166,7 @@ const ProductForm: React.FC<{productType:string}> = ({productType}) => {
               className="form-control"
               id="images"
               multiple
-              onChange={handleImagesChange}
-              
+              onChange={handleImagesChange} 
             />
           </div>
           <button type="submit" className="btn btn-primary">Ajouter le produit</button>

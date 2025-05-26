@@ -21,7 +21,6 @@ export interface clientData{
     Tel: string;
     City: string;
     Address : string;
-    OrderId : string;
     Amount : number;
     Currency : string;
 }

@@ -39,7 +39,6 @@ const useSandalsData = () => {
             setSandalsData((await res).data.products || []);setSandalsDataDetails((await res).data.products_details || []);
           }
           catch(err){
-            console.log(err)
           }
         }
         useEffect(()=>{

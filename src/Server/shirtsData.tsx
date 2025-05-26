@@ -39,7 +39,6 @@ const useShirtsData = () => {
         setShirtsData((await res).data.products || []);setShirtsDataDetails((await res).data.products_details || []);
       }
       catch(err){
-        console.log(err)
       }
     }
     useEffect(()=>{

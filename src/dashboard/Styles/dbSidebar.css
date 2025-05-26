@@ -7,6 +7,18 @@
     padding: 5px;
     overflow-y: auto;
 }
+
+.db-sidebar-header{
+    position: fixed;
+    width: 210px;
+    top:0;
+    left: 0%;
+    background-color: white;
+}
+.db-sidebar-list{
+    margin-top: 105px;
+}
+
 .db-sidebar h5{
     color: #0e92e4;
 }
@@ -71,3 +83,29 @@
     color: #0782ce;
     font-weight:bold;
 }
+
+/* Réduit la taille de la barre de défilement */
+::-webkit-scrollbar {
+  width: 8px; /* largeur pour une barre de défilement verticale */
+  height: 8px; /* hauteur pour une barre de défilement horizontale */
+}
+
+/* Personnalise la partie "pouce" de la barre de défilement */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* couleur du "pouce" (partie qui se déplace) */
+  border-radius: 10px; /* bordure arrondie du "pouce" */
+}
+
+/* Personnalise la partie de fond de la barre de défilement */
+::-webkit-scrollbar-track {
+  background: white; /* couleur de fond */
+  border-radius: 10px; /* bordure arrondie du fond */
+}
+
+.sidebar-lang{
+    background: transparent;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+

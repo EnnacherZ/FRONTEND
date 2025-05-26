@@ -39,7 +39,6 @@ const usePantsData = () => {
         setPantsData((await res).data.products || []);setPantsDataDetails((await res).data.products_details || []);
       }
       catch(err){
-        console.log(err)
       }
     }
     useEffect(()=>{

@@ -4,7 +4,6 @@ import logo from "../assets/FIRDAOUS STORE.png"
 import Loading from "../Components/loading";
 import apiInstance, { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
 
 
 const Login : React.FC = () => {
@@ -20,13 +19,11 @@ const Login : React.FC = () => {
             const res = await apiInstance.post('db/token', {username,password});
             localStorage.setItem(ACCESS_TOKEN, res.data.access);
             localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-            console.log(jwtDecode(res.data.refresh).exp)
-            navigate('/DBHome')
+            navigate('/Dashboard/Home')
         }
         catch{alert('FORBIDDEN !!')}
         finally{setLoading(false)}
     }
-    console.log(username,password)
 
 if(loading){
     return(<><Loading message="Authentication..."/></>)

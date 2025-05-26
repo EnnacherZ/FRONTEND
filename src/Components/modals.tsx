@@ -222,7 +222,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
                                     style={{width:"100%", textTransform:'capitalize'}}>
                     <div className= {`col-md-4  cartPriceConf1 ${selectedLang(currentLang)=='ar'?'':'text-start'}`}>
                             <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('category')} : </strong>{item?.category.toLowerCase()}</div> 
-                            <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('ref')} :</strong> {item?.ref.toLowerCase()}</div>
+                            <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('ref')} :</strong> {item?.ref}</div>
                             <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('name')} :</strong> {item?.name.toLowerCase()}</div> 
                     </div> 
                     <div className='' style={{wordSpacing:5}}>
@@ -286,6 +286,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
                     </span>
                 </div>
             </div>
+
 
         </motion.div>
 

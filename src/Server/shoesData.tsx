@@ -34,13 +34,14 @@ const useShoesData = () => {
       try{
         const res = connecter.get(`api/getProducts?productType=Shoe`);
         setShoesData((await res).data.products || []);setShoesDataDetails((await res).data.products_details || []);
+      console.log((await res).data)     
       }
       catch(err){
-        console.log(err)
       }
     }
     useEffect(()=>{
       getProducts();
+
     },[])
         return ({shoesData, shoesDataDetails})
 };

@@ -3,7 +3,7 @@ import {motion} from "framer-motion";
 import "../Styles/modals.css"
 
 
-const ModalBackDrop : React.FC<{children:ReactNode, onClose:()=>void, onOpen:boolean}> = ({children, onClose, onOpen }) =>{
+const ModalBackDrop : React.FC<{children:ReactNode, onClose:()=>void | undefined, onOpen:boolean}> = ({children, onClose, onOpen }) =>{
 
     return(<>
         <motion.div

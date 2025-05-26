@@ -1,0 +1,17 @@
+
+.db.modals.orders{
+    margin: auto;
+    margin-top: 50px;
+    max-width: 75%;
+    height: 500px;
+    background-color: aliceblue;
+    border-radius: 10px;
+}
+
+ul{
+    list-style: none;
+}
+
+ul li span{
+    margin: 0 16px;
+}

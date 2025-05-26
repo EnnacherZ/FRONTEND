@@ -16,13 +16,15 @@ import SuccessTrans from "./Components/successTrans";
 import Pants from "./Components/Pants";
 import ProductDetails from "./Components/ProductDetails";
 import Login from "./dashboard/LogIn";
-import DBHome from "./dashboard/home";
-import AddShoes from "./dashboard/pages/AddShoes";
+import DBHome from "./dashboard/pages/home";
+import ProductsManager from "./dashboard/pages/ProductsManager";
+import ExceptionsPage from "./dashboard/pages/Exceptions";
+
 
 // Définir vos routes
 const routes = [
-  { path: "/dbHome", element: <DBHome /> },
-  { path: "/Login", element: <Login /> },
+  { path: "/Dashboard/Home", element: <DBHome /> },
+  { path: "/Dashboard/Login", element: <Login /> },
   { path: "/productDetails/:product/:category/:ref/:id", element: <ProductDetails /> },
   { path: "/test", element: <Test /> },
   { path: "/", element: <Navigate to="/Home" /> },
@@ -34,7 +36,9 @@ const routes = [
   { path: "/YourCart", element: <Cart /> },
   { path: "/Checkout", element: <Checkout /> },
   { path: "/Trans", element: <SuccessTrans /> },
-  {path : "/db/:productType", element : <AddShoes/>}
+  { path: "/Dashboard/:productType", element : <ProductsManager/>},
+  { path: "/Dashboard/Deficiency", element : <ExceptionsPage/> },
+  // { path: "/testy", element : <Accordion/>}
 ];
 
 // Créer le routeur avec les nouvelles options futures
@@ -51,7 +55,7 @@ const App: React.FC = () => {
         <PaymentProvider>
           <ProductsContextProvider>
             {/* Utiliser RouterProvider pour appliquer le routeur */}
-            <RouterProvider router={router} />
+            <RouterProvider router={router}   future={{v7_startTransition: true}} />
           </ProductsContextProvider>
         </PaymentProvider>
       </CartProvider>
