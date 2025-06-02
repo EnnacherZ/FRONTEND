@@ -17,17 +17,17 @@ export interface HomePageData{
 export const undefinedHomePageData:HomePageData = {promo:[], noPromo:[]}
 const HomePage: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL
-    const [shoes, setShoes] = useState([])
-    const [sandals, setSandals] = useState([])
-    const [shirts, setShirts] = useState([])
-    const [pants, setPants] = useState([])
+    const [shoes, setShoes] = useState()
+    const [sandals, setSandals] = useState()
+    const [shirts, setShirts] = useState()
+    const [pants, setPants] = useState()
     useEffect(()=>{
       const getData = async () =>{
             const allProducts = await axios.get(`${apiUrl}api/getAllProducts`)
-            setShoes(allProducts.data.list_shoes || []);
-            setSandals(allProducts.data.list_sandals || []);
-            setShirts(allProducts.data.list_shirts || []);
-            setPants(allProducts.data.list_pants || []);
+            setShoes(allProducts.data.list_shoes);
+            setSandals(allProducts.data.list_sandals);
+            setShirts(allProducts.data.list_shirts);
+            setPants(allProducts.data.list_pants);
      };
       getData();
     },[])

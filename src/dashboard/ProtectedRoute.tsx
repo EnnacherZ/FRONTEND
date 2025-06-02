@@ -44,7 +44,7 @@ const ProtectedRoute : React.FC<{children:ReactNode}> = ({children}) =>{
     if(isAuthorized == null){
         return(<><Loading message="Authentication..."/></>)
     }
-    return (isAuthorized? children : <Navigate to={"/Login"}/>)
+    return (isAuthorized? children : <Navigate to={"/Dashboard/Login"}/>)
 
 }
 

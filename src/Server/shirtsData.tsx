@@ -3,7 +3,7 @@ import { Product, ProductDetail } from "../Contexts/ProductsContext";
 import { connecter } from "./connecter";
 
 const useShirtsData = () => {
-    const [shirtsData, setShirtsData] = useState<Product[]>([]);
+    const [shirtsData, setShirtsData] = useState<Product[]>();
     const [shirtsDataDetails, setShirtsDataDetails] = useState<ProductDetail[]>([]);
 
 
@@ -36,7 +36,7 @@ const useShirtsData = () => {
     const getProducts = async () => {
       try{
         const res = connecter.get(`api/getProducts?productType=Shirt`);
-        setShirtsData((await res).data.products || []);setShirtsDataDetails((await res).data.products_details || []);
+        setShirtsData((await res).data.products);setShirtsDataDetails((await res).data.products_details || []);
       }
       catch(err){
       }

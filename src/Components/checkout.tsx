@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Header, { goTo } from "./header";
 import "../Styles/checkout.css"
 import { clientData, usePayment } from '../Contexts/paymentContext';
@@ -12,12 +12,12 @@ import { MdAlternateEmail, MdRemoveShoppingCart} from 'react-icons/md';
 import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
 import { useLangContext, selectedLang } from "../Contexts/languageContext"; 
-import {ToastContainer } from "react-toastify";
+import {toast, ToastContainer, Zoom } from "react-toastify";
 import { useCart } from "../Contexts/cartContext";
 import Loading from "./loading";
 import Footer from "./footer";
 import { connecter } from "../Server/connecter";
-
+import { HiOutlineCash } from "react-icons/hi";
 
 type FormValues = {
   FirstName : string;
@@ -42,7 +42,8 @@ const Checkout :  React.FC = () => {
     const [isModify, setIsModify] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [orderId, setOrderId] =useState<string>();
-    const wait = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+    const [isOnlinePayment, setIsOnlinePayment] = useState<boolean>();
+    const paymentForm = useRef<HTMLDivElement>(null);
     const Clientform = useForm<FormValues>({
       defaultValues:clientForm
     })
@@ -108,7 +109,7 @@ const Checkout :  React.FC = () => {
 
       useEffect(() => {
         // Download YCPay script dynamically
-        if(tokenId===null && !isScriptLoaded){
+        if(!isScriptLoaded){
         const script = document.createElement('script');
         script.src = 'https://youcanpay.com/js/ycpay.js';
         script.async = true;
@@ -121,16 +122,19 @@ const Checkout :  React.FC = () => {
       }, []);
 
       const handleYCPay = async () => {
+        setOnlinePayment();
         if(clientForm&&!tokenId){
           try {
+            
             console.log('waiting')
             const tokenParams = {
-                amount: clientForm?.Amount*100 , // Montant requis
+                amount: clientForm?.Amount, // Montant requis
                 currency: 'MAD', // Devise requise
                 customer_ip: '10.25.28.35', // IP du client requise
                 success_url: 'https://google.com/', // URL de succès requise
                 error_url: 'https://youtube.com/', // URL d'erreur optionnelle
             };
+            console.log(tokenParams)
             const customer= {
               first_name: clientForm.FirstName,
               last_name: clientForm.LastName, 
@@ -149,14 +153,12 @@ const Checkout :  React.FC = () => {
             console.log(respo);
             setOrderId(respo.data.order_id);
             setTokenId(tokenRespo);
+            
             }catch(err){console.log(err)}  
         }else{return}      
       };
 
       useEffect(() => {
-        if (tokenId === null) {
-          return;
-        }
         if (isScriptLoaded && tokenId) {
           // Initialise YCPay
           const ycPay = new YCPay('pub_sandbox_1bfc0387-7aea-49ab-b51e-930e5', {
@@ -165,7 +167,6 @@ const Checkout :  React.FC = () => {
             errorContainer: '#error-container',
             formContainer: '#payment-container',
             token: tokenId,
-            customCSS: '.main-container{display: block} ',
           });
     
           // Render payment form
@@ -174,11 +175,14 @@ const Checkout :  React.FC = () => {
           // Add pay button listner
           const payButton = document.getElementById('pay');
           if (payButton) {
-            payButton.addEventListener('click', () => {
-              ycPay.pay(tokenId)
-                .then(successCallback)
-                .catch(errorCallback);
-            });
+            if(isOnlinePayment){
+              payButton.addEventListener('click', () => {
+                ycPay.pay(tokenId)
+                  .then(successCallback)
+                  .catch(errorCallback);
+              });             
+            }
+            
           }
         }
       }, [tokenId]);
@@ -204,42 +208,81 @@ const Checkout :  React.FC = () => {
           console.error('Payment error:', response);
       };
 
-      // const handlePaymentCheck = async () =>{
-      //   try{
-      //     const response = await axios.post(`${apiUrl}api/handlepaycheck`, {
-      //       shoes_order : shoesOrder,
-      //       sandals_order : sandalsOrder,
-      //     })
-      //     setOrderedProducts(response.data.orderedProducts || [])
-      //     setIsChecked(response.data.message)
-      //   }catch(err){console.log(err)}
-      // }
-
 
       const handlePayment = async (trans:string, date:string) => {
         try {
             setIsLoading(true)
             window.scrollTo(0,0)
-            const response = await connecter.post(`api/handlepay/`,{
+            let formData = {}
+            if(isOnlinePayment){
+              formData = {
               shoes_order : allItems.Shoes,
               sandals_order : allItems.Sandals,
               shirts_order : allItems.Shirts,
               pants_order : allItems.Pants,
               orderId: orderId,
               transaction_id : trans,
-              date : date
-            });
-            await wait(5000);
+              date : date,
+              onlinePayment : isOnlinePayment
+            }
+            }else{
+              formData = {
+              shoes_order : allItems.Shoes,
+              sandals_order : allItems.Sandals,
+              shirts_order : allItems.Shirts,
+              pants_order : allItems.Pants,
+              date : date,
+              onlinePayment : isOnlinePayment,
+              transaction_id : trans,
+              client : clientForm,
+              }
+            }
+            const response = await connecter.post(`api/handlepay/`,formData);
             setSuccessTransItems(response.data.ordered_products||[]);
-            setIsLoading(false);
             clearCart();
-            goTo("/Trans")
+            goTo("/Trans");
+            setIsLoading(false);
             console.log(response.data.ordered_products||[]);
         } catch (error) {
             console.error('Error during payment:', error);
         }
     };
     
+
+    const setCOD = () =>{
+      if(paymentForm.current){
+        paymentForm.current.style.display = 'none';
+        setIsOnlinePayment(false);
+        setTokenId(null);
+      }
+    }
+    const setOnlinePayment = () =>{
+      if(paymentForm.current){
+        paymentForm.current.style.display = 'block';
+        setIsOnlinePayment(true);
+        window.scrollBy({top:300, behavior:'smooth'})
+      }
+    };
+
+    const OnClickPayment = () => {
+          if(isOnlinePayment==false){
+            handlePayment("COD", date.toUTCString())
+          }
+          else if(isOnlinePayment==undefined){
+              toast.error(t('choosePM'), {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                  transition: Zoom,
+                });
+            }
+    }
+
 
     if(!cartChecker){;return(<>
     <Header/>
@@ -305,8 +348,8 @@ const Checkout :  React.FC = () => {
 
     </div>
 
-    <div className={`repay-alert rounded p-2 ${selectedLang(currentLang)=='ar'&&'rtl'}`}><AiFillAlert size={"1.3em"}  className="mx-2 alerticon"/> 
-      {t('checkoutAlert')}
+    <div className={`repay-alert rounded p-2 ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+      <AiFillAlert size={"1.3em"}  className="mx-2 alerticon"/> {t('checkoutAlert')}
     </div>
 
     <div className="clientFormAndPayment disabled">
@@ -618,19 +661,25 @@ const Checkout :  React.FC = () => {
         <FaMoneyBillTransfer className="mx-3"/> {t('paymentPortal')}
       </div>
       <hr></hr>
-      <button className="creditCard rounded my-2" onClick={handleYCPay} >
+      <button className={`cod ${isOnlinePayment==false&&"choosed"} rounded my-3 ${selectedLang(currentLang)=='ar'&&'rtl'}`} onClick={setCOD}>
+        <HiOutlineCash className="mx-2"/> {t('cod')}
+      </button>
+      <button className={`creditCard ${isOnlinePayment==true&&"choosed"} rounded my-3 ${selectedLang(currentLang)=='ar'&&'rtl'}`} onClick={handleYCPay} >
         <FaCreditCard className="mx-3"/> {t('creditCard')}
       </button>
-      <div id="error-container" ></div>
-      <div id="payment-container" className="mb-2" ></div>
+      <div className={`mb-2 `} id="payment-container" ref={paymentForm}>
+      </div>
       <div className="gateway-brand d-flex justify-content-end  p-2" >
           <span className="text-muted"><i>by</i></span>
           <div className="gateway-brand-img">
               <img src="https://youcanpay.com/images/ycpay-logo.svg" alt="" />
           </div>
       </div>
+      <div className={`paymentMethoidChoice fw-bold fs-6 ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+        {t("choicePM")} : {isOnlinePayment==undefined? t("noChoicePM"):(isOnlinePayment?t('creditCard'):t('cod'))}
+      </div>
     </div>
-    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} 
+    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} onClick={OnClickPayment}
     >{t('pay')}</button>
     </div>
 

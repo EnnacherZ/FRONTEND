@@ -10,10 +10,12 @@ import { FaHome, FaSignOutAlt } from "react-icons/fa";
 import { goTo } from "../Components/header";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
 import { MdLanguage } from "react-icons/md";
-import { useLangContext } from "../Contexts/languageContext";
+import { selectedLang, useLangContext } from "../Contexts/languageContext";
+import { useTranslation } from "react-i18next";
 
 
 const Sidebar : React.FC = () => {
+    const {t} = useTranslation();
     const {currentLang, setCurrentLang} = useLangContext();
     const [actual, setActual] = useState<string>(window.location.pathname.slice(1));
     
@@ -24,12 +26,12 @@ const Sidebar : React.FC = () => {
     };
 
     return(<>
-    <div className="db-sidebar shadow justify-content-between">
-        <div className="db-sidebar-header shadow-sm">
+    <div className={`${selectedLang(currentLang)=='ar'?'db-sidebar-rtl rtl':'db-sidebar'} shadow justify-content-between`}>
+        <div className={`${selectedLang(currentLang)=='ar'?'db-sidebar-header-rtl rtl':'db-sidebar-header'} shadow-sm`}>
         <div className="db-sidebar-logo my-2" onClick={()=>goTo('Home')}><img src={logo} alt="" /></div>
         <h5 className="text-center fw-bold my-2">STORE DASHBOARD</h5>
         </div>
-        <ul className="db-sidebar-list">
+        <ul className={`db-sidebar-list ${selectedLang(currentLang)=='ar'?'rtl':''}`}>
                     <li className="d-flex rounded " style={{zIndex:11000}}>
                     <MdLanguage size={20}/>
                         <select className="mx-1 sidebar-lang fw-bold"
@@ -47,14 +49,14 @@ const Sidebar : React.FC = () => {
                             </option>
                         </select>
             </li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/home'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Home")}}><FaHome className="me-2"/> Home</li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/orders'&&'DbIsClicked'}`} onClick={()=>setActual('Orders')}><BsInboxesFill className="me-2"/> Orders</li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/deficiency'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Deficiency")}}><FaArrowDownWideShort className="me-2"/> Deficiency</li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/shoe'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Shoe')}}><LiaShoePrintsSolid className="me-2"/> Shoes</li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/sandal'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Sandal')}}><GiSandal className="me-2"/> Sandals</li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/shirt'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Shirt')}}><FaShirt className="me-2"/> Shirts</li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/pant'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Pant')}}><PiPantsBold className="me-2"/> Pants</li>
-            <div className="my-1 rounded db-signout shadow " onClick={signOut}><FaSignOutAlt className="me-2"/> Sign out</div>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/home'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Home")}}><FaHome className="me-2"/> {t('home')} </li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/orders'&&'DbIsClicked'}`} onClick={()=>setActual('Orders')}><BsInboxesFill className="me-2"/> {t('orders')} </li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/deficiency'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Deficiency")}}><FaArrowDownWideShort className="me-2"/> {t('deficiencies')} </li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/shoe'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Shoe')}}><LiaShoePrintsSolid className="me-2"/> {t('shoes')}</li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/sandal'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Sandal')}}><GiSandal className="me-2"/> {t('sandals')}</li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/shirt'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Shirt')}}><FaShirt className="me-2"/> {t('shirts')}</li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/pant'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Pant')}}><PiPantsBold className="me-2"/> {t('pants')}</li>
+            <div className="my-1 rounded db-signout shadow " onClick={signOut}><FaSignOutAlt className="me-2"/> {t('signOut')}</div>
         </ul>
 
     </div>

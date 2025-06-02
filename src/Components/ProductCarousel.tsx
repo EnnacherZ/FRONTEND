@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { Product } from "../Contexts/ProductsContext";
 import { useTranslation } from "react-i18next";
 import Loading from "./loading";
+import NoProduct from "./NoProduct";
 
 interface ProductCarouselProps {
-  Data : Product[];
+  Data : Product[] | undefined;
   productType : string;
 }
 
@@ -16,7 +17,7 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, productType}) =
   const apiUrl = import.meta.env.VITE_IMG_URL
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const [productsData, setProductsData] = useState<Product[]>([]);
+  const [productsData, setProductsData] = useState<Product[]>();
     const responsive = {
         superLargeDesktop: {
           breakpoint: { max: 4000, min: 1024 },
@@ -63,9 +64,11 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, productType}) =
         return x;
       }
 
+    if(!productsData){return <Loading message={t('loadingProducts')}/>}
+    else if(productsData.length==0){<NoProduct/>}
     return(
       <><hr className="my-1"/>
-        {productsData.length==0 && <Loading message="Products are being loaded"/>}
+        
         <Carousel className={`mt-1 productCarousel z-0 `} 
                 responsive={responsive}
                 swipeable={true}

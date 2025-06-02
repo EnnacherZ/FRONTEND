@@ -9,13 +9,12 @@ import Marquee from "react-fast-marquee"
 import { FaCircleDot } from "react-icons/fa6";
 import usePantsData from "../Server/pantsData.tsx";
 import { Product } from "../Contexts/ProductsContext.tsx";
-import Loading from "./loading.tsx";
 import "../Styles/test.css"
 import pant from "../assets/pants.png";
 
 const Pants: React.FC = () => {
   const {pantsData, pantsDataDetails} = usePantsData();
-  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]);
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>();
   const [selectedCriteria, setSelectedCriteria] = useState<DataToFilter>(
     {product : '',
     category : '',
@@ -32,7 +31,8 @@ const Pants: React.FC = () => {
       show();
   }, [selectedCriteria, pantsData]);
 
-  const filterData = (data: Product[], criterias: DataToFilter) => {
+  const filterData = (data: Product[] | undefined, criterias: DataToFilter) => {
+    if(!data){return undefined}
     return data.filter((item) => {
       if(criterias.category===""&& criterias.name===""&& criterias.ref===""){return true}
       const categoryMatch = criterias.category
@@ -93,13 +93,12 @@ const Pants: React.FC = () => {
 
       </Marquee>
     </div>
-    {pantsData.length>0?<Products pData={filteredProduct} 
+    <Products pData={filteredProduct} 
               pDataDetails={pantsDataDetails} 
               productShowed="Pant" 
               handleFilter={handleProductSearch}
               handleReset={handleReset}/>
-            :<Loading message="Loading ..."/>}
-
+       
     <Footer/>
 
  

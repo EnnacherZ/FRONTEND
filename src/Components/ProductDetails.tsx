@@ -78,7 +78,6 @@ const ProductDetails: React.FC = () => {
    
      useEffect(()=>{
          const getPro = async () => {
-             try{
                  const res = await connecter.get(`api/getSearchedProd?product=${product}&category=${category}&ref=${ref}&id=${id}`)
                  const respo = await res.data.product[0]
                  const respo1 = await res.data.products
@@ -87,9 +86,6 @@ const ProductDetails: React.FC = () => {
                  setData(respo1);
                  setReviews(respo2)
                  console.log(res)
-             }
-             catch(err)
-             {console.log(err)}
          };
          getPro();
      },[ref, category, id, product])
@@ -142,7 +138,7 @@ const ProductDetails: React.FC = () => {
        setSelectedShoeDetails(prev => ({ ...prev, [shoeId]: { size, quantity } }));
    };
  
-   function sizeFilter(L: ProductDetail[], l: number) {
+   function sizeFilter(L: ProductDetail[] | undefined, l: number) {
        if (!L) return []; 
        return L.filter(p => p.productId === l).map(p => [p.size, p.quantity] as [string, number]);
    }

@@ -7,6 +7,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { selectedLang } from "../Contexts/languageContext";
 import { useTranslation } from "react-i18next";
 import { useLangContext } from "../Contexts/languageContext";
+import { Rings } from "react-loader-spinner";
 
 const dropIn = {
     hidden : {
@@ -28,7 +29,7 @@ const dropIn = {
     },
 }
 
-const Modals : React.FC<{cible:string, onBack:()=>void, item:any, onDelete:(()=>void )| undefined}> = ({cible, onBack, item, onDelete}) => {
+const Modals : React.FC<{cible:string, onBack:(()=>void), item:any, onDelete:(()=>void )| undefined}> = ({cible, onBack, item, onDelete}) => {
     const {t} = useTranslation();
     const {currentLang} = useLangContext();
     const [isSP, setIsSP] = useState<boolean>();
@@ -102,6 +103,25 @@ return(
                                             </button>
                     </span>
                 </div>               
+            </div>
+            <div className={`${cible=="loading"?"card align-middle parentCartConfAll ":"d-none"}`}>
+                                <div className="flex-column" style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    }}>
+                                <Rings
+                                        height="10em"
+                                        width="10em"
+                                        color="#0e92e4"
+                                        ariaLabel="loading"
+                                        wrapperStyle={{justifyContent:'center', alignItems:"center"}}
+                                        
+                                    />
+                                    <div className="loading-msg fs-3 fw-bold text-center mt-4">
+                                        Authentication...
+                                    </div>
+                            </div>
             </div>
 
             

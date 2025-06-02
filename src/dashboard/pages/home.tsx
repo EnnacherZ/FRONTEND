@@ -11,6 +11,7 @@ import Modals from "../modals";
 import { AnimatePresence } from "framer-motion";
 import getDeficiencies from "../../Server/dashboard/deficiencies";
 import ProtectedRoute from "../ProtectedRoute";
+import { selectedLang, useLangContext } from "../../Contexts/languageContext";
 
 
 
@@ -18,11 +19,14 @@ const orderExceptions = [<IoWarning color="red" size={25}/>, <MdOutlineFileDownl
 const orderStatus = [<p style={{fontSize:"1em", fontWeight:"bold",color:"rgb(234 179 8)"}}>Waiting</p>, <p style={{fontSize:"1em", fontWeight:"bold"}} color="green">Done</p>]
 
 export const hideInfos = (infos:string, range:number) => {
+    if(!infos){return "Not founded"}
+    else if(infos.length<=5){return infos}
     const showedLength = infos.length - range 
     return infos.slice(0, showedLength) + "*".repeat(10)
 }
 
 const DBHome : React.FC = () => {
+    const {currentLang } = useLangContext();
     const remainingOrders = getRemainingOrders();
     const deficiencies = getDeficiencies();
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -39,7 +43,7 @@ const DBHome : React.FC = () => {
 
 
         <Sidebar/>
-        <div className="db-home">
+        <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
             <div className="fw-bold"><FaWpforms className="me-3" size={20}/>Remaining Orders</div>
             <table className="table table-bordred table-hover mt-2 orders-table rounded shadow-sm">
@@ -58,8 +62,8 @@ const DBHome : React.FC = () => {
 
                     {remainingOrders.slice(0, isExpanded?remainingOrders.length:3).map((ord, index)=>(
                         <tr key={index} onClick={()=>orderOnClick(ord)}>
-                            <td>{hideInfos(ord.order_id, 30)}</td>
-                            <td>{hideInfos(ord.transaction_id, 30)}</td>
+                            <td className="fw-bold">{hideInfos(ord.order_id, 30)}</td>
+                            <td className="fw-bold">{hideInfos(ord.transaction_id, 30)}</td>
                             <td>{ord.date}</td>
                             <td>{ord.amount}</td>
                             <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>

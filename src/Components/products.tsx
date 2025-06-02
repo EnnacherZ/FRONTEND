@@ -11,6 +11,8 @@ import ReactPaginate from 'react-paginate';
 import { useTranslation } from "react-i18next";
 import { selectedLang, useLangContext } from "../Contexts/languageContext";
 import NotFound from "./NotFound";
+import NoProduct from "./NoProduct";
+import Loading from "./loading";
 
 interface productsShow {
    pData: any;
@@ -25,7 +27,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,h
     const { addItem } = useCart();
     const {t} = useTranslation();
     const {currentLang} = useLangContext();
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>();
     const [productDetails, setProductDetails] = useState<ProductDetail[]>([]);
     const [clickedButton, setClickedButton] = useState<{ [key: number]: string | null }>({});
     const [selectedProductDetails, setSelectedProductDetails] = useState<{ [key: number]: { size: string; quantity: number | null } }>({});
@@ -111,10 +113,12 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,h
         setCurrentPage(selectedPage.selected);
     };
 
-    const displayedProducts = products.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
-    const pageCount = Math.ceil(products.length / itemsPerPage);
+    const displayedProducts =products? products?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage): [];
+    const pageCount =products? Math.ceil(products.length / itemsPerPage):0
 
-
+    
+    if(!products){return <Loading message={t('loadingProducts')}/>}
+    else if(products?.length==0 ){return <NoProduct />}
     return (
         <>
             <div className="productsDiv mt-3">

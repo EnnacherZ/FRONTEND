@@ -114,7 +114,18 @@ i18n
           stars:'Stars',
           username:'Username',
           yourReview:'Your review',
-          firstReview:'Put the first review !'
+          firstReview:'Put the first review !',
+          cod: 'Cash on delivery COD',
+          choosePM : 'Please choose a payment method !',
+          choicePM: 'Chosen payment method',
+          noChoicePM : 'Not chosen yet !',
+          signOut :'Sign out',
+          orders : 'Orders',
+          deficiencies : 'Quantity\'s deficiency',
+          loadingProducts : 'Products are loading...',
+          stayTuned : 'Stay tuned !',
+          productsComing : 'New products will come !',
+
         },
       },
       fr: {
@@ -225,7 +236,18 @@ i18n
           stars:'Etoiles',
           username:'Nom d\'utilisateur',
           yourReview:'votre avis',
-          firstReview:'Publier le premier avis !'
+          firstReview:'Publier le premier avis !',
+          cod: 'Cash on delivery COD',
+          choosePM : 'Merci de choisir une métode de paiment!',
+          choicePM: 'Méthode de paiment choisie',
+          noChoicePM : 'Pas encore choisi !',
+          signOut :'Déconnexion',
+          orders : 'Ordres',
+          deficiencies : 'Déficit de quantité',
+          loadingProducts : 'Chargement des produits...',
+          stayTuned : 'Restez à l\'écoute !',
+          productsComing : 'De nouveaux produits arriveront !',
+
 
         },
       },
@@ -282,10 +304,10 @@ i18n
           // For checkout page
           clientInfos : 'معلومات الزبون',
           paymentPortal : 'بوابة الدفع',
-          checkoutAlert : "👍🏻قم أولاً بملء النموذج، ثم اختر طريقة الدفع",
+          checkoutAlert : "  قم أولاً بملء نموذج الدفع، ثم اختر طريقة الدفع 👍🏻",
           creditCard : 'بطاقة بنكية',
           firstN :'الاسم',
-          lastN : 'النسب',
+          lastN : 'النسب', 
           email : 'البريد الالكتروني',
           phN : 'رقم الهاتف',
           address : 'العنوان',
@@ -344,8 +366,22 @@ i18n
           stars:'التقييم',
           username:'اسم المستخدم',
           yourReview:'تعليقك',
-          firstReview : '! نشر المراجعة الأولى'
+          firstReview : '! نشر المراجعة الأولى',
+          cod: 'COD الدفع عند الاستلام ',
+          choosePM : '! المرجو اختيار طريقة الدفع',
+          choicePM: 'طريقة الدفع المختارة',
+          noChoicePM: 'لم يتم اختياره بعد!',
+          signOut :'تسجيل الخروج',
+          orders : 'الطلبيات',
+          deficiencies : 'نقص الكميات',
+          loadingProducts : 'جاري تحميل المنتجات...',
+          stayTuned : '! ترقبوا',
+          productsComing : '! منتجات جديدة قادمة',
+
+       
+       
         },
+
       },
     },
     lng: "fr",

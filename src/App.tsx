@@ -19,6 +19,7 @@ import Login from "./dashboard/LogIn";
 import DBHome from "./dashboard/pages/home";
 import ProductsManager from "./dashboard/pages/ProductsManager";
 import ExceptionsPage from "./dashboard/pages/Exceptions";
+import AddProductTypeForm from "./reloader";
 
 
 // Définir vos routes
@@ -38,7 +39,7 @@ const routes = [
   { path: "/Trans", element: <SuccessTrans /> },
   { path: "/Dashboard/:productType", element : <ProductsManager/>},
   { path: "/Dashboard/Deficiency", element : <ExceptionsPage/> },
-  // { path: "/testy", element : <Accordion/>}
+  { path: "/testy", element : <AddProductTypeForm/>}
 ];
 
 // Créer le routeur avec les nouvelles options futures

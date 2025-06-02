@@ -6,7 +6,7 @@ import '../Styles/HomePage.css'
 import { Product} from "../Contexts/ProductsContext";
 
 
-const HomeShoes : React.FC<{data:Product[]}> = ({data}) => {
+const HomeShoes : React.FC<{data:Product[]| undefined}> = ({data}) => {
     const {t} = useTranslation();
     // const [promo, setPromo]=useState<Product[]>([])
     // const [noPromo, setNoPromo]=useState<Product[]>([])

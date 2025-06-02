@@ -1,13 +1,29 @@
+.db-sidebar-rtl{
+    position: fixed;
+    top: 0;
+    right : 0;
+    width:220px;
+    height:100vh;
+    padding: 5px;
+    overflow-y: auto;
+}
 .db-sidebar{
     position: fixed;
-    left : 0;
-    right:0;
+    top:0;
+    left:0;
     width:220px;
     height:100vh;
     padding: 5px;
     overflow-y: auto;
 }
 
+.db-sidebar-header-rtl{
+    position: fixed;
+    width: 210px;
+    top:0;
+    right: 0%;
+    background-color: white;
+}
 .db-sidebar-header{
     position: fixed;
     width: 210px;
@@ -15,11 +31,11 @@
     left: 0%;
     background-color: white;
 }
-.db-sidebar-list{
+.db-sidebar-list, .db-sidebar-list.rtl{
     margin-top: 105px;
 }
 
-.db-sidebar h5{
+.db-sidebar h5, .db-sidebar-rtl h5{
     color: #0e92e4;
 }
 
@@ -30,13 +46,14 @@
     height: auto;
 }
   
-.db-sidebar li {
+.db-sidebar li, .db-sidebar-rtl li {
     padding: 15px;
     cursor: pointer;
     height: 50px;
     transition: 0.2s ease;
     display: flex;
     align-items: center;
+    justify-content: space-between;
  }
   
 .db-sidebar li:hover {
@@ -71,6 +88,7 @@
     transition: 0.25s ease-in-out;
     cursor: pointer;
     height: 50px;
+    justify-content: space-between;
 }
 .db-signout:hover{
     background-color: white;

@@ -6,16 +6,18 @@ import { FaSortAmountDown } from "react-icons/fa";
 import getDeficiencies from "../../Server/dashboard/deficiencies";
 import { hideInfos } from "./home";
 import ProtectedRoute from "../ProtectedRoute";
+import { selectedLang, useLangContext } from "../../Contexts/languageContext";
 
 
 const ExceptionsPage : React.FC= () => {
+    const {currentLang} = useLangContext();
     const deficiencies = getDeficiencies();
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
 return(<>
 <ProtectedRoute>
 <Sidebar/>
-<div className="db-deficiency">
+<div className={`db-deficiency ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
     <DbHeader/>
             <div className="fw-bold"><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</div>
             <table className="table table-bordred mt-2 orders-table rounded shadow-sm">

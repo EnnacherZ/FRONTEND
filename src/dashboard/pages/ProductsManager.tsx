@@ -13,6 +13,7 @@ import { IoSettings } from "react-icons/io5";
 import { GiSettingsKnobs } from "react-icons/gi";
 import ProtectedRoute from "../ProtectedRoute";
 import apiInstance from "../api";
+import { selectedLang, useLangContext } from "../../Contexts/languageContext";
 
 export interface OptionType {
     label:string,
@@ -24,6 +25,7 @@ let AllOptions : OptionType[] = [];
 const connecter = apiInstance;
 
 const ProductsManager : React.FC = () => {
+  const {currentLang} = useLangContext();
     const {productType} = useParams<{productType:string}>();
     const [products, setProducts] = useState<Product[]>([]);
 
@@ -61,7 +63,7 @@ const ProductsManager : React.FC = () => {
     return(<>
     <ProtectedRoute>
         <Sidebar/>
-        <div className="db-home">
+        <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
             <hr/>
             <div className="Prod-manage-title m-4 fw-bold">
@@ -72,6 +74,7 @@ const ProductsManager : React.FC = () => {
             <div className="Prod-manage-title m-4 fw-bold">
               <GiSettingsKnobs  size={20}/> <span className="mx-3">Settings of {productType} products</span>
             </div>
+            {productType?<ProductParameters productType={productType}/>:<Loading message="Loading"/>}
         </div>
     </ProtectedRoute>
 
@@ -112,5 +115,81 @@ const ProductsOperations : React.FC<{productType:string}> = ({productType}) => {
   );
 }
 
-export default ProductsManager
+
+const ProductParameters : React.FC<{productType:string}> = ({productType}) => {
+  
+  const [valuesText, setValuesText] = useState("");
+  //const [productsCategories, setProductsCategories] = useState<string[]>([]);
+  const handlePostParameters = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const values = valuesText
+      .split(",")
+      .map((v) => v.trim())
+      .filter((v) => v.length > 0);
+
+    try {
+      const response = await connecter.post("db/products/parameters", 
+        {
+          productType: productType, label: "categories", values : values
+        }
+      )
+
+      if (response.status ==201) {
+        window.location.reload()
+      }
+    } catch (error) {
+    }
+  };
+
+
+return(<>
+  <Accordion >
+    <Accordion.Item eventKey="0" className="my-3 rounded card shadow ">
+      <Accordion.Header> <span className="fw-bold">Add product categories</span> </Accordion.Header>
+        <Accordion.Body>
+          <form onSubmit={handlePostParameters}>
+        <div className="mb-3">
+            <label htmlFor="ref" className="form-label">Product type:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="category"
+              value={productType}
+              disabled
+            />
+          </div>
+        <div className="mb-3">
+            <label htmlFor="ref" className="form-label">Category:</label>
+            <input
+              className="form-control"
+              id="category"
+              type="text"
+              value={valuesText}
+              onChange={(e) => setValuesText(e.target.value)}
+              placeholder="ex: val1, val2, val3"
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">Submit</button>
+          </form>
+        </Accordion.Body>
+    </Accordion.Item>
+    <Accordion>
+        <Accordion.Header> <span className="fw-bold">Delete product categories</span> </Accordion.Header>
+        <Accordion.Body>
+      
+        </Accordion.Body>
+    </Accordion>
+  </Accordion>
+
+</>)
+
+};
+
+
+
+export default ProductsManager;
+
+
 
