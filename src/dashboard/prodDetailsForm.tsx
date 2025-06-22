@@ -27,8 +27,9 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
         return [prod, prodDetail];
     }
 
-    const handleOption = (option:OptionType | null) =>  {
-        setSelectedOption(option)};
+    const handleOption = async (option:OptionType | null) =>  {
+        setSelectedOption(option);
+    };
 
 
 
@@ -60,14 +61,12 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
         transition: Zoom,
     });
     }
-
-
     }
 
 
     return(<>
-        <div className="prodForm">
-            <form onSubmit={handleSubmit}>
+        <div className="prodForm " >
+            <form onSubmit={handleSubmit} >
                 <div className="mb-3">
                     <label htmlFor="ref" className="form-label"> Product :</label>
                     <Select
@@ -77,6 +76,9 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
                     placeholder="Choisissez un produit"
                     isClearable
                     />
+                </div>
+                <div className={`mb-2 ${selectedOption?"d-flex":'d-none'} justify-content-center`} >
+                    <img src={selectedOption?.picture} alt="" className="border border-dark shadow"/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label"> Size :</label>

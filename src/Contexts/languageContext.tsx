@@ -125,6 +125,10 @@ i18n
           loadingProducts : 'Products are loading...',
           stayTuned : 'Stay tuned !',
           productsComing : 'New products will come !',
+          settings: 'Settings',
+          statistics : 'Statistics',
+          remainingOrders: 'Remaining orders',
+
 
         },
       },
@@ -247,6 +251,10 @@ i18n
           loadingProducts : 'Chargement des produits...',
           stayTuned : 'Restez à l\'écoute !',
           productsComing : 'De nouveaux produits arriveront !',
+          settings: 'Paramètres',
+          statistics:'Statistiques',
+          remainingOrders: 'Commandes en attente',
+          
 
 
         },
@@ -377,7 +385,10 @@ i18n
           loadingProducts : 'جاري تحميل المنتجات...',
           stayTuned : '! ترقبوا',
           productsComing : '! منتجات جديدة قادمة',
-
+          settings: 'لاعدادات',
+          statistics:'الاحصائيات',
+          remainingOrders: 'طلبيات في انتظار التاكيد',
+          
        
        
         },
@@ -411,7 +422,7 @@ i18n
 }
   const langContext = createContext<langContextProps | undefined>(undefined);
   export const LangContextProvider : React.FC<{children:ReactNode}> = ({children}) =>{
-    const [currentLang, setCurrentLang] = useState<string>("العربية");
+    const [currentLang, setCurrentLang] = useState<string>("English");
     useEffect(()=>{
         i18n.changeLanguage(selectedLang(currentLang));
     },[currentLang])

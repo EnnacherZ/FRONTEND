@@ -20,12 +20,13 @@ import DBHome from "./dashboard/pages/home";
 import ProductsManager from "./dashboard/pages/ProductsManager";
 import ExceptionsPage from "./dashboard/pages/Exceptions";
 import AddProductTypeForm from "./reloader";
+import Orders from "./dashboard/pages/Orders";
+import Settings from "./dashboard/pages/Settings";
+import { ParametersContextProvider } from "./dashboard/Contexts/ParametersContext";
 
 
 // Définir vos routes
 const routes = [
-  { path: "/Dashboard/Home", element: <DBHome /> },
-  { path: "/Dashboard/Login", element: <Login /> },
   { path: "/productDetails/:product/:category/:ref/:id", element: <ProductDetails /> },
   { path: "/test", element: <Test /> },
   { path: "/", element: <Navigate to="/Home" /> },
@@ -37,17 +38,27 @@ const routes = [
   { path: "/YourCart", element: <Cart /> },
   { path: "/Checkout", element: <Checkout /> },
   { path: "/Trans", element: <SuccessTrans /> },
-  { path: "/Dashboard/:productType", element : <ProductsManager/>},
-  { path: "/Dashboard/Deficiency", element : <ExceptionsPage/> },
   { path: "/testy", element : <AddProductTypeForm/>}
 ];
 
+const dbRoutes = [
+  { path: "/Dashboard/Home", element: <DBHome /> },
+  { path: "/Dashboard/Login", element: <Login /> },
+  { path: "/Dashboard/:productType", element : <ProductsManager/>},
+  { path: "/Dashboard/Deficiency", element : <ExceptionsPage/> },
+  { path: "/Dashboard/Orders", element : <Orders/> },
+  { path: "/Dashboard/Settings", element : <Settings/> },
+]
+
+
+
+
 // Créer le routeur avec les nouvelles options futures
-const router = createBrowserRouter(routes, {
-  future: {      // Activer la transition concurrente (React 18+)
-    v7_relativeSplatPath: true,      // Activer la gestion des chemins relatifs dans les splats
-  },
-});
+
+const isAdminInterface = window.location.pathname.startsWith("/Dashboard") || window.location.pathname.startsWith("/dashboard")
+const router = isAdminInterface
+  ? createBrowserRouter(dbRoutes, { future: { v7_relativeSplatPath: true } })
+  : createBrowserRouter(routes, { future: { v7_relativeSplatPath: true } });
 
 const App: React.FC = () => {
   return (
@@ -55,8 +66,12 @@ const App: React.FC = () => {
       <CartProvider>
         <PaymentProvider>
           <ProductsContextProvider>
-            {/* Utiliser RouterProvider pour appliquer le routeur */}
+            {isAdminInterface?<ParametersContextProvider>
             <RouterProvider router={router}   future={{v7_startTransition: true}} />
+            </ParametersContextProvider>:
+            <RouterProvider router={router}   future={{v7_startTransition: true}}/>
+            }
+            {/* Utiliser RouterProvider pour appliquer le routeur */}
           </ProductsContextProvider>
         </PaymentProvider>
       </CartProvider>

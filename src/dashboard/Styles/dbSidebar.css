@@ -19,14 +19,14 @@
 
 .db-sidebar-header-rtl{
     position: fixed;
-    width: 210px;
+    width: 215px;
     top:0;
     right: 0%;
     background-color: white;
 }
 .db-sidebar-header{
     position: fixed;
-    width: 210px;
+    width: 215px;
     top:0;
     left: 0%;
     background-color: white;
@@ -39,11 +39,13 @@
     color: #0e92e4;
 }
 
-.db-sidebar ul {
+.db-sidebar ul, .db-sidebar-rtl ul {
     list-style-type: none;
-    padding: 0;
+    padding: 0 5px;
     width: 100%;
     height: auto;
+    font-size: 14px;
+    font-weight: bold;
 }
   
 .db-sidebar li, .db-sidebar-rtl li {
@@ -90,28 +92,74 @@
     height: 50px;
     justify-content: space-between;
 }
+.db-settings-btn{
+    color: white;
+    background-color: #2A7B9B;
+    width:100%;
+    display: flex;
+    align-items: center;
+    padding: 0px 15px;
+    border : 0.5px solid #979494;
+    transition: 0.25s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+    cursor: pointer;
+    height: 50px;
+    justify-content: space-between;
+    
+}
+.db-statistics-btn{
+    color: white;
+    background-color: #9E2EE8;
+    width:100%;
+    display: flex;
+    align-items: center;
+    padding: 0px 15px;
+    border : 0.5px solid ;
+    transition: 0.25s ease-in-out;
+    cursor: pointer;
+    height: 50px;
+    justify-content: space-between;
+    
+}
 .db-signout:hover{
     background-color: white;
     color: red;
     border-color: red;
+    font-weight: bolder;
+    border-width: 5px;
+}
+.db-settings-btn:hover{
+    background-color: white;
+    color: #2A7B9B;
+    border-color: #2A7B9B;
+    font-weight: bolder;
+    border-width: 5px;
+}
+.db-statistics-btn:hover{
+    background-color: white;
+    color: #9E2EE8;
+    border-color:#9E2EE8;
+    font-weight: bolder;
+    border-width: 5px;
 }
 
 .DbIsClicked{
     background-color: #e5f4fd;
     color: #0782ce;
-    font-weight:bold;
+    font-weight:bolder;
+    border: 0.1px solid #0782ce;
+    font-size: 13px;
 }
 
 /* Réduit la taille de la barre de défilement */
 ::-webkit-scrollbar {
-  width: 8px; /* largeur pour une barre de défilement verticale */
+  width: 3px; /* largeur pour une barre de défilement verticale */
   height: 8px; /* hauteur pour une barre de défilement horizontale */
 }
 
 /* Personnalise la partie "pouce" de la barre de défilement */
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.5); /* couleur du "pouce" (partie qui se déplace) */
-  border-radius: 10px; /* bordure arrondie du "pouce" */
+  background-color: #57baf8; /* couleur du "pouce" (partie qui se déplace) */
+  border-radius: 5px; /* bordure arrondie du "pouce" */
 }
 
 /* Personnalise la partie de fond de la barre de défilement */

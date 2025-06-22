@@ -131,6 +131,9 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
                     isClearable
                     />
                 </div>
+                <div className={`mb-2 ${selectedOption?"d-flex":'d-none'} justify-content-center`} >
+                    <img src={selectedOption?.picture} alt="" className="border border-dark shadow"/>
+                </div>
         <div className="mb-3">
             <label htmlFor="ref" className="form-label">Category:</label>
             <input

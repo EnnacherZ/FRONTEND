@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState, ReactNode, useEffect} from "react";
+import React, {createContext, useContext, useState, ReactNode} from "react";
 
 export interface ProductDetail {
     productId: number;
@@ -35,8 +35,6 @@ export interface ProductReviews{
 }
 
 interface ProductDetailProps {
-    DetailledProduct : Product;
-    setDetailledProduct : React.Dispatch<React.SetStateAction<Product>>;
     rev_star:number;
     rev_name:string;
     rev_email:string;
@@ -53,22 +51,8 @@ export const ProductsContextProvider : React.FC<{children : ReactNode}> = ({chil
     const [rev_name, setRev_name] = useState<string>("");
     const [rev_email, setRev_email] = useState<string>("");
     const [reviewText, setReviewText] = useState<string>("");
-    const [DetailledProduct, setDetailledProduct] = useState<Product>(
-        ()=>{
-            try{
-                const savedTargetedProduct = sessionStorage.getItem("EnnacherStoreTargetedProduct")
-                if(savedTargetedProduct){return JSON.parse(savedTargetedProduct)}
-                return {}
-            }catch(error){console.log(error)}
-        }
-    );
 
-    useEffect(()=>{
-        try{
-            sessionStorage.setItem('EnnacherStoreTargetedProduct', JSON.stringify(DetailledProduct))
-        }catch(error){ console.log(error)
-        }
-    }, [DetailledProduct])
+
 
     // useEffect(()=>{
     //     const productTypee = DetailledProduct.selectedProduct?.productType || '';
@@ -83,7 +67,7 @@ export const ProductsContextProvider : React.FC<{children : ReactNode}> = ({chil
 
 
     return(
-    <ProductsContext.Provider value={{DetailledProduct, setDetailledProduct, 
+    <ProductsContext.Provider value={{ 
     rev_star,rev_email,rev_name,reviewText,setRev_email,setRev_name,setRev_star,setReviewText}}>
         {children}
     </ProductsContext.Provider>)

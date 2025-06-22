@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../sidebar";
+import Select from "react-select";
 import { useParams } from "react-router-dom";
 import DbHeader from "../DbHeader";
 import ProductForm from "../prodForm";
@@ -8,57 +9,51 @@ import Accordion from 'react-bootstrap/Accordion';
 import ProdDetailsForm from "../prodDetailsForm";
 import ProdDelete from "../prodDelete";
 import ProdModif from "../prodModif";
-import { Product } from "../../Contexts/ProductsContext";
 import { IoSettings } from "react-icons/io5";
-import { GiSettingsKnobs } from "react-icons/gi";
 import ProtectedRoute from "../ProtectedRoute";
 import apiInstance from "../api";
 import { selectedLang, useLangContext } from "../../Contexts/languageContext";
+import { ProductDetail } from "../../Contexts/ProductsContext";
 
 export interface OptionType {
     label:string,
-    value : number
+    value : number,
+    picture : string
 }
 
-let AllOptions : OptionType[] = [];
 
 const connecter = apiInstance;
 
 const ProductsManager : React.FC = () => {
   const {currentLang} = useLangContext();
     const {productType} = useParams<{productType:string}>();
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<OptionType[]>([]);
 
-    const productSwitcher = (productType:string) => {
-        let prod = ""; let prodDetail = ""; let prodManager = "";
-        switch(productType){
-            case('Shoe'):
-                prod = 'db/shoes';prodDetail = "db/updateShoeDetails";prodManager = "db/shoes/manager/";break;
-            case('Sandal'):
-                prod = 'db/sandals';prodDetail = "db/updateSandalDetails";prodManager = "db/sandals/manager/";break;
-            case('Shirt'):
-                prod = 'db/shirts';prodDetail = "db/updateShirtDetails";prodManager = "db/shirts/manager/";break;
-            case('Pant'):
-                prod = 'db/pants';prodDetail = "db/updatePantDetails";prodManager = "db/pants/manager/";break;
-        }
-        return [prod, prodDetail, prodManager];
-    }
+    // const productSwitcher = (productType:string) => {
+    //     let prod = ""; let prodDetail = ""; let prodManager = "";
+    //     switch(productType){
+    //         case('Shoe'):
+    //             prod = 'db/shoes';prodDetail = "db/updateShoeDetails";prodManager = "db/shoes/manager/";break;
+    //         case('Sandal'):
+    //             prod = 'db/sandals';prodDetail = "db/updateSandalDetails";prodManager = "db/sandals/manager/";break;
+    //         case('Shirt'):
+    //             prod = 'db/shirts';prodDetail = "db/updateShirtDetails";prodManager = "db/shirts/manager/";break;
+    //         case('Pant'):
+    //             prod = 'db/pants';prodDetail = "db/updatePantDetails";prodManager = "db/pants/manager/";break;
+    //     }
+    //     return [prod, prodDetail, prodManager];
+    // }
 
     useEffect(()=>{
         const getProducts = async () => {
           if(productType){
-            const response = await connecter.get(productSwitcher(productType)[0]);
-            setProducts(response.data);
+            const response = await connecter.get(`db/productsChoices?productType=${productType}`);
+            setProducts(response.data.choices);
           }
         };
         getProducts();
     },[productType]);
 
-
-    useEffect(()=>{
-        if(products.length>0){
-        AllOptions = products.map((pro)=>({label: String(pro.category + " " + pro.ref + " " + pro.name), value: pro.id}))
-    }}, [products])
 
     return(<>
     <ProtectedRoute>
@@ -69,12 +64,8 @@ const ProductsManager : React.FC = () => {
             <div className="Prod-manage-title m-4 fw-bold">
               <IoSettings size={20}/> <span className="mx-3">Management of {productType} products</span>
             </div>
-            {productType?<ProductsOperations productType={productType}/>:<Loading message="Loading"/>}
-            <hr/>
-            <div className="Prod-manage-title m-4 fw-bold">
-              <GiSettingsKnobs  size={20}/> <span className="mx-3">Settings of {productType} products</span>
-            </div>
-            {productType?<ProductParameters productType={productType}/>:<Loading message="Loading"/>}
+            {productType?<ProductsOperations productType={productType} options={products}/>:<Loading message="Loading"/>}
+
         </div>
     </ProtectedRoute>
 
@@ -82,33 +73,45 @@ const ProductsManager : React.FC = () => {
 };
 
 
-const ProductsOperations : React.FC<{productType:string}> = ({productType}) => {
+const ProductsOperations : React.FC<{productType:string, options:OptionType[]}> = ({productType, options}) => {
 
   return (
 
     <Accordion >
       <Accordion.Item eventKey="0" className="my-3 rounded card shadow ">
+        <Accordion.Header><span className="fw-bold">Advanced search</span></Accordion.Header>
+        <Accordion.Body>
+
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="1" className="my-3 rounded card shadow ">
+        <Accordion.Header><span className="fw-bold">Product details</span></Accordion.Header>
+        <Accordion.Body>
+          <ProductDetails AllOptions={options} productType={productType} />
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="2" className="my-3 rounded card shadow ">
         <Accordion.Header> <span className="fw-bold">Add a product</span> </Accordion.Header>
         <Accordion.Body>
         <ProductForm productType={productType} />
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey="1" className="my-3 rounded card shadow ">
+      <Accordion.Item eventKey="3" className="my-3 rounded card shadow ">
         <Accordion.Header> <span className="fw-bold">Add products data</span> </Accordion.Header>
         <Accordion.Body>
-          <ProdDetailsForm productType={productType} AllOptions={AllOptions} />
+          <ProdDetailsForm productType={productType} AllOptions={options} />
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey="2" className="my-3 rounded card shadow ">
+      <Accordion.Item eventKey="4" className="my-3 rounded card shadow ">
         <Accordion.Header> <span className="fw-bold">Modify a product</span> </Accordion.Header>
         <Accordion.Body>
-          <ProdModif productType={productType} AllOptions={AllOptions} />
+          <ProdModif productType={productType} AllOptions={options} />
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey="3" className="my-3 rounded card shadow ">
+      <Accordion.Item eventKey="5" className="my-3 rounded card shadow ">
         <Accordion.Header> <span className="fw-bold">Delete a product</span> </Accordion.Header>
         <Accordion.Body>
-          <ProdDelete productType={productType} AllOptions={AllOptions}/>
+          <ProdDelete productType={productType} AllOptions={options}/>
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
@@ -116,76 +119,72 @@ const ProductsOperations : React.FC<{productType:string}> = ({productType}) => {
 }
 
 
-const ProductParameters : React.FC<{productType:string}> = ({productType}) => {
-  
-  const [valuesText, setValuesText] = useState("");
-  //const [productsCategories, setProductsCategories] = useState<string[]>([]);
-  const handlePostParameters = async (e: React.FormEvent) => {
-    e.preventDefault();
 
-    const values = valuesText
-      .split(",")
-      .map((v) => v.trim())
-      .filter((v) => v.length > 0);
-
-    try {
-      const response = await connecter.post("db/products/parameters", 
-        {
-          productType: productType, label: "categories", values : values
-        }
-      )
-
-      if (response.status ==201) {
-        window.location.reload()
+const ProductDetails : React.FC<{productType:string, AllOptions:OptionType[]}> = ({productType, AllOptions}) => {
+    const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+    const [productDetails, setProductsDetails] = useState<ProductDetail[]>();
+    const [isLoading, setIsLoading] = useState<boolean>();
+    const handleOption = async (option:OptionType | null) =>  {
+      setSelectedOption(option);
+      if(option?.value){
+        setIsLoading(true);
+        const res = connecter.get(`db/getProductDetails?productType=${productType}&productId=${option.value}`);
+        setProductsDetails((await res).data.data);
+        setIsLoading(false);
+      }else{
+        setProductsDetails(undefined)
       }
-    } catch (error) {
-    }
-  };
+    };
 
 
-return(<>
-  <Accordion >
-    <Accordion.Item eventKey="0" className="my-3 rounded card shadow ">
-      <Accordion.Header> <span className="fw-bold">Add product categories</span> </Accordion.Header>
-        <Accordion.Body>
-          <form onSubmit={handlePostParameters}>
-        <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Product type:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="category"
-              value={productType}
-              disabled
-            />
-          </div>
-        <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Category:</label>
-            <input
-              className="form-control"
-              id="category"
-              type="text"
-              value={valuesText}
-              onChange={(e) => setValuesText(e.target.value)}
-              placeholder="ex: val1, val2, val3"
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
-          </form>
-        </Accordion.Body>
-    </Accordion.Item>
-    <Accordion>
-        <Accordion.Header> <span className="fw-bold">Delete product categories</span> </Accordion.Header>
-        <Accordion.Body>
-      
-        </Accordion.Body>
-    </Accordion>
-  </Accordion>
 
-</>)
 
-};
+
+  return(<>
+  <div className="mb-3">
+                    <label htmlFor="ref" className="form-label"> Product :</label>
+                    <Select
+                    options={AllOptions}
+                    value={selectedOption}
+                    onChange={handleOption}
+                    placeholder="Choisissez un produit"
+                    isClearable
+                    />
+  </div>
+    <div className={`mb-2 ${selectedOption?"d-flex":'d-none'} justify-content-center`} >
+      <img src={selectedOption?.picture} alt="" className="border border-dark shadow" style={{width:280}}/>
+    </div>
+    <div className="mb-3">
+
+        {!productDetails?(<>
+        {isLoading?<Loading message="loading"/>:<><span>Pas de produit choisi</span></>}
+        </>)
+        :<>{productDetails.length>0?
+      <table className="table table-bordred table-hover mt-2 orders-table rounded shadow border border-dark">
+        <thead>
+          <tr className="text-muted">
+          <th className="text-muted">Size</th>
+          <th className="text-muted">Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {productDetails.map((pro, index)=>(
+            <tr key={index}>
+              <td>{pro.size}</td>
+              <td>{pro.quantity}</td>
+            </tr>
+          ))}
+        </tbody>
+        </table>:
+        <span>Ce produit ne contient pas de données</span>
+        }
+        </>}
+
+    </div>
+  </>)
+}
+
+
 
 
 
@@ -193,3 +192,4 @@ export default ProductsManager;
 
 
 
+ 

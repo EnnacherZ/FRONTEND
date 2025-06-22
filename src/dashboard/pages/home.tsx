@@ -12,11 +12,14 @@ import { AnimatePresence } from "framer-motion";
 import getDeficiencies from "../../Server/dashboard/deficiencies";
 import ProtectedRoute from "../ProtectedRoute";
 import { selectedLang, useLangContext } from "../../Contexts/languageContext";
+import { goTo } from "../../Components/header";
+import NotFound from "../NotFound";
+import { toast, ToastContainer, Zoom } from "react-toastify";
 
 
 
 const orderExceptions = [<IoWarning color="red" size={25}/>, <MdOutlineFileDownloadDone color="green" size={25}/>]
-const orderStatus = [<p style={{fontSize:"1em", fontWeight:"bold",color:"rgb(234 179 8)"}}>Waiting</p>, <p style={{fontSize:"1em", fontWeight:"bold"}} color="green">Done</p>]
+const orderStatus = [<p style={{fontSize:"1em", fontWeight:"bold",color:"rgb(234 179 8)"}}>Waiting</p>, <p style={{fontSize:"1em", fontWeight:"bold",color:"green"}}>Done</p>]
 
 export const hideInfos = (infos:string, range:number) => {
     if(!infos){return "Not founded"}
@@ -27,9 +30,9 @@ export const hideInfos = (infos:string, range:number) => {
 
 const DBHome : React.FC = () => {
     const {currentLang } = useLangContext();
-    const remainingOrders = getRemainingOrders();
+    const {remainingOrders} = getRemainingOrders();
     const deficiencies = getDeficiencies();
-    const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState<{orders:boolean, deficiencies:boolean}>({orders:false, deficiencies:false});
     const [isOrdModal, setIsOrdModal] = useState<boolean>(false);
     const [targetedItem, setTargetedItem] = useState<any>();
 
@@ -38,6 +41,30 @@ const DBHome : React.FC = () => {
         setIsOrdModal(true);
     }
 
+        const processOrder = (ord:any) => {
+        
+        if(ord.exception){
+            toast.error('Please process the deficiencies, then process the order !',{
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false, 
+                  closeOnClick: false,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                  transition: Zoom,
+                })
+        }else{
+            orderOnClick(ord);
+        }
+    }
+
+
+  const toggleExpand = (product:string) => {
+    setIsExpanded((prev)=>({...prev, [product]:!prev[product as keyof {orders:boolean, deficiencies:boolean}]}));
+  };
+    
     return(<>
 <ProtectedRoute>
 
@@ -45,42 +72,53 @@ const DBHome : React.FC = () => {
         <Sidebar/>
         <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
-            <div className="fw-bold"><FaWpforms className="me-3" size={20}/>Remaining Orders</div>
-            <table className="table table-bordred table-hover mt-2 orders-table rounded shadow-sm">
-                <thead>
-                    <tr className="text-muted">
-                        <th className="text-muted">Order ID</th>
-                        <th className="text-muted">Transaction ID</th>
-                        <th className="text-muted">Date</th>
-                        <th className="text-muted">Amount</th>
-                        <th className="text-muted">Status</th>
-                        <th className="text-muted">Exceptions</th>
-                        <th className="text-muted">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div className="fw-bold d-flex justify-content-between me-2 my-3">
+                <span><FaWpforms className="m-3" size={20}/>Remaining Orders</span>
+                <a href="Orders" onClick={()=>goTo("Orders")}>Show all orders</a>
+            </div>
+                    {remainingOrders.length>0?
+                    <>
+                    <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
+                        <thead>
+                            <tr className="text-muted">
+                                <th className="text-muted">Order ID</th>
+                                <th className="text-muted">Transaction ID</th>
+                                <th className="text-muted">Date</th>
+                                <th className="text-muted">Amount</th>
+                                <th className="text-muted">Status</th>
+                                <th className="text-muted">Deficiencies</th>
+                                <th className="text-muted">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {remainingOrders.slice(0, isExpanded.orders? remainingOrders.length: 3).map((ord, index)=>(
+                                <tr key={index}>
+                                    <td className="fw-bold">{hideInfos(ord.order_id, 30)}</td>
+                                    <td className="fw-bold">{hideInfos(ord.transaction_id, 30)}</td>
+                                    <td>{ord.date}</td>
+                                    <td>{ord.amount}</td>
+                                    <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>
+                                    <td className="text-center">{ord.exception?orderExceptions[0]:orderExceptions[1]}</td>
+                                    <td><button className="btn btn-primary" onClick={()=>{processOrder(ord)}}>Process</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                        <div className="orders-expansion text-center m-1 d-flex justify-content-center">
+                            <button className="btn btn-outline-primary" onClick={()=>toggleExpand("orders")}>
+                                {!isExpanded.orders?`Read more ${ remainingOrders.length>=3?`(+ ${remainingOrders.length - 3})`:''}`:"Read less"}
+                            </button>
+                        </div>
+                    </>
+                    :<>
+                    <NotFound message="No remaining orders found !"/>
+                    </>} 
 
-                    {remainingOrders.slice(0, isExpanded?remainingOrders.length:3).map((ord, index)=>(
-                        <tr key={index} onClick={()=>orderOnClick(ord)}>
-                            <td className="fw-bold">{hideInfos(ord.order_id, 30)}</td>
-                            <td className="fw-bold">{hideInfos(ord.transaction_id, 30)}</td>
-                            <td>{ord.date}</td>
-                            <td>{ord.amount}</td>
-                            <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>
-                            <td className="text-center">{ord.exception?orderExceptions[0]:orderExceptions[1]}</td>
-                            <td><button className="btn btn-primary">Process</button></td>
-                        </tr>
-                    ))}
-
-                </tbody>
-            </table>
-                <div className="orders-expansion text-center m-1 d-flex justify-content-center">
-                    <button className="btn btn-outline-primary" onClick={()=>setIsExpanded(!isExpanded)}>
-                        {!isExpanded?"Read more":"Read less"}
-                    </button>
-                </div>
-
-            <div className="fw-bold"><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</div>
+            <div className="fw-bold me-2 my-3 d-flex justify-content-between">
+                <span><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</span>
+                <a href="Deficiency">Show all deficiencies</a>
+            </div>
+            {deficiencies.length>0?<>
             <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
                 <thead>
                     <tr className="text-muted">
@@ -94,7 +132,7 @@ const DBHome : React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {deficiencies.slice(0, isExpanded? deficiencies.length: 3).map((ord, index)=>(
+                    {deficiencies.slice(0, isExpanded.deficiencies? deficiencies.length: 3).map((ord, index)=>(
                         <tr key={index}>
                             <td>{hideInfos(ord.order, 30)}</td>
                             <td>{ord.product_type}</td>
@@ -108,14 +146,19 @@ const DBHome : React.FC = () => {
                 </tbody>
             </table>
                 <div className="orders-expansion text-center m-1 d-flex justify-content-center">
-                    <button className="btn btn-outline-primary" onClick={()=>setIsExpanded(!isExpanded)}>
-                        {!isExpanded?"Read more":"Read less"}
+                    <button className="btn btn-outline-primary" onClick={()=>toggleExpand("deficiencies")}>
+                        {!isExpanded.deficiencies?`Read more ${ deficiencies.length>=3?`(+ ${deficiencies.length - 3})`:''}`:"Read less"}
                     </button>
                 </div>
+            </>
+            :<>
+            <NotFound message="no deficiency found"/>
+            </>}
         </div>
 
         <AnimatePresence mode="wait">
             {isOrdModal&&<Modals
+                message={undefined}
                 onDelete={undefined}
                 cible="orders"
                 onBack={()=>setIsOrdModal(false)}
@@ -125,7 +168,7 @@ const DBHome : React.FC = () => {
 
 
   
-
+<ToastContainer/>
 </ProtectedRoute>
   </>
     )

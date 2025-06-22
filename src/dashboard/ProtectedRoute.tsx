@@ -4,8 +4,12 @@ import apiInstance, { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
 import React, { ReactNode, useEffect, useState } from "react";
 import Loading from "../Components/loading";
 
+
 const ProtectedRoute : React.FC<{children:ReactNode}> = ({children}) =>{
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+
+
+
 
     useEffect(()=>{
         auth().catch(()=>{setIsAuthorized(false)})

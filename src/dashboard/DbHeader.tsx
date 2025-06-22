@@ -8,7 +8,7 @@ import getDeficiencies from "../Server/dashboard/deficiencies";
 
 
 const DbHeader : React.FC = () => {
-    const remainingOrders = getRemainingOrders();
+    const {remainingOrders} = getRemainingOrders();
     const deficiencies = getDeficiencies();
 
 return(<>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Styles/dbSidebar.css";
 import { BsInboxesFill } from "react-icons/bs";
 import { LiaShoePrintsSolid } from "react-icons/lia";
@@ -9,15 +9,16 @@ import logo from "../assets/FIRDAOUS STORE.png";
 import { FaHome, FaSignOutAlt } from "react-icons/fa";
 import { goTo } from "../Components/header";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
-import { MdLanguage } from "react-icons/md";
+import { MdLanguage, MdOutlineSettings } from "react-icons/md";
 import { selectedLang, useLangContext } from "../Contexts/languageContext";
 import { useTranslation } from "react-i18next";
+import { ImStatsDots } from "react-icons/im";
 
 
 const Sidebar : React.FC = () => {
     const {t} = useTranslation();
     const {currentLang, setCurrentLang} = useLangContext();
-    const [actual, setActual] = useState<string>(window.location.pathname.slice(1));
+    const actual = window.location.pathname.slice(1);
     
     const signOut = () => {
         localStorage.setItem(ACCESS_TOKEN, '')
@@ -50,15 +51,16 @@ const Sidebar : React.FC = () => {
                         </select>
             </li>
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/home'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Home")}}><FaHome className="me-2"/> {t('home')} </li>
-            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/orders'&&'DbIsClicked'}`} onClick={()=>setActual('Orders')}><BsInboxesFill className="me-2"/> {t('orders')} </li>
+            <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/orders'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Orders")}}><BsInboxesFill className="me-2"/> {t('orders')} </li>
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/deficiency'&&'DbIsClicked'}`} onClick={()=>{goTo("/Dashboard/Deficiency")}}><FaArrowDownWideShort className="me-2"/> {t('deficiencies')} </li>
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/shoe'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Shoe')}}><LiaShoePrintsSolid className="me-2"/> {t('shoes')}</li>
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/sandal'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Sandal')}}><GiSandal className="me-2"/> {t('sandals')}</li>
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/shirt'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Shirt')}}><FaShirt className="me-2"/> {t('shirts')}</li>
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/pant'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Pant')}}><PiPantsBold className="me-2"/> {t('pants')}</li>
-            <div className="my-1 rounded db-signout shadow " onClick={signOut}><FaSignOutAlt className="me-2"/> {t('signOut')}</div>
+            <div className="my-2 rounded db-statistics-btn shadow " onClick={()=>goTo("/Dashboard/Statistics")}><ImStatsDots  className="me-2"/> {t('statistics')}</div>
+            <div className="my-2 rounded db-settings-btn shadow " onClick={()=>goTo("/Dashboard/Settings")}><MdOutlineSettings  className="me-2"/> {t('settings')}</div>
+            <div className="my-2 rounded db-signout shadow " onClick={signOut}><FaSignOutAlt className="me-2"/> {t('signOut')}</div>
         </ul>
-
     </div>
     </>)
 

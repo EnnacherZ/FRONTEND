@@ -7,6 +7,7 @@ import getDeficiencies from "../../Server/dashboard/deficiencies";
 import { hideInfos } from "./home";
 import ProtectedRoute from "../ProtectedRoute";
 import { selectedLang, useLangContext } from "../../Contexts/languageContext";
+import NotFound from "../NotFound";
 
 
 const ExceptionsPage : React.FC= () => {
@@ -14,12 +15,21 @@ const ExceptionsPage : React.FC= () => {
     const deficiencies = getDeficiencies();
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
+
+    const processDeficiency = (ord: any) => {
+        
+
+    }
+
+
+
 return(<>
 <ProtectedRoute>
 <Sidebar/>
 <div className={`db-deficiency ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
     <DbHeader/>
-            <div className="fw-bold"><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</div>
+            <div className="fw-bold my-2"><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</div>
+            {deficiencies.length>0?<>
             <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
                 <thead>
                     <tr className="text-muted">
@@ -30,6 +40,7 @@ return(<>
                         <th className="text-muted">Product Name</th>
                         <th className="text-muted">Size</th>
                         <th className="text-muted">Quantity</th>
+                        <th className="text-muted">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +53,7 @@ return(<>
                             <td>{ord.product_name}</td>
                             <td>{ord.product_size}</td>
                             <td>{ord.delta_quantity}</td>
+                            <td><button className="btn btn-primary" onClick={()=>{processDeficiency(ord)}}>Process</button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -51,6 +63,10 @@ return(<>
                         {!isExpanded?"Read more":"Read less"}
                     </button>
                 </div>
+            </>
+            :<>
+            <NotFound message="no deficiency found"/>
+            </>}
 </div>
 </ProtectedRoute>
 

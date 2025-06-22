@@ -69,6 +69,9 @@ const ProdDelete : React.FC<{productType:string, AllOptions:OptionType[]}> = ({p
                     isClearable
                     />
                 </div>
+                <div className={`mb-2 ${selectedOption?"d-flex":'d-none'} justify-content-center`} >
+                    <img src={selectedOption?.picture} alt="" className="border border-dark shadow"/>
+                </div>
                 <button type="button" className="btn btn-danger fw-bold" onClick={()=>setIsModal(true)}>Delete</button>
             </form>
 

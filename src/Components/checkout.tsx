@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Header, { goTo } from "./header";
 import "../Styles/checkout.css"
-import { clientData, usePayment } from '../Contexts/paymentContext';
+import { clientData, usePayment, PaymentResponse } from '../Contexts/paymentContext';
 import { useForm } from 'react-hook-form';
 import { AiFillAlert } from "react-icons/ai";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -35,7 +35,7 @@ const Checkout :  React.FC = () => {
     const {t} = useTranslation();
     const {total, cartChecker, clearCart, allItems, setSuccessTransItems} = useCart();
     const {currentLang} = useLangContext();
-    const {setClientForm, clientForm, setPaymentResponse, setCurrentCurrency, currentCurrency,} = usePayment();
+    const {setClientForm, clientForm, setPaymentResponse, setCurrentCurrency, currentCurrency} = usePayment();
     const [isPhone, setIsPhone]= useState<boolean>()
     const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
     const [tokenId, setTokenId] = useState<string|null>(null);
@@ -84,7 +84,7 @@ const Checkout :  React.FC = () => {
            FirstName : getValues('FirstName'),
            LastName : getValues('LastName'),
            Email : getValues('Email'),
-           Tel : getValues('Tel'),
+           Phone : getValues('Tel'),
            City : getValues('City'),
            Address : getValues('Address'),
            Amount : total,
@@ -143,7 +143,7 @@ const Checkout :  React.FC = () => {
               city: clientForm?.City, 
               state: '', 
               country_code: 'MA', 
-              phone: clientForm?.Tel, 
+              phone: clientForm?.Phone, 
               email: clientForm?.Email, 
           }
             const respo = await connecter.post(`api/getPaymentToken`,
@@ -198,7 +198,8 @@ const Checkout :  React.FC = () => {
             message : res.message,
             success : res.success,
             order_id :res.order_id,
-            date : date.toUTCString()
+            date : date.toUTCString(),
+            isOnlinePayment : isOnlinePayment
           });
           await handlePayment(response.response.transaction_id,date.toUTCString());
           // window.location.reload()
@@ -209,7 +210,7 @@ const Checkout :  React.FC = () => {
       };
 
 
-      const handlePayment = async (trans:string, date:string) => {
+      const handlePayment = async (trans:string, date:string) => {   
         try {
             setIsLoading(true)
             window.scrollTo(0,0)
@@ -237,11 +238,30 @@ const Checkout :  React.FC = () => {
               client : clientForm,
               }
             }
-            const response = await connecter.post(`api/handlepay/`,formData);
+            
+            console.log(formData)
+            const response = await connecter.post(`api/handlepay/`,formData,
+            );
             setSuccessTransItems(response.data.ordered_products||[]);
+            
+            if(isOnlinePayment==false){
+              const paymentRes:PaymentResponse = {                            
+                  order_id: response.data.paymentResponse.order_id,            
+                  success: true,          
+                  transaction_id: trans,
+                  amount : response.data.paymentResponse.amount,
+                  currency : response.data.paymentResponse.currency,
+                  date : date ,
+                  isOnlinePayment : false ,
+                  code:"",
+                  message:""
+              }
+              console.log(response.data.paymentReaspone)
+              setPaymentResponse(paymentRes);
+            }
             clearCart();
-            goTo("/Trans");
             setIsLoading(false);
+            goTo("/Trans");
             console.log(response.data.ordered_products||[]);
         } catch (error) {
             console.error('Error during payment:', error);
@@ -655,7 +675,7 @@ const Checkout :  React.FC = () => {
     </form>}
 
     <div className="d-flex flex-column paymentDiv mb-5">
-    <div className={`paymentGateway ${isClt(clientForm)&&isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
+    <div className={`paymentGateway ${isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
           id="paymentGateway">
       <div className="paymentGatewayTitle fs-3" id="paymentGatewayTitle">
         <FaMoneyBillTransfer className="mx-3"/> {t('paymentPortal')}
@@ -679,7 +699,7 @@ const Checkout :  React.FC = () => {
         {t("choicePM")} : {isOnlinePayment==undefined? t("noChoicePM"):(isOnlinePayment?t('creditCard'):t('cod'))}
       </div>
     </div>
-    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} onClick={OnClickPayment}
+    <button id="pay" className={`rounded mt-2 pay-button ${isModify?'':'is-disabled'}`} onClick={OnClickPayment}
     >{t('pay')}</button>
     </div>
 

@@ -87,12 +87,6 @@ const SuccessTrans: React.FC = () => {
           </div>
           <hr className="my-2" />
           <ul className="px-1">
-            <li className="d-flex justify-content-between align-items-center px-1 my-2 " key={1}>
-              <span className="fw-bold text-muted">{t('code')} :</span>
-              <span className="fw-bold" style={{ color: "#0e92e4" }}>
-                {paymentResponse?.code}
-              </span>
-            </li>
             <li className="d-flex justify-content-between align-items-center px-1  my-2" key={3}>
               <span className="fw-bold text-muted">{t('currency')} :</span>
               <span className="fw-bold" style={{ color: "#0e92e4" }}>
@@ -114,7 +108,7 @@ const SuccessTrans: React.FC = () => {
             <li className="d-flex justify-content-between align-items-center px-1  my-2" key={9}>
               <span className="fw-bold text-muted">{t('transactionId')} :</span>
               <span className="fw-bold" style={{ color: "#0e92e4" }}>
-                {paymentResponse?.transaction_id}
+                {paymentResponse?.isOnlinePayment?paymentResponse?.transaction_id:t('cod')}
               </span>
             </li>
           </ul>
