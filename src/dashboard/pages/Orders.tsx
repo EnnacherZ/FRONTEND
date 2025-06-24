@@ -1,18 +1,18 @@
 import React, {useState } from "react";
 import ProtectedRoute from "../ProtectedRoute";
 import Sidebar from "../sidebar";
-import { selectedLang, useLangContext } from "../../Contexts/languageContext";
+import { useLangContext } from "../../Contexts/languageContext";
 import DbHeader from "../DbHeader";
 import { FaWpforms } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
-import getRemainingOrders from "../../Server/dashboard/orders";
-import { hideInfos } from "./home";
+import {getRemainingOrders} from "../../Server/dashboard/orders";
 import { IoWarning } from "react-icons/io5";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import NotFound from "../NotFound";
 import { AnimatePresence } from "framer-motion";
 import Modals from "../modals";
+import { hideInfos, selectedLang } from "../functions";
 
 
 

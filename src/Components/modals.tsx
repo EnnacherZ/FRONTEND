@@ -6,9 +6,10 @@ import "../Styles/modals.css"
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoArrowBackOutline, IoClose } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
-import { selectedLang, useLangContext } from "../Contexts/languageContext";
+import { useLangContext } from "../Contexts/languageContext";
 import { MdReviews } from "react-icons/md";
 import { FaStar, FaUser } from "react-icons/fa6";
+import { selectedLang } from "./functions";
 
 
 

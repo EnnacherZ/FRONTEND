@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "./Styles/prodForm.css";
 import apiInstance from './api';
 import { AnimatePresence, motion } from 'framer-motion';
-import { dropIn } from './modals';
+import { dropIn } from './functions';
 import { Rings } from 'react-loader-spinner';
 import ModalBackDrop from '../Components/modalBackdrop';
 import { useParametersContext } from './Contexts/ParametersContext';

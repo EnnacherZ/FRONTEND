@@ -1,10 +1,10 @@
 import React from "react";
 import "./Styles/DbHeader.css"
 import { GrOverview } from "react-icons/gr";
-import getRemainingOrders from "../Server/dashboard/orders";
+import {getRemainingOrders} from "../Server/dashboard/orders";
 import { FaWpforms } from "react-icons/fa6";
 import { FaSortAmountDown } from "react-icons/fa";
-import getDeficiencies from "../Server/dashboard/deficiencies";
+import {getDeficiencies} from "../Server/dashboard/deficiencies";
 
 
 const DbHeader : React.FC = () => {

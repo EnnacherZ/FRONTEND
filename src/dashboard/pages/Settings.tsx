@@ -5,12 +5,11 @@ import DbHeader from "../DbHeader";
 import "../Styles/settings.css";
 import Accordion from "react-bootstrap/esm/Accordion";
 import apiInstance from "../api";
-import Loading from "../../Components/loading";
 import { useTranslation } from "react-i18next";
 import { useLangContext } from "../../Contexts/languageContext";
-import { selectedLang } from "../../Contexts/languageContext";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import { GiSettingsKnobs } from "react-icons/gi";
+import { selectedLang } from "../functions";
 
 
 const connecter = apiInstance;
@@ -38,7 +37,7 @@ return(<>
             <DbHeader/>
             <hr/>
             <div className="Prod-manage-title m-4 fw-bold">
-              <GiSettingsKnobs  size={20}/> <span className="mx-3">Settings of products</span>
+              <GiSettingsKnobs  size={20}/> <span className="mx-3">{t('productSettings')} </span>
             </div>           
             <Accordion>
               <Accordion.Item eventKey="0" className="my-3 rounded card shadow ">
@@ -69,6 +68,7 @@ return(<>
 
 
 const ProductParameters : React.FC<{productType:string[], param:string}> = ({productType, param}) => {
+  const {t} = useTranslation();
   const capitalize = (str:string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   const [valuesText, setValuesText] = useState("");
   const [selectedType, setSelectedType] = useState<string>();
@@ -114,7 +114,7 @@ return(<>
         <Accordion.Body>
           <form onSubmit={handlePostParameters}>
         <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Product type:</label>
+            <label htmlFor="ref" className="form-label">{t('productType')}:</label>
             {productType.length>0?(<>
             <select name="" id="" className="form-select" aria-placeholder="Choose a product type" onChange={(e)=>{setSelectedType(e.target.value)}}>
             <option value={undefined}>Open this select menu</option>

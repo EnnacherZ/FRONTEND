@@ -4,7 +4,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineAccessTimeFilled, MdPayment } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { useLangContext } from "../Contexts/languageContext";
-import { selectedLang } from "../Contexts/languageContext";
+import { selectedLang } from "./functions";
 
 const CommandDetails : React.FC = () => {
     const {t} = useTranslation();

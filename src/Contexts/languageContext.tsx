@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import React, {createContext, Dispatch, ReactNode, useContext, useEffect, useState} from 'react';
+import { selectedLang } from '../Components/functions';
 
 i18n
   .use(initReactI18next)
@@ -10,6 +11,8 @@ i18n
         translation: {
           welcome: "Welcome to our application",
           home : "Home",
+          productType : "Product type",
+          productSettings: 'Product settings',
           shoes : "Shoes",
           sandals : 'Sandals',
           shirts : 'Shirts',
@@ -62,6 +65,7 @@ i18n
           creditCard : 'Credit card',
           firstN :'First name',
           lastN : 'Last name',
+          fullName: ' Full name',
           email : 'E-mail',
           phN : 'Phone number',
           address : 'Address',
@@ -128,13 +132,18 @@ i18n
           settings: 'Settings',
           statistics : 'Statistics',
           remainingOrders: 'Remaining orders',
-
+          deliveredOrders : 'Delivered orders',
+          allOrders: 'All orders',
+          back : 'Back',
+          extractDeliveryForm: 'Extract delivery form',
 
         },
       },
       fr: {
         translation: {
           welcome: "Bienvenue dans notre application",
+          productType : "Type de produit",
+          productSettings : 'paramètres du produit',
           home : "Accueil",
           shoes : "Shoes",
           sandals : 'Sandales',
@@ -188,6 +197,7 @@ i18n
           creditCard : 'Carte bancaire',
           firstN :'Prénom',
           lastN : 'Nom',
+          fullName: 'Nom et prénom',
           email : 'E-mail',
           phN : 'N° de téléphone',
           address : 'Adresse',
@@ -254,7 +264,10 @@ i18n
           settings: 'Paramètres',
           statistics:'Statistiques',
           remainingOrders: 'Commandes en attente',
-          
+          deliveredOrders : 'Commandes livrées',
+          allOrders: 'Toutes les commandes',       
+          back : 'Retour',   
+          extractDeliveryForm: 'استخراج نموذج التسليم',
 
 
         },
@@ -263,6 +276,8 @@ i18n
         translation: {
           welcome: "مرحبًا بك في تطبيقنا",
           home : "الرئيسية",
+          productType : "نوع المنتج",
+          productSettings : 'إعدادات المنتج',
           shoes : "الاحذية",
           sandals : 'صنادل',
           shirts : 'اقمصة',
@@ -315,7 +330,8 @@ i18n
           checkoutAlert : "  قم أولاً بملء نموذج الدفع، ثم اختر طريقة الدفع 👍🏻",
           creditCard : 'بطاقة بنكية',
           firstN :'الاسم',
-          lastN : 'النسب', 
+          lastN : 'النسب',
+          fullName: 'الاسم الكامل',
           email : 'البريد الالكتروني',
           phN : 'رقم الهاتف',
           address : 'العنوان',
@@ -388,6 +404,10 @@ i18n
           settings: 'لاعدادات',
           statistics:'الاحصائيات',
           remainingOrders: 'طلبيات في انتظار التاكيد',
+          deliveredOrders : 'الطلبيات المُسلّمة',
+          allOrders: 'جميع الطلبيات',
+          back: 'الرجوع',
+          extractDeliveryForm: 'استخراج نموذج التسليم',
           
        
        
@@ -406,25 +426,18 @@ i18n
     currentLang : string;
     setCurrentLang : Dispatch<React.SetStateAction<string>>
   }
-  export const selectedLang = (l:string) => {
-    let a = '';
-    switch(l){
-        case    'العربية':
-            a = 'ar';
-            break;
-        case 'Français':
-            a = 'fr';
-            break;
-        case 'English':
-            a='en';
-            break
-    }return a
-}
+  
   const langContext = createContext<langContextProps | undefined>(undefined);
   export const LangContextProvider : React.FC<{children:ReactNode}> = ({children}) =>{
-    const [currentLang, setCurrentLang] = useState<string>("English");
+    const [currentLang, setCurrentLang] = useState<string>(()=>{
+      const lang = sessionStorage.getItem('AlFirdaousStoreLang');
+      if(lang){return JSON.parse(lang)}else{
+        return "English"
+      }
+    });
     useEffect(()=>{
-        i18n.changeLanguage(selectedLang(currentLang));
+      sessionStorage.setItem('AlFirdaousStoreLang', JSON.stringify(currentLang));
+      i18n.changeLanguage(selectedLang(currentLang));
     },[currentLang])
 
 

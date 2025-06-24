@@ -12,8 +12,9 @@ import ProdModif from "../prodModif";
 import { IoSettings } from "react-icons/io5";
 import ProtectedRoute from "../ProtectedRoute";
 import apiInstance from "../api";
-import { selectedLang, useLangContext } from "../../Contexts/languageContext";
+import { useLangContext } from "../../Contexts/languageContext";
 import { ProductDetail } from "../../Contexts/ProductsContext";
+import { selectedLang } from "../functions";
 
 export interface OptionType {
     label:string,

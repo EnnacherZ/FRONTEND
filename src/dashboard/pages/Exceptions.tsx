@@ -3,22 +3,26 @@ import Sidebar from "../sidebar";
 import DbHeader from "../DbHeader";
 import "../Styles/deficiency.css";
 import { FaSortAmountDown } from "react-icons/fa";
-import getDeficiencies from "../../Server/dashboard/deficiencies";
-import { hideInfos } from "./home";
+import {getDeficiencies} from "../../Server/dashboard/deficiencies";
 import ProtectedRoute from "../ProtectedRoute";
-import { selectedLang, useLangContext } from "../../Contexts/languageContext";
+import { useLangContext } from "../../Contexts/languageContext";
 import NotFound from "../NotFound";
+import { hideInfos, selectedLang } from "../functions";
+import { AnimatePresence } from "framer-motion";
+import Modals from "../modals";
 
 
 const ExceptionsPage : React.FC= () => {
     const {currentLang} = useLangContext();
     const deficiencies = getDeficiencies();
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [targetedItem, setTargetedItem] = useState<any>();
+    const [isDeficiencyModal, setIsDeficiencyModal] = useState<boolean>()
 
 
     const processDeficiency = (ord: any) => {
-        
-
+        setTargetedItem(ord);
+        setIsDeficiencyModal(true);
     }
 
 
@@ -46,7 +50,7 @@ return(<>
                 <tbody>
                     {deficiencies.slice(0, isExpanded? deficiencies.length: 3).map((ord, index)=>(
                         <tr key={index}>
-                            <td>{hideInfos(ord.order, 30)}</td>
+                            <td>{hideInfos(ord.order.order_id, 30)}</td>
                             <td>{ord.product_type}</td>
                             <td>{ord.product_category}</td>
                             <td>{ord.product_ref}</td>
@@ -68,6 +72,18 @@ return(<>
             <NotFound message="no deficiency found"/>
             </>}
 </div>
+
+        <AnimatePresence mode="wait">
+            {isDeficiencyModal&&<Modals
+                message={undefined}
+                onDelete={undefined}
+                cible="deficiencies"
+                onBack={()=>setIsDeficiencyModal(false)}
+                item={targetedItem}
+            />}         
+        </AnimatePresence>
+
+
 </ProtectedRoute>
 
 

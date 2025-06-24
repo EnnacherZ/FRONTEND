@@ -4,29 +4,24 @@ import Sidebar from "../sidebar";
 import DbHeader from "../DbHeader";
 import "../Styles/DbHome.css";
 import { FaSortAmountDown, FaWpforms } from "react-icons/fa";
-import getRemainingOrders from "../../Server/dashboard/orders";
+import {getRemainingOrders} from "../../Server/dashboard/orders";
 import { IoWarning } from "react-icons/io5";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
 import Modals from "../modals";
 import { AnimatePresence } from "framer-motion";
-import getDeficiencies from "../../Server/dashboard/deficiencies";
+import {getDeficiencies} from "../../Server/dashboard/deficiencies";
 import ProtectedRoute from "../ProtectedRoute";
-import { selectedLang, useLangContext } from "../../Contexts/languageContext";
-import { goTo } from "../../Components/header";
+import { useLangContext } from "../../Contexts/languageContext";
 import NotFound from "../NotFound";
 import { toast, ToastContainer, Zoom } from "react-toastify";
+import { goTo, hideInfos, selectedLang } from "../functions";
 
 
 
 const orderExceptions = [<IoWarning color="red" size={25}/>, <MdOutlineFileDownloadDone color="green" size={25}/>]
 const orderStatus = [<p style={{fontSize:"1em", fontWeight:"bold",color:"rgb(234 179 8)"}}>Waiting</p>, <p style={{fontSize:"1em", fontWeight:"bold",color:"green"}}>Done</p>]
 
-export const hideInfos = (infos:string, range:number) => {
-    if(!infos){return "Not founded"}
-    else if(infos.length<=5){return infos}
-    const showedLength = infos.length - range 
-    return infos.slice(0, showedLength) + "*".repeat(10)
-}
+
 
 const DBHome : React.FC = () => {
     const {currentLang } = useLangContext();
@@ -134,7 +129,7 @@ const DBHome : React.FC = () => {
                 <tbody>
                     {deficiencies.slice(0, isExpanded.deficiencies? deficiencies.length: 3).map((ord, index)=>(
                         <tr key={index}>
-                            <td>{hideInfos(ord.order, 30)}</td>
+                            <td>{hideInfos(ord.order.order_id, 30)}</td>
                             <td>{ord.product_type}</td>
                             <td>{ord.product_category}</td>
                             <td>{ord.product_ref}</td>

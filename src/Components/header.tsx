@@ -12,7 +12,7 @@ import { MdLanguage } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import "../Contexts/languageContext";
 import { useLangContext } from "../Contexts/languageContext";
-export const goTo = (ref:string) => {window.location.href = ref}
+import { goTo } from "./functions";
 const Header: React.FC = () => {
     const { itemCount } = useCart();
     const {setCurrentLang, currentLang} = useLangContext();

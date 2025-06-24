@@ -7,12 +7,12 @@ import { FaArrowDownWideShort, FaShirt } from "react-icons/fa6";
 import { GiSandal } from "react-icons/gi";
 import logo from "../assets/FIRDAOUS STORE.png";
 import { FaHome, FaSignOutAlt } from "react-icons/fa";
-import { goTo } from "../Components/header";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
 import { MdLanguage, MdOutlineSettings } from "react-icons/md";
-import { selectedLang, useLangContext } from "../Contexts/languageContext";
+import { useLangContext } from "../Contexts/languageContext";
 import { useTranslation } from "react-i18next";
 import { ImStatsDots } from "react-icons/im";
+import { goTo, selectedLang } from "./functions";
 
 
 const Sidebar : React.FC = () => {

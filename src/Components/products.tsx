@@ -9,10 +9,11 @@ import { motion } from "framer-motion";
 import { Product, ProductDetail } from "../Contexts/ProductsContext";
 import ReactPaginate from 'react-paginate';
 import { useTranslation } from "react-i18next";
-import { selectedLang, useLangContext } from "../Contexts/languageContext";
+import { useLangContext } from "../Contexts/languageContext";
 import NotFound from "./NotFound";
 import NoProduct from "./NoProduct";
 import Loading from "./loading";
+import { selectedLang } from "./functions";
 
 interface productsShow {
    pData: any;

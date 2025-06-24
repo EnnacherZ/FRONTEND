@@ -2,7 +2,7 @@ import React, {useLayoutEffect, useState } from 'react';
 import { CartItem, useCart } from '../Contexts/cartContext.tsx';
 import {ToastContainer, Zoom, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
-import Header, { goTo } from './header.tsx';
+import Header from './header.tsx';
 import '../Styles/cart.css';
 import Modals from './modals.tsx';
 import { AnimatePresence } from 'framer-motion';
@@ -12,8 +12,9 @@ import { TbCreditCardPay } from 'react-icons/tb';
 import ReactCountryFlag from 'react-country-flag';
 import Footer from './footer.tsx';
 import { useTranslation } from 'react-i18next';
-import { selectedLang, useLangContext } from "../Contexts/languageContext.tsx";
+import { useLangContext } from "../Contexts/languageContext.tsx";
 import { usePayment } from '../Contexts/paymentContext.tsx';
+import { goTo, selectedLang } from './functions.tsx';
 const apiUrl = import.meta.env.VITE_IMG_URL;
 
 const toCheckout = () => {window.location.href="/Checkout"}

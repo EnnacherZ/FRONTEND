@@ -23,6 +23,7 @@ import AddProductTypeForm from "./reloader";
 import Orders from "./dashboard/pages/Orders";
 import Settings from "./dashboard/pages/Settings";
 import { ParametersContextProvider } from "./dashboard/Contexts/ParametersContext";
+import OrderTracker from "./Components/OrderTracker";
 
 
 // Définir vos routes
@@ -38,10 +39,12 @@ const routes = [
   { path: "/YourCart", element: <Cart /> },
   { path: "/Checkout", element: <Checkout /> },
   { path: "/Trans", element: <SuccessTrans /> },
-  { path: "/testy", element : <AddProductTypeForm/>}
+  { path: "/testy", element : <AddProductTypeForm/>},
+  { path: "/MyOrder/:orderID", element : <OrderTracker/>}
 ];
 
 const dbRoutes = [
+  { path: "/Dashboard", element: <Navigate to="/Dashboard/Home" /> },
   { path: "/Dashboard/Home", element: <DBHome /> },
   { path: "/Dashboard/Login", element: <Login /> },
   { path: "/Dashboard/:productType", element : <ProductsManager/>},

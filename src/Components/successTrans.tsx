@@ -12,8 +12,8 @@ import { AllItems, useCart } from "../Contexts/cartContext";
 import { BsBagCheckFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { useLangContext } from "../Contexts/languageContext";
-import { selectedLang } from "../Contexts/languageContext";
 import Header from "./header";
+import { selectedLang } from "./functions";
 
 const SuccessTrans: React.FC = () => {
   const {currentLang} = useLangContext();

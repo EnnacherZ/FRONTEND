@@ -4,7 +4,6 @@ import Header from "./header";
 import { TbRosetteDiscount } from "react-icons/tb";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { FaCartPlus, FaShirt, FaStar, } from "react-icons/fa6";
-
 import 'swiper/css';             // Importation du CSS principal
 import 'swiper/css/bundle';      // Si tu veux les styles pour les fonctionnalités comme les boutons, pagination, etc.
 import 'swiper/css/navigation'; // Si tu utilises la navigation
@@ -18,7 +17,7 @@ import { Product, ProductDetail, ProductReviews } from "../Contexts/ProductsCont
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import {useCart } from "../Contexts/cartContext";
 import { useTranslation } from "react-i18next";
-import { selectedLang, useLangContext } from "../Contexts/languageContext";
+import { useLangContext } from "../Contexts/languageContext";
 import Text from "./TextProductsDetails";
 import useShoesData from "../Server/shoesData";
 import useShirtsData from "../Server/shirtsData";
@@ -40,6 +39,7 @@ import ModalBackDrop from "./modalBackdrop";
 import { IoAddCircle, IoClose } from "react-icons/io5";
 import img from "../assets/review-guest.jpg";
 import TextReducer from "./TextReducer";
+import { selectedLang } from "./functions";
 
 const apiUrl = import.meta.env.VITE_IMG_URL
 

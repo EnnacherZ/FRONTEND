@@ -80,6 +80,7 @@ const ProdDelete : React.FC<{productType:string, AllOptions:OptionType[]}> = ({p
     <ToastContainer/>
     <AnimatePresence>
     {isModal&&<Modals
+    message={undefined}
     cible="db/delete"
     item={{}}
     onBack={()=>setIsModal(false)}

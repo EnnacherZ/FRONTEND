@@ -4,7 +4,7 @@ import apiInstance from "../../dashboard/api";
 
 const connecter = apiInstance;
 
-const getRemainingOrders = () => {
+export const getRemainingOrders = () => {
     const [allOrders, setAllOrders] = useState<Array<any>>([]);
     const [remainingOrders, setRemainingOrders] = useState<Array<any>>([]);
     const [deliveredOrders, setDeliveredOrders] = useState<Array<any>>([]);
@@ -27,5 +27,4 @@ const getRemainingOrders = () => {
 
 
 };
-export default getRemainingOrders;
 

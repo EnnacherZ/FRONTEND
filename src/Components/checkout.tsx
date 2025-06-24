@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Header, { goTo } from "./header";
+import Header from "./header";
 import "../Styles/checkout.css"
 import { clientData, usePayment, PaymentResponse } from '../Contexts/paymentContext';
 import { useForm } from 'react-hook-form';
@@ -11,13 +11,14 @@ import { FaCity,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
 import { MdAlternateEmail, MdRemoveShoppingCart} from 'react-icons/md';
 import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
-import { useLangContext, selectedLang } from "../Contexts/languageContext"; 
+import { useLangContext } from "../Contexts/languageContext"; 
 import {toast, ToastContainer, Zoom } from "react-toastify";
 import { useCart } from "../Contexts/cartContext";
 import Loading from "./loading";
 import Footer from "./footer";
 import { connecter } from "../Server/connecter";
 import { HiOutlineCash } from "react-icons/hi";
+import { goTo, selectedLang } from "./functions";
 
 type FormValues = {
   FirstName : string;
