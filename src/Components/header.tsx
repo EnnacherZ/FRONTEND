@@ -72,7 +72,7 @@ const Header: React.FC = () => {
     ]    
 
     return (
-        <div    className={`header-container border-bottom-5 shadow-lg`} 
+        <div    className={`header-container border-bottom-5 shadow-lg ltr`} 
                 style={{borderBottomColor:"#7baccb"}}
                 >
         {isPhone?(<>

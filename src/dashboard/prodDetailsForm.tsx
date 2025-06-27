@@ -4,10 +4,12 @@ import "./Styles/prodForm.css"
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import { OptionType } from "./pages/ProductsManager";
 import apiInstance from "./api";
+import { useTranslation } from "react-i18next";
 
 const connecter = apiInstance;
 
 const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> = ({productType, AllOptions}) => {
+    const {t} = useTranslation();
     const [size, setSize] = useState<string | number >('');
     const [quantity, setQuantity] = useState<number>(0);
     const [selectedOption, setSelectedOption] = useState<OptionType|null>(null);
@@ -68,12 +70,12 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
         <div className="prodForm " >
             <form onSubmit={handleSubmit} >
                 <div className="mb-3">
-                    <label htmlFor="ref" className="form-label"> Product :</label>
+                    <label htmlFor="ref" className="form-label"> {t('product')} :</label>
                     <Select
                     options={AllOptions}
                     value={selectedOption}
                     onChange={handleOption}
-                    placeholder="Choisissez un produit"
+                    placeholder= {t('selectProduct')}
                     isClearable
                     />
                 </div>
@@ -81,7 +83,7 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
                     <img src={selectedOption?.picture} alt="" className="border border-dark shadow"/>
                 </div>
                 <div className="mb-3">
-                    <label className="form-label"> Size :</label>
+                    <label className="form-label"> {t('size')} :</label>
                     <input
                     type="text"
                     className="form-control"
@@ -92,7 +94,7 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label"> Quantity :</label>
+                    <label className="form-label"> {t('quantity')} :</label>
                     <input
                     type="number"
                     className="form-control"
@@ -103,7 +105,7 @@ const ProdDetailsForm : React.FC<{productType:string, AllOptions:OptionType[]}> 
                     min={1}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">{t('submit')}</button>
             </form>
         </div>
 

@@ -29,7 +29,7 @@ const Sidebar : React.FC = () => {
     return(<>
     <div className={`${selectedLang(currentLang)=='ar'?'db-sidebar-rtl rtl':'db-sidebar'} shadow justify-content-between`}>
         <div className={`${selectedLang(currentLang)=='ar'?'db-sidebar-header-rtl rtl':'db-sidebar-header'} shadow-sm`}>
-        <div className="db-sidebar-logo my-2" onClick={()=>goTo('Home')}><img src={logo} alt="" /></div>
+        <div className="db-sidebar-logo my-2" onClick={()=>goTo('/Dashboard/Home')}><img src={logo} alt="" /></div>
         <h5 className="text-center fw-bold my-2">STORE DASHBOARD</h5>
         </div>
         <ul className={`db-sidebar-list ${selectedLang(currentLang)=='ar'?'rtl':''}`}>

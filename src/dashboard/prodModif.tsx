@@ -5,11 +5,13 @@ import { AnimatePresence } from "framer-motion";
 import Select from "react-select";
 import { OptionType } from "./pages/ProductsManager";
 import apiInstance from "./api";
+import { useTranslation } from "react-i18next";
 
 
 const connecter = apiInstance;
 
 const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({productType, AllOptions}) => {
+    const {t} = useTranslation(); 
     const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
     const [isModal, setIsModal] = useState<boolean>(false);
     const [ref, setRef] = useState<number | string>('');
@@ -122,12 +124,12 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
         <div className="prodForm">
             <form>
                 <div className="mb-3">
-                    <label htmlFor="ref" className="form-label"> Product :</label>
+                    <label htmlFor="ref" className="form-label"> {t('product')} :</label>
                     <Select
                     options={AllOptions}
                     value={selectedOption}
                     onChange={handleOption}
-                    placeholder="Choisissez un produit"
+                    placeholder={t('selectProduct')}
                     isClearable
                     />
                 </div>
@@ -135,7 +137,7 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
                     <img src={selectedOption?.picture} alt="" className="border border-dark shadow"/>
                 </div>
         <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Category:</label>
+            <label htmlFor="ref" className="form-label">{t('category')} :</label>
             <input
               type="text"
               className="form-control"
@@ -146,7 +148,7 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Référence:</label>
+            <label htmlFor="ref" className="form-label">{t('ref')} :</label>
             <input
               type="number"
               className="form-control"
@@ -157,7 +159,7 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">Nom:</label>
+            <label htmlFor="name" className="form-label">{t('name')} :</label>
             <input
               type="text"
               className="form-control"
@@ -168,7 +170,7 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="price" className="form-label">Prix:</label>
+            <label htmlFor="price" className="form-label">{t('price')} :</label>
             <input
               type="number"
               className="form-control"
@@ -188,10 +190,10 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
               onChange={() => setNewest(!newest)}
 
             />
-            <label htmlFor="newest" className="form-check-label">Produit le plus récent:</label>
+            <label htmlFor="newest" className="form-check-label">{t('newerProduct')} :</label>
           </div>
           <div className="mb-3">
-            <label htmlFor="promo" className="form-label">Promo (%):</label>
+            <label htmlFor="promo" className="form-label">{t('promotion')} (%):</label>
             <input
               type="number"
               className="form-control"
@@ -203,7 +205,7 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="images" className="form-label">Image Pricipale:</label>
+            <label htmlFor="images" className="form-label">{t('mainImage')} :</label>
             <input
               type="file"
               className="form-control"
@@ -214,17 +216,18 @@ const ProdModif : React.FC<{productType:string, AllOptions:OptionType[]}> = ({pr
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="images" className="form-label">Images:</label>
+            <label htmlFor="images" className="form-label">{t('additionalImages')} :</label>
             <input
               type="file"
               className="form-control"
               id="images"
               multiple
-              onChange={handleImagesChange} 
+              onChange={handleImagesChange}
+              
             />
-            <div className="images-counter fw-bold" style={{fontSize:12}}>Images uploaded : {images.length<4?images.length:`4 (Max)`}</div>
+            <div className="images-counter fw-bold" style={{fontSize:12}}>{t('imagesUploaded')} : {images.length<4?images.length:`4 (Max)`}</div>
           </div>
-                <button type="button" className="btn btn-danger fw-bold" onClick={()=>setIsModal(true)}>Delete</button>
+                <button type="button" className="btn btn-primary fw-bold" onClick={()=>setIsModal(true)}>{t('submit')}</button>
             </form>
 
 

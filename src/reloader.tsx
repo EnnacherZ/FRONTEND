@@ -9,6 +9,7 @@ const AddProductTypeForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+                        
 
     const values = valuesText
       .split(",")

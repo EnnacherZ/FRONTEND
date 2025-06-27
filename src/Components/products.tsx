@@ -70,7 +70,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,h
         if (!selectedProductDetails[product.id]) {
             toast.error(t('toastSizeAlert'), {
                 position: "top-center",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -95,7 +95,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,h
         };
         addItem(item);
         toast.success(t('toastAddSuccess') , {
-            autoClose: 5000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,

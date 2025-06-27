@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createContext, useContext, ReactNode, Dispatch} from "react";
 import { useCart } from "./cartContext"; 
 // import axios from "axios";
-import { PDFDocument,rgb} from 'pdf-lib';
+import {  PDFDocument, rgb, StandardFonts, PDFHexString, PDFName} from 'pdf-lib';
 import invoiceEn from "./exempEn.pdf";
 import { ProductDetail } from "./ProductsContext";
 import QRCode from 'qrcode';
@@ -64,7 +64,7 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
     const [invoiceUrl, setInvoiceUrl] = useState<string|undefined>()
     const [paymentResponse, setPaymentResponse] = useState<PaymentResponse | undefined>(()=>{
       try{
-        const response  = localStorage.getItem('AlFirdaousStorePaymentResponse')
+        const response  = sessionStorage.getItem('AlFirdaousStorePaymentResponse')
         if(response){return JSON.parse(response)}else{return {}}
       }catch(err){
         return {}
@@ -73,7 +73,7 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
     
 
     useEffect(()=>{
-      try{localStorage.setItem('AlFirdaousStorePaymentResponse', JSON.stringify(paymentResponse))}catch(err){}
+      try{sessionStorage.setItem('AlFirdaousStorePaymentResponse', JSON.stringify(paymentResponse))}catch(err){}
     },[paymentResponse]);
 
     const [clientForm, setClientForm] = useState<clientData | undefined>(() => {
@@ -137,43 +137,73 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
     },[currentCurrency])
 
     useEffect(()=>{
-        const createInvoice = async () =>{
-            const invoiceFile = await fetch(invoiceEn).then(res => res.arrayBuffer());
-            const invoicePdf = await PDFDocument.load(invoiceFile);
-            const filePages = invoicePdf.getPages();
-            const firstPage = filePages[0];
-            // Client infos
-            const qrDataUrl = await QRCode.toDataURL(`${origin}${'/OrderTracking/'}${paymentResponse?.order_id}`,{color:{dark:'#545454'}});
 
+const createInvoice = async () => {
+  const invoiceFile = await fetch(invoiceEn).then(res => res.arrayBuffer());
+  const invoicePdf = await PDFDocument.load(invoiceFile);
+  const filePages = invoicePdf.getPages();
+  const firstPage = filePages[0];
 
-    // 3. Convertir base64 en image pour pdf-lib
-    const qrImageBytes = await fetch(qrDataUrl).then(res => res.arrayBuffer());
-    const qrImage = await invoicePdf.embedPng(qrImageBytes);
-    const qrDims = qrImage.scale(0.75); // redimensionner
-// for (let y = 1000; y >= 100; y -= 25) {
-//   for (let x = 50; x <= 500; x += 50) {
-//     firstPage.drawText(`(${x},${y})`, {
-//       x,
-//       y,
-//       size: 10,
-//       color: rgb(0.6, 0.6, 0.6),
-//     });
-//   }
-// }
-    // 4. Ajouter l’image sur le PDF
-    firstPage.drawImage(qrImage, {
-      x: 115,
-      y: 110,
-      width: qrDims.width,
-      height: qrDims.height,
-    });
+  // Générer le QR code
+  const qrDataUrl = await QRCode.toDataURL(`${origin}${'MyOrder/'}${paymentResponse?.order_id}`, {
+    color: { dark: '#545454' },
+  });
 
-    firstPage.drawText('https://www.youknowthatgodwillguideus.inchaallah', {
-      x: 340,
-      y: 120,
-      size:11,
-    });
+  // Convertir en image utilisable par pdf-lib
+  const qrImageBytes = await fetch(qrDataUrl).then(res => res.arrayBuffer());
+  const qrImage = await invoicePdf.embedPng(qrImageBytes);
+  const qrDims = qrImage.scale(0.75);
 
+  // Ajouter l’image QR sur le PDF
+  firstPage.drawImage(qrImage, {
+    x: 100,
+    y: 100,
+    width: qrDims.width,
+    height: qrDims.height,
+  });
+
+  // Texte du lien
+  const linkText = 'Click here! | Cliquer ici !';
+  const fontSize = 11;
+  const x = 380;
+  const y = 120;
+
+  const font = await invoicePdf.embedFont(StandardFonts.Helvetica);
+
+  // Dessiner le texte
+  firstPage.drawText(linkText, {
+    x,
+    y,
+    size: fontSize,
+    font,
+    color: rgb(0, 0, 1),
+  });
+
+  // Créer l’annotation de lien
+  const textWidth = font.widthOfTextAtSize(linkText, fontSize);
+  const textHeight = font.heightAtSize(fontSize);
+  const linkUrl = `${origin}${'MyOrder/'}${paymentResponse?.order_id}`;
+  
+const linkAnnotation = invoicePdf.context.obj({
+  Type: PDFName.of('Annot'),
+  Subtype: PDFName.of('Link'),
+  Rect: [x, y, x + textWidth, y + textHeight],
+  Border: [0, 0, 0],
+  A: invoicePdf.context.obj({
+    S: PDFName.of('URI'),
+    URI: PDFHexString.fromText(linkUrl),
+  }),
+});
+
+  const linkRef = invoicePdf.context.register(linkAnnotation);
+
+  // Ajouter l’annotation à la page
+  const annots = firstPage.node.get(PDFName.of('Annots'));
+  if (annots) {
+    (annots as any).push(linkRef);
+  } else {
+    firstPage.node.set(PDFName.of('Annots'), invoicePdf.context.obj([linkRef]));
+  }
 
             firstPage.drawText(clientForm?.FirstName || '', {
                 x: 115,
@@ -256,6 +286,7 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
                     size: 11,
                     color: rgb(0, 0, 0), // Noir
                 });
+                
 
                 const invoiceDoc = await invoicePdf.save();
                 const pdfUrl = URL.createObjectURL(new Blob([invoiceDoc], {type : 'application/pdf'}));

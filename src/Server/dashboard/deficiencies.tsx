@@ -11,7 +11,7 @@ export const getDeficiencies = () => {
            try{ 
             const response = await connecter.get("db/getDeficiencies");
             setDeficiencies(response.data.deficiencies || []);
-            console.log(response.data.deficiencies);
+            
         }catch{}
         }
         getDeficienciesData();

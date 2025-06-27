@@ -6,10 +6,13 @@ import { dropIn } from './functions';
 import { Rings } from 'react-loader-spinner';
 import ModalBackDrop from '../Components/modalBackdrop';
 import { useParametersContext } from './Contexts/ParametersContext';
+import { useTranslation } from 'react-i18next';
+import { toast, ToastContainer, Zoom } from 'react-toastify';
 
 const connecter = apiInstance;
 
 const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
+    const {t} = useTranslation();
     const { categories } = useParametersContext();
     const [ref, setRef] = useState<number>(0);
     const [name, setName] = useState('');
@@ -45,8 +48,22 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if(category == ''){
+            toast.error(t('categoryErrorMessage'), {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Zoom,
+                    });
+            
+        }else{
         setIsLoading(true);
-
         const formData = new FormData();
         formData.append('name', name);
         formData.append('category', category);
@@ -78,7 +95,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
             console.error('Erreur lors de la création du produit:', error);
         }
         setIsLoading(false);
-    };
+    }};
 
     if (!categories) return <>Chargement des catégories...</>;
 
@@ -88,7 +105,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
             <form onSubmit={handleSubmit}>
                 {/* Select catégorie */}
                 <div className="mb-3">
-                    <label htmlFor="category" className="form-label">Catégorie:</label>
+                    <label htmlFor="category" className="form-label">{t('category')} :</label>
                     <select
                         id="category"
                         className="form-select"
@@ -96,18 +113,20 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
                         onChange={(e) => setCategory(e.target.value)}
                         required
                     >
-                        <option value="">Sélectionner une catégorie</option>
-                        {(categories[productType] as any[])?.map((cat, index) => (
+                        <option value={''}>{t('selectCategory')} </option>
+                        
+                        {(categories[productType] as any[])?.length>0?(categories[productType] as any[]).map((cat, index) => (
                             <option value={cat} key={index}>
                                 {cat}
                             </option>
-                        ))}
+                        )):
+                        <option value={undefined} disabled>{t('noCategoryData')}</option>}
                     </select>
                 </div>
 
                 {/* Référence */}
                 <div className="mb-3">
-                    <label htmlFor="ref" className="form-label">Référence:</label>
+                    <label htmlFor="ref" className="form-label">{t('ref')} :</label>
                     <input
                         type="number"
                         className="form-control"
@@ -120,7 +139,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
 
                 {/* Nom */}
                 <div className="mb-3">
-                    <label htmlFor="name" className="form-label">Nom:</label>
+                    <label htmlFor="name" className="form-label">{t('name')} :</label>
                     <input
                         type="text"
                         className="form-control"
@@ -133,7 +152,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
 
                 {/* Prix */}
                 <div className="mb-3">
-                    <label htmlFor="price" className="form-label">Prix:</label>
+                    <label htmlFor="price" className="form-label">{t('price')} :</label>
                     <input
                         type="number"
                         className="form-control"
@@ -154,12 +173,12 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
                         checked={newest}
                         onChange={() => setNewest(!newest)}
                     />
-                    <label htmlFor="flexSwitchCheckDefault" className="form-check-label">Produit le plus récent</label>
+                    <label htmlFor="flexSwitchCheckDefault" className="form-check-label">{t('newerProduct')} </label>
                 </div>
 
                 {/* Promo */}
                 <div className="mb-3">
-                    <label htmlFor="promo" className="form-label">Promo (%):</label>
+                    <label htmlFor="promo" className="form-label">{t('promotion')} (%):</label>
                     <input
                         type="number"
                         className="form-control"
@@ -173,7 +192,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
 
                 {/* Image principale */}
                 <div className="mb-3">
-                    <label htmlFor="mainImage" className="form-label">Image Principale:</label>
+                    <label htmlFor="mainImage" className="form-label">{t('mainImage')} :</label>
                     <input
                         type="file"
                         className="form-control"
@@ -185,7 +204,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
 
                 {/* Autres images */}
                 <div className="mb-3">
-                    <label htmlFor="images" className="form-label">Images supplémentaires:</label>
+                    <label htmlFor="images" className="form-label">{t('additionalImages')} :</label>
                     <input
                         type="file"
                         className="form-control"
@@ -197,7 +216,7 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
 
                 {/* Counter d’images */}
                 <div className="images-counter mb-3 fw-bold" style={{ fontSize: 12 }}>
-                    Images uploaded : {images.length < 4 ? images.length : '4 (Max)'}
+                    {t('imagesUploaded')} : {images.length < 4 ? images.length : '4 (Max)'}
                 </div>
 
                 <button type="submit" className="btn btn-primary" disabled={isLoading}>
@@ -234,13 +253,14 @@ const ProductForm: React.FC<{ productType: string }> = ({ productType }) => {
                                     wrapperStyle={{ justifyContent: 'center', alignItems: "center" }}
                                 />
                                 <div className="loading-msg fs-3 fw-bold text-center my-4">
-                                    Chargement...
+                                    {t('loading')} ...
                                 </div>
                             </div>
                         </motion.div>
                     </ModalBackDrop>
                 }
             </AnimatePresence>
+            <ToastContainer/>
         </div>
     );
 };

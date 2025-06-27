@@ -15,33 +15,44 @@ import { useLangContext } from "../../Contexts/languageContext";
 import NotFound from "../NotFound";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import { goTo, hideInfos, selectedLang } from "../functions";
+import { useTranslation } from "react-i18next";
+import Loading from "../../Components/loading";
 
 
 
-const orderExceptions = [<IoWarning color="red" size={25}/>, <MdOutlineFileDownloadDone color="green" size={25}/>]
-const orderStatus = [<p style={{fontSize:"1em", fontWeight:"bold",color:"rgb(234 179 8)"}}>Waiting</p>, <p style={{fontSize:"1em", fontWeight:"bold",color:"green"}}>Done</p>]
 
 
 
 const DBHome : React.FC = () => {
+    const {t} = useTranslation();
     const {currentLang } = useLangContext();
     const {remainingOrders} = getRemainingOrders();
     const deficiencies = getDeficiencies();
     const [isExpanded, setIsExpanded] = useState<{orders:boolean, deficiencies:boolean}>({orders:false, deficiencies:false});
     const [isOrdModal, setIsOrdModal] = useState<boolean>(false);
-    const [targetedItem, setTargetedItem] = useState<any>();
+    const [targetedOrder, setTargetedOrder] = useState<any>();
+    const [targetedDeficiency, setTargetedDeficiency] = useState<any>();
+    const [isDeficiencyModal, setIsDeficiencyModal] = useState<boolean>()
+
+    const deficiencyOnClick = (ord: any) => {
+        setTargetedDeficiency(ord);
+        setIsDeficiencyModal(true);
+    }
+
+    const orderExceptions = [<IoWarning color="red" size={25}/>, <MdOutlineFileDownloadDone color="green" size={25}/>]
+    const orderStatus = [<p style={{fontSize:"1em", fontWeight:"bold",color:"rgb(234 179 8)"}}>{t('waiting')}</p>, <p style={{fontSize:"1em", fontWeight:"bold", color:"green"}} >{t('done')}</p>]
 
     const orderOnClick = (ord:any) => {
-        setTargetedItem(ord);
+        setTargetedOrder(ord);
         setIsOrdModal(true);
     }
 
         const processOrder = (ord:any) => {
         
         if(ord.exception){
-            toast.error('Please process the deficiencies, then process the order !',{
+            toast.error(t('deficienciesMessage'),{
                   position: "top-center",
-                  autoClose: 5000,
+                  autoClose: 2000,
                   hideProgressBar: false, 
                   closeOnClick: false,
                   pauseOnHover: false,
@@ -60,6 +71,7 @@ const DBHome : React.FC = () => {
     setIsExpanded((prev)=>({...prev, [product]:!prev[product as keyof {orders:boolean, deficiencies:boolean}]}));
   };
     
+
     return(<>
 <ProtectedRoute>
 
@@ -68,21 +80,21 @@ const DBHome : React.FC = () => {
         <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
             <div className="fw-bold d-flex justify-content-between me-2 my-3">
-                <span><FaWpforms className="m-3" size={20}/>Remaining Orders</span>
-                <a href="Orders" onClick={()=>goTo("Orders")}>Show all orders</a>
+                <span><FaWpforms className="m-3" size={20}/>{t('remainingOrders')} </span>
+                <a href="Orders" onClick={()=>goTo("Orders")}>{t('showAllOrders')} </a>
             </div>
-                    {remainingOrders.length>0?
+                    {remainingOrders?remainingOrders.length>0?
                     <>
                     <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
                         <thead>
                             <tr className="text-muted">
-                                <th className="text-muted">Order ID</th>
-                                <th className="text-muted">Transaction ID</th>
-                                <th className="text-muted">Date</th>
-                                <th className="text-muted">Amount</th>
-                                <th className="text-muted">Status</th>
-                                <th className="text-muted">Deficiencies</th>
-                                <th className="text-muted">Action</th>
+                                <th className="text-muted">{t('orderId')}</th>
+                                <th className="text-muted">{t('transactionId')}</th>
+                                <th className="text-muted">{t('date')}</th>
+                                <th className="text-muted">{t('amount')}</th>
+                                <th className="text-muted">{t('status')}</th>
+                                <th className="text-muted">{t('deficiencies')}</th>
+                                <th className="text-muted">{t('action')} </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,36 +106,39 @@ const DBHome : React.FC = () => {
                                     <td>{ord.amount}</td>
                                     <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>
                                     <td className="text-center">{ord.exception?orderExceptions[0]:orderExceptions[1]}</td>
-                                    <td><button className="btn btn-primary" onClick={()=>{processOrder(ord)}}>Process</button></td>
+                                    <td><button className="btn btn-primary" onClick={()=>{processOrder(ord)}}>{t('process')} </button></td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                        <div className="orders-expansion text-center m-1 d-flex justify-content-center">
+                        <div className={remainingOrders.length>3?"orders-expansion text-center m-1 d-flex justify-content-center":'d-none'} >
                             <button className="btn btn-outline-primary" onClick={()=>toggleExpand("orders")}>
-                                {!isExpanded.orders?`Read more ${ remainingOrders.length>=3?`(+ ${remainingOrders.length - 3})`:''}`:"Read less"}
+                                {!isExpanded.orders?`${t('readMore')} ${ remainingOrders.length>=3?`(+ ${remainingOrders.length - 3})`:''}`:t('readLess')}
                             </button>
                         </div>
                     </>
                     :<>
-                    <NotFound message="No remaining orders found !"/>
-                    </>} 
+                    <NotFound message={t('noRemainingOrder')}/>
+                    </>
+                    :
+                    <Loading message={t('loading')}/>} 
 
             <div className="fw-bold me-2 my-3 d-flex justify-content-between">
-                <span><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</span>
-                <a href="Deficiency">Show all deficiencies</a>
+                <span><FaSortAmountDown  className="m-3" size={20}/>{t('deficiencies')} </span>
+                <a href="Deficiency">{t('showAllDeficiencies')}</a>
             </div>
-            {deficiencies.length>0?<>
+            {deficiencies?deficiencies.length>0?<>
             <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
                 <thead>
                     <tr className="text-muted">
-                        <th className="text-muted">Order ID</th>
-                        <th className="text-muted">Product Type</th>
-                        <th className="text-muted">Product Category</th>
-                        <th className="text-muted">Product Ref</th>
-                        <th className="text-muted">Product Name</th>
-                        <th className="text-muted">Size</th>
-                        <th className="text-muted">Quantity</th>
+                        <th className="text-muted">{t('orderId')} </th>
+                        <th className="text-muted">{t('productType')}</th>
+                        <th className="text-muted">{t('category')}</th>
+                        <th className="text-muted">{t('ref')}</th>
+                        <th className="text-muted">{t('name')}</th>
+                        <th className="text-muted">{t('size')}</th>
+                        <th className="text-muted">{t('quantity')}</th>
+                        <th className="text-muted">{t('action')}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -136,19 +151,22 @@ const DBHome : React.FC = () => {
                             <td>{ord.product_name}</td>
                             <td>{ord.product_size}</td>
                             <td>{ord.delta_quantity}</td>
+                            <td><button className="btn btn-primary" onClick={()=>{deficiencyOnClick(ord)}}>{t('processDeficiency')} </button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-                <div className="orders-expansion text-center m-1 d-flex justify-content-center">
+                <div className={deficiencies.length>3?'orders-expansion text-center m-1 d-flex justify-content-center':'d-none'}>
                     <button className="btn btn-outline-primary" onClick={()=>toggleExpand("deficiencies")}>
-                        {!isExpanded.deficiencies?`Read more ${ deficiencies.length>=3?`(+ ${deficiencies.length - 3})`:''}`:"Read less"}
+                        {!isExpanded.deficiencies?`${t('readMore')} ${ deficiencies.length>=3?`(+ ${deficiencies.length - 3})`:''}`:t('readLess')}
                     </button>
                 </div>
             </>
             :<>
-            <NotFound message="no deficiency found"/>
-            </>}
+            <NotFound message={t('noDeficiencyFound')}/>
+            </>
+            :
+            <Loading message={t('loading')}/>}
         </div>
 
         <AnimatePresence mode="wait">
@@ -157,7 +175,17 @@ const DBHome : React.FC = () => {
                 onDelete={undefined}
                 cible="orders"
                 onBack={()=>setIsOrdModal(false)}
-                item={targetedItem}
+                item={targetedOrder}
+            />}         
+        </AnimatePresence>
+
+        <AnimatePresence mode="wait">
+            {isDeficiencyModal&&<Modals
+                message={undefined}
+                onDelete={undefined}
+                cible="deficiencies"
+                onBack={()=>setIsDeficiencyModal(false)}
+                item={targetedDeficiency}
             />}         
         </AnimatePresence>
 

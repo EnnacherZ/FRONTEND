@@ -5,9 +5,9 @@ import apiInstance from "../../dashboard/api";
 const connecter = apiInstance;
 
 export const getRemainingOrders = () => {
-    const [allOrders, setAllOrders] = useState<Array<any>>([]);
-    const [remainingOrders, setRemainingOrders] = useState<Array<any>>([]);
-    const [deliveredOrders, setDeliveredOrders] = useState<Array<any>>([]);
+    const [allOrders, setAllOrders] = useState<Array<any>>();
+    const [remainingOrders, setRemainingOrders] = useState<Array<any>>();
+    const [deliveredOrders, setDeliveredOrders] = useState<Array<any>>();
 
     useEffect(()=>{
         const getRemainingOrdersFunction = async () =>{

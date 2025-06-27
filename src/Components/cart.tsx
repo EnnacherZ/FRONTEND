@@ -71,9 +71,9 @@ const Cart: React.FC = () => {
   const ConfirmRemove = (item: CartItem) => {
     removeItem(item);
     setIsRemoveConfirm(false);
-    toast.error('The item is removed', {
+    toast.error(t('itemRemoved'), {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: false,
       pauseOnHover: false,
@@ -93,9 +93,9 @@ const Cart: React.FC = () => {
   const handleClearCart = () => {
     clearCart();
     setIsRemoveConfirm(false);
-    toast.error('The cart is cleared', {
+    toast.error(t('cartCleared'), {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: false,
       pauseOnHover: false,

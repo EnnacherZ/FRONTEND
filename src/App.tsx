@@ -24,6 +24,8 @@ import Orders from "./dashboard/pages/Orders";
 import Settings from "./dashboard/pages/Settings";
 import { ParametersContextProvider } from "./dashboard/Contexts/ParametersContext";
 import OrderTracker from "./Components/OrderTracker";
+import Statistics from "./dashboard/pages/Statistics";
+import OrderDetails from "./dashboard/pages/OrderDetails";
 
 
 // Définir vos routes
@@ -51,6 +53,8 @@ const dbRoutes = [
   { path: "/Dashboard/Deficiency", element : <ExceptionsPage/> },
   { path: "/Dashboard/Orders", element : <Orders/> },
   { path: "/Dashboard/Settings", element : <Settings/> },
+  { path: "/Dashboard/Statistics", element : <Statistics/> },
+  { path: '/Dashboard/OrderDetails/:orderID', element: <OrderDetails/>},
 ]
 
 
@@ -68,12 +72,12 @@ const App: React.FC = () => {
     <LangContextProvider>
       <CartProvider>
         <PaymentProvider>
-          <ProductsContextProvider>
-            {isAdminInterface?<ParametersContextProvider>
+          <ProductsContextProvider><ParametersContextProvider>
+            {isAdminInterface?
             <RouterProvider router={router}   future={{v7_startTransition: true}} />
-            </ParametersContextProvider>:
+            :
             <RouterProvider router={router}   future={{v7_startTransition: true}}/>
-            }
+            }</ParametersContextProvider>
             {/* Utiliser RouterProvider pour appliquer le routeur */}
           </ProductsContextProvider>
         </PaymentProvider>

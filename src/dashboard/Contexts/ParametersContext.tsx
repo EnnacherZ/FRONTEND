@@ -1,5 +1,5 @@
 import React, {useContext, createContext, ReactNode, useEffect, useState} from "react";
-import apiInstance from "../api";
+import { connecter } from "../../Server/connecter";
 
 
 
@@ -17,7 +17,7 @@ export const ParametersContextProvider : React.FC<{children:ReactNode}> = ({chil
 
     useEffect(()=>{
         const getCategories = async () => {
-            const response = await apiInstance.get('db/products/getCategories?param=categories');
+            const response = await connecter.get('db/products/getParameters?param=categories');
             setCategories(response.data.categories || undefined);
         }
         getCategories();

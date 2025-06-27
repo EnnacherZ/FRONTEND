@@ -154,7 +154,7 @@ const ProductDetails: React.FC = () => {
        if(!selectedShoeDetails[pro.id]){
            toast.error(t('toastSizeAlert'), {
                position: "top-center",
-               autoClose: 5000,
+               autoClose: 2000,
                hideProgressBar: false,
                closeOnClick: false,
                pauseOnHover: false,
@@ -179,7 +179,7 @@ const ProductDetails: React.FC = () => {
        };
        addItem(item);
        toast.success(t('toastAddSuccess') , {
-           autoClose: 5000,
+           autoClose: 2000,
            hideProgressBar: false,
            closeOnClick: false,
            pauseOnHover: false,
@@ -193,7 +193,7 @@ const ProductDetails: React.FC = () => {
        if(!selectedShoeDetails[pro.id]){
            toast.error(t('toastSizeAlert'), {
                position: "top-center",
-               autoClose: 5000,
+               autoClose: 2000,
                hideProgressBar: false,
                closeOnClick: false,
                pauseOnHover: false,
@@ -218,7 +218,7 @@ const ProductDetails: React.FC = () => {
        };
        addItem(item);
        toast.success(t('toastAddSuccess') , {
-           autoClose: 5000,
+           autoClose: 2000,
            hideProgressBar: false,
            closeOnClick: false,
            pauseOnHover: false,

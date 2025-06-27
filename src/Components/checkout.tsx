@@ -20,11 +20,12 @@ import { connecter } from "../Server/connecter";
 import { HiOutlineCash } from "react-icons/hi";
 import { goTo, selectedLang } from "./functions";
 
+
 type FormValues = {
   FirstName : string;
   LastName : string;
   Email : string;
-  Tel: string;
+  Phone: string;
   City: string;
   Address : string;
   customerId : string;
@@ -85,7 +86,7 @@ const Checkout :  React.FC = () => {
            FirstName : getValues('FirstName'),
            LastName : getValues('LastName'),
            Email : getValues('Email'),
-           Phone : getValues('Tel'),
+           Phone : getValues('Phone'),
            City : getValues('City'),
            Address : getValues('Address'),
            Amount : total,
@@ -292,7 +293,7 @@ const Checkout :  React.FC = () => {
           else if(isOnlinePayment==undefined){
               toast.error(t('choosePM'), {
                   position: "top-center",
-                  autoClose: 5000,
+                  autoClose: 2000,
                   hideProgressBar: false,
                   closeOnClick: false,
                   pauseOnHover: false,
@@ -450,7 +451,7 @@ const Checkout :  React.FC = () => {
                   <div className={`form-label ${selectedLang(currentLang)=='ar'&&'rtl'}`}>{t('phN')}:</div>
                   <div className="input-group">
                     <span className="input-group-text"><FaRegUserCircle/></span> 
-                    <input  {...register("Tel",{
+                    <input  {...register("Phone",{
                             required:t('telreq')+' !',
                             minLength : {
                               value:10,
@@ -458,16 +459,16 @@ const Checkout :  React.FC = () => {
                             }
                           })} 
                           type="tel" 
-                          className={errors.Tel?"form-control is-invalid":"form-control"}
+                          className={errors.Phone?"form-control is-invalid":"form-control"}
                           placeholder={t('phN')}
                           readOnly={isModify}
                           disabled={isModify}
                           />
                   </div>
-                  {errors.Tel && (
+                  {errors.Phone && (
                       <span style={{color:"red",fontSize:"1.25vw"}}
                             className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
-                        {`${errors.Tel.message}`}</span>
+                        {`${errors.Phone.message}`}</span>
                     )}
                 </div>
             </div>
@@ -598,7 +599,7 @@ const Checkout :  React.FC = () => {
     <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label">{t('phN')} :</label></span>
       <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
       <span className="input-group-text rounded-0" id="basic-addon3"><FaPhone /></span>
-      <input  {...register("Tel",{
+      <input  {...register("Phone",{
                   required:t('telreq')+' !',
                   minLength : {
                     value:10,
@@ -608,7 +609,7 @@ const Checkout :  React.FC = () => {
         })} 
               type="tel" 
               className={(selectedLang(currentLang)=='ar')?
-                errors.Tel?"form-control is-invalid rounded-0 rounded-start text-end":
+                errors.Phone?"form-control is-invalid rounded-0 rounded-start text-end":
                 "form-control rounded-0 rounded-start text-end":"form-control"
       } 
               placeholder={t('phN')}
@@ -617,9 +618,9 @@ const Checkout :  React.FC = () => {
 
 
     </div>
-    {errors.Tel && (
+    {errors.Phone && (
         <span style={{color:"red", fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
-          {`${errors.Tel.message}`}</span>
+          {`${errors.Phone.message}`}</span>
     )}
 
     <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label">{t('city')} :</label></span>
@@ -676,7 +677,7 @@ const Checkout :  React.FC = () => {
     </form>}
 
     <div className="d-flex flex-column paymentDiv mb-5">
-    <div className={`paymentGateway ${isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
+    <div className={`paymentGateway ${isClt(clientForm)&&isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
           id="paymentGateway">
       <div className="paymentGatewayTitle fs-3" id="paymentGatewayTitle">
         <FaMoneyBillTransfer className="mx-3"/> {t('paymentPortal')}
@@ -700,7 +701,7 @@ const Checkout :  React.FC = () => {
         {t("choicePM")} : {isOnlinePayment==undefined? t("noChoicePM"):(isOnlinePayment?t('creditCard'):t('cod'))}
       </div>
     </div>
-    <button id="pay" className={`rounded mt-2 pay-button ${isModify?'':'is-disabled'}`} onClick={OnClickPayment}
+    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} onClick={OnClickPayment}
     >{t('pay')}</button>
     </div>
 

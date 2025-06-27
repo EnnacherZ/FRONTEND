@@ -10,15 +10,17 @@ import NotFound from "../NotFound";
 import { hideInfos, selectedLang } from "../functions";
 import { AnimatePresence } from "framer-motion";
 import Modals from "../modals";
-
+import { useTranslation } from "react-i18next";
+import Loading from "../../Components/loading";
+import { ToastContainer } from "react-toastify";
 
 const ExceptionsPage : React.FC= () => {
+    const {t} = useTranslation();
     const {currentLang} = useLangContext();
     const deficiencies = getDeficiencies();
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [targetedItem, setTargetedItem] = useState<any>();
     const [isDeficiencyModal, setIsDeficiencyModal] = useState<boolean>()
-
 
     const processDeficiency = (ord: any) => {
         setTargetedItem(ord);
@@ -32,19 +34,19 @@ return(<>
 <Sidebar/>
 <div className={`db-deficiency ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
     <DbHeader/>
-            <div className="fw-bold my-2"><FaSortAmountDown  className="me-3" size={20}/> Deficiencies</div>
-            {deficiencies.length>0?<>
+            <div className="fw-bold my-2"><FaSortAmountDown  className="me-3" size={20}/>{t('deficiencies')} </div>
+            {deficiencies?deficiencies.length>0?<>
             <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
                 <thead>
                     <tr className="text-muted">
-                        <th className="text-muted">Order ID</th>
-                        <th className="text-muted">Product Type</th>
-                        <th className="text-muted">Product Category</th>
-                        <th className="text-muted">Product Ref</th>
-                        <th className="text-muted">Product Name</th>
-                        <th className="text-muted">Size</th>
-                        <th className="text-muted">Quantity</th>
-                        <th className="text-muted">Action</th>
+                        <th className="text-muted">{t('orderId')} </th>
+                        <th className="text-muted">{t('productType')}</th>
+                        <th className="text-muted">{t('category')}</th>
+                        <th className="text-muted">{t('ref')}</th>
+                        <th className="text-muted">{t('name')}</th>
+                        <th className="text-muted">{t('size')}</th>
+                        <th className="text-muted">{t('quantity')}</th>
+                        <th className="text-muted">{t('action')} </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,20 +59,22 @@ return(<>
                             <td>{ord.product_name}</td>
                             <td>{ord.product_size}</td>
                             <td>{ord.delta_quantity}</td>
-                            <td><button className="btn btn-primary" onClick={()=>{processDeficiency(ord)}}>Process</button></td>
+                            <td><button className="btn btn-primary" onClick={()=>{processDeficiency(ord)}}>{t('processDeficiency')} </button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-                <div className="orders-expansion text-center m-1 d-flex justify-content-center">
+                <div className={deficiencies.length>3?'orders-expansion text-center m-1 d-flex justify-content-center':'d-none'}>
                     <button className="btn btn-outline-primary" onClick={()=>setIsExpanded(!isExpanded)}>
-                        {!isExpanded?"Read more":"Read less"}
+                        {!isExpanded?t('readMore'):t('readLess')}
                     </button>
                 </div>
             </>
             :<>
-            <NotFound message="no deficiency found"/>
-            </>}
+            <NotFound message={t('noDeficiencyFound')}/>
+            </>
+            :
+            <Loading message={t('loading')}/>}
 </div>
 
         <AnimatePresence mode="wait">
@@ -78,12 +82,12 @@ return(<>
                 message={undefined}
                 onDelete={undefined}
                 cible="deficiencies"
-                onBack={()=>setIsDeficiencyModal(false)}
+                onBack={()=>{setIsDeficiencyModal(false)}}
                 item={targetedItem}
             />}         
         </AnimatePresence>
 
-
+<ToastContainer/>
 </ProtectedRoute>
 
 

@@ -1,5 +1,6 @@
+import { toast, Zoom } from "react-toastify";
 
-
+const origin = import.meta.env.VITE_ACTUAL_ORIGIN;
 
 export const hideInfos = (infos: any, range: number): string => {
     if (!infos || typeof infos !== 'string') {
@@ -11,7 +12,7 @@ export const hideInfos = (infos: any, range: number): string => {
     }
 
     const visiblePart = infos.slice(0, infos.length - range);
-    const hiddenPart = "*".repeat(range);
+    const hiddenPart = "*".repeat(5);
     return visiblePart + hiddenPart;
 };
 
@@ -37,6 +38,7 @@ export const dropIn = {
 }
 
 export const goTo = (ref:string) => {window.location.href = ref}
+export const goToNewBlank = (ref:string) => {window.open(`${origin.slice(0, -1)}${ref}`, '_blank')}
 
   export const selectedLang = (l:string) => {
     let a = '';
@@ -51,4 +53,34 @@ export const goTo = (ref:string) => {window.location.href = ref}
             a='en';
             break
     }return a
+}
+
+export const showToast = (message:string, event : string) => {
+            if(event == "error"){
+                toast.error(message,{
+                  position: "top-center",
+                  autoClose: 2000,
+                  hideProgressBar: false, 
+                  closeOnClick: false,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                  transition: Zoom,
+                })
+            }else if(event == "success"){
+                toast.success(message,{
+                  position: "top-center",
+                  autoClose: 2000,
+                  hideProgressBar: false, 
+                  closeOnClick: false,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                  transition: Zoom,
+                })
+            }
+
+
 }

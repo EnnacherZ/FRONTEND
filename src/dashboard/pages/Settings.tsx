@@ -46,10 +46,10 @@ return(<>
               <Accordion.Item eventKey="1" className="my-3 rounded card shadow ">
                 <ProductParameters productType={productTypes?productTypes:[""]} param="categories"/>
               </Accordion.Item>
-              <Accordion.Item eventKey="2" className="my-3 rounded card shadow ">
+              {/* <Accordion.Item eventKey="2" className="my-3 rounded card shadow ">
                 <Accordion.Header></Accordion.Header>
                 <Accordion.Body></Accordion.Body>
-              </Accordion.Item>
+              </Accordion.Item> */}
             </Accordion>
             
             
@@ -110,14 +110,14 @@ const ProductParameters : React.FC<{productType:string[], param:string}> = ({pro
 
 
 return(<>
-      <Accordion.Header> <span className="fw-bold">Add product categories</span> </Accordion.Header>
+      <Accordion.Header> <span className="fw-bold mx-2">{t('addProductCategories')}</span> </Accordion.Header>
         <Accordion.Body>
           <form onSubmit={handlePostParameters}>
         <div className="mb-3">
-            <label htmlFor="ref" className="form-label">{t('productType')}:</label>
+            <label htmlFor="ref" className="form-label"> {t('productType')} :</label>
             {productType.length>0?(<>
             <select name="" id="" className="form-select" aria-placeholder="Choose a product type" onChange={(e)=>{setSelectedType(e.target.value)}}>
-            <option value={undefined}>Open this select menu</option>
+            <option value={undefined}>{t('selectProductType')} </option>
             {productType.map((type,index)=>(
                 <option value={type} key={index}>{type}</option>
             ))}
@@ -134,7 +134,7 @@ return(<>
             </>)}
           </div>
         <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Category:</label>
+            <label htmlFor="ref" className="form-label">{t('category')} :</label>
             <input
               className="form-control"
               id="category"
@@ -145,7 +145,7 @@ return(<>
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <button type="submit" className="btn btn-primary">{t('submit')} </button>
           </form>
         </Accordion.Body>
 <ToastContainer/>
@@ -155,7 +155,7 @@ return(<>
 
 
 const ProductTypes : React.FC = () => {
-  
+  const {t} = useTranslation();
   const [productTypes, setProductTypes] = useState("");
   //const [productsCategories, setProductsCategories] = useState<string[]>([]);
   const handlePostParameters = async (e: React.FormEvent) => {
@@ -182,11 +182,11 @@ const ProductTypes : React.FC = () => {
 
 
 return(<>
-      <Accordion.Header> <span className="fw-bold">Add product types</span> </Accordion.Header>
+      <Accordion.Header> <span className="fw-bold mx-2">{t('addProductTypes')}</span> </Accordion.Header>
         <Accordion.Body>
           <form onSubmit={handlePostParameters}>
         <div className="mb-3">
-            <label htmlFor="ref" className="form-label">Product type:</label>
+            <label htmlFor="ref" className="form-label">{t('productType')} :</label>
             <input
               className="form-control"
               id="category"
@@ -197,7 +197,7 @@ return(<>
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <button type="submit" className="btn btn-primary">{t('submit')} </button>
           </form>
         </Accordion.Body>
 </>)

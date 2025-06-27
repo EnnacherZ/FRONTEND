@@ -2,6 +2,10 @@ import React, { useLayoutEffect, useState } from "react";
 import {FaSearch } from "react-icons/fa";
 import "../Styles/FilterSection.css"
 import {FaArrowUp } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
+import { useLangContext } from "../Contexts/languageContext";
+import { selectedLang } from "./functions";
+import { useParametersContext } from "../dashboard/Contexts/ParametersContext";
 
 export interface DataToFilter {
     product : string,
@@ -17,7 +21,9 @@ export interface FilterSectionProps{
 
 
 const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType, handleReset}) =>{
-    
+    const {t} = useTranslation();
+    const {categories} = useParametersContext();
+    const {currentLang} = useLangContext();
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isPhone, setIsPhone] = useState<boolean>(false)
     const [isDroppedFilter, setIsDroppedFilter] = useState<boolean>(false)
@@ -52,28 +58,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
     }, [window.innerWidth])
     
 
-    const CategoryRender = (L:string) =>{
-        let itemCategory : string[] = [];
-        switch(L){
-            case 'Shoe':
-                itemCategory = ['Mocassin', 'Basket', 'Classic', 'Medical'];
-                break;
-            case 'Sandal':
-                itemCategory = [''];
-                break;
-            case 'Pant Sport':
-                itemCategory = ['Jeans', 'Toile'];
-                break;
-            case 'Pant Classic':
-                itemCategory = ['Jeans', 'Toile'];
-                break;
-            case 'Shirt':
-                itemCategory = ['Polo Sport', 'Polo décontracté', "T-Shirt", "Sweet"];
-                break;
-        }
-        return itemCategory;  
-        }
-
     const handleSearch = () =>{
         handleFilter(selectedCriteria);
         if(isDroppedFilter){
@@ -87,9 +71,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
     }
     return(
         <>
-        <div className={`filter-section ${dropOn?"extended":""} px-1 ${isPhone?'':'rounded'} shadow`}>
+        <div className={`filter-section ${dropOn?"extended":""} px-1 ${isPhone?'':'rounded'} shadow ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
                 <div className="filter-title">
-                    <FaSearch /> <span>Search</span>
+                    <FaSearch /> <span>{t('search')}</span>
                 </div>            
         {isDroppedFilter?
             (<>
@@ -100,31 +84,34 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
                 <div className={`filter-dropped-inputs ${dropOn?"active":""}`}>
                     <div className={`FDI-S1 ${dropOn?'active':''}`}>
                         <div className={isPhone?'':"mb-3 "}>
-                            <label className="label-control">Product</label>
+                            <label className="label-control">{t("productType")}</label>
                             <input
                                 readOnly
                                 disabled
                                 className="form-control mt-1 fw-bold"
                                 id="autoSizingSelect idProduct"
-                                value={productType} />
+                                value={t(productType)} />
                         </div>
 
                         <div className={isPhone?'':"mb-3 "}>
-                            <label>Category</label>
+                            <label>{t('catgory')}</label>
                             <select
-                                className="form-select me-5 mt-1"
+                                className="form-select mt-1"
                                 id="autoSizingSelect idCategory"
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}>
-                                <option value={""}>select category</option>
-                                {CategoryRender(productType).map((it) => (
-                                    <option key={it} value={it}>{it}</option>
-                                ))}
+                                <option value={""}>{t('selectCategory')}</option>
+                        {(categories[productType] as any[])?.length>0?(categories[productType] as any[]).map((cat, index) => (
+                            <option value={cat} key={index}>
+                                {cat}
+                            </option>
+                        )):
+                        <option value={undefined} disabled></option>}
                             </select>
                         </div>
 
                         <div className={isPhone?'':"mb-3 "}>
-                            <label>Ref</label>
+                            <label>{t('ref')}</label>
                             <input
                                 className="form-control mt-1"
                                 id="autoSizingSelect idRef"
@@ -137,7 +124,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
                     </div>
                     <div className={`FDI-S2 ${dropOn?'active':''}`}>
                         <div className={isPhone?'':"mb-3 "}>
-                            <label>Name</label>
+                            <label>{t('name')}</label>
                             <input
                                 className="form-control mt-1"
                                 id="autoSizingSelect idName"
@@ -148,11 +135,11 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
                         </div>
 
                         <div className={isPhone?'':"mb-3 "}>
-                            <button onClick={handleSearch} type="submit" className="btn btn-primary inputs-button" >Search</button>
+                            <button onClick={handleSearch} type="submit" className="btn btn-primary inputs-button" >{t('search')}</button>
                         </div>
 
                         <div className={isPhone?'':"mb-3 "}>
-                            <button type='reset' className="btn btn-secondary inputs-button"  onClick={handleGlobalReset}>Reset</button>
+                            <button type='reset' className="btn btn-secondary inputs-button"  onClick={handleGlobalReset}>{t('reset')}</button>
                         </div>
                     </div>
                     <div className={`closeDrppedFilter ${dropOn?'':'closed'} rounded-circle shadow`}
@@ -166,60 +153,59 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
         <div className="filter-inputs">
         
                 <div className={isPhone?'':"mb-3 "}>
-                    <label className="label-control">Product</label>
+                    <label className="label-control">{t('productType')}:</label>
                     <div className="input-group">
                     <input
                         readOnly
                         disabled
                         className="form-control mt-1 fw-bold"
                         id="autoSizingSelect idProduct"
-                        value={productType} /> 
+                        value={t(productType)} /> 
                     </div>
 
                 </div>
 
                 <div className={isPhone?'':"mb-3 "}>
-                    <label>Category</label>
-                    <select
-                        className="form-select me-5 mt-1"
-                        id="autoSizingSelect idCategory"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}>
-                        <option value={""}>select category</option>
-                        {CategoryRender(productType).map((it) => (
-                            <option key={it} value={it}>{it}</option>
-                        ))}
-                    </select>
+                    <label>{t('category')}:</label>
+                <select className="form-select" aria-label="Default select example">
+                    <option value={""} className="text-muted" aria-placeholder="hjhvj">{t('selectCategory')} </option>
+                        {(categories[productType] as any[])?.length>0?(categories[productType] as any[]).map((cat, index) => (
+                            <option value={cat} key={index}>
+                                {cat}
+                            </option>
+                        )):
+                        <option value={undefined} disabled></option>}
+                </select>
                 </div>
 
                 <div className={isPhone?'':"mb-3 "}>
-                    <label>Ref</label>
+                    <label>{t('ref')}:</label>
                     <input
                         className="form-control mt-1"
                         id="autoSizingSelect idRef"
                         type="text"
-                        placeholder="enter a reference"
+                        placeholder= {t('enterRef')}
                         value={selectedRef}
                         onChange={(e) => setSelectedRef(e.target.value)} />
                 </div>
 
                 <div className={isPhone?'':"mb-3 "}>
-                    <label>Name</label>
+                    <label>{t('name')}:</label>
                     <input
                         className="form-control mt-1"
                         id="autoSizingSelect idName"
                         type="text"
-                        placeholder="enter a name"
+                        placeholder={t('enterName')}
                         value={selectedName}
                         onChange={(e) => setSelectedName(e.target.value)} />
                 </div>
 
                 <div className={isPhone?'':"mb-3 "}>
-                    <button onClick={handleSearch} type="submit" className="btn btn-primary inputs-button" >Search</button>
+                    <button onClick={handleSearch} type="submit" className="btn btn-primary inputs-button" >{t('search')}</button>
                 </div>
 
                 <div className={isPhone?'':"mb-3 "}>
-                    <button type='reset' className="btn btn-secondary inputs-button"  onClick={handleGlobalReset}>Reset</button>
+                    <button type='reset' className="btn btn-secondary inputs-button"  onClick={handleGlobalReset}>{t('reset')}</button>
                 </div>
 
         </div>
