@@ -10,7 +10,6 @@ import ProdDetailsForm from "../prodDetailsForm";
 import ProdDelete from "../prodDelete";
 import ProdModif from "../prodModif";
 import { IoSettings } from "react-icons/io5";
-import ProtectedRoute from "../ProtectedRoute";
 import apiInstance from "../api";
 import { useLangContext } from "../../Contexts/languageContext";
 import { ProductDetail } from "../../Contexts/ProductsContext";
@@ -59,7 +58,7 @@ const ProductsManager : React.FC = () => {
 
 
     return(<>
-    <ProtectedRoute>
+
         <Sidebar/>
         <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
@@ -70,7 +69,7 @@ const ProductsManager : React.FC = () => {
             {productType?<ProductsOperations productType={productType} options={products}/>:<Loading message="Loading"/>}
 
         </div>
-    </ProtectedRoute>
+
 
     </>)
 };

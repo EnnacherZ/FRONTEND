@@ -1,5 +1,4 @@
 import React, {useState } from "react";
-import ProtectedRoute from "../ProtectedRoute";
 import Sidebar from "../sidebar";
 import { useLangContext } from "../../Contexts/languageContext";
 import DbHeader from "../DbHeader";
@@ -75,7 +74,7 @@ const Orders : React.FC = () => {
 //     },[])
 
     return(<>
-        <ProtectedRoute>
+
         <Sidebar/>
         <div className={`db-deficiency ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
@@ -213,7 +212,7 @@ const Orders : React.FC = () => {
             />}         
         </AnimatePresence>
         <ToastContainer/>
-        </ProtectedRoute>
+
 
 </>)
 

@@ -262,10 +262,11 @@ const Checkout :  React.FC = () => {
               setPaymentResponse(paymentRes);
             }
             clearCart();
-            setIsLoading(false);
+            //setIsLoading(false);
             goTo("/Trans");
-            console.log(response.data.ordered_products||[]);
+            //console.log(response.data.ordered_products||[]);
         } catch (error) {
+            setIsLoading(false);
             console.error('Error during payment:', error);
         }
     };

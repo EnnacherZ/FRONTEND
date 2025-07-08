@@ -1,32 +1,35 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
 import "../Styles/Login.css";
 import logo from "../assets/FIRDAOUS STORE.png"
 import Loading from "../Components/loading";
-import apiInstance, { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
-import { useNavigate } from "react-router-dom";
+import {Navigate} from "react-router-dom";
+import { useAuth } from "./Contexts/Authentication";
+
 
 
 const Login : React.FC = () => {
-    const navigate = useNavigate();
+    const {signIn, isAuthorized, isLoading} = useAuth();
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleSubmit = async (e:React.FormEvent) => {
-        setLoading(true);
-        e.preventDefault();
-        try{
-            const res = await apiInstance.post('db/token', {username,password});
-            localStorage.setItem(ACCESS_TOKEN, res.data.access);
-            localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-            navigate('/Dashboard/Home')
-        }
-        catch{alert('FORBIDDEN !!')}
-        finally{setLoading(false)}
-    }
 
-if(loading){
+    const handleSubmit = (e:React.FormEvent) =>{
+        signIn(e, username, password);
+
+    };
+
+
+
+if(isAuthorized){
+
+    return <Navigate to={"/Dashboard/Home"}/>
+
+}else{
+
+if(isLoading){
+
     return(<><Loading message="Authentication..."/></>)
+
 }
 
 return(<>
@@ -53,5 +56,6 @@ return(<>
         </form>
     </div>
 </>)
+}
 }
 export default Login

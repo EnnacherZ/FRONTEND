@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ProtectedRoute from "../ProtectedRoute";
 import Sidebar from "../sidebar";
 import DbHeader from "../DbHeader";
 import "../Styles/orderDetails.css";
@@ -165,7 +164,7 @@ const OrderDetails : React.FC = () => {
 
 
     return(<>
-    <ProtectedRoute>
+
         <Sidebar/>
         <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
             <DbHeader/>
@@ -368,7 +367,7 @@ const OrderDetails : React.FC = () => {
 
         <ToastContainer/>
 
-    </ProtectedRoute>
+
     
     </>);
 

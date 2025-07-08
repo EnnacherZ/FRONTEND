@@ -7,24 +7,27 @@ import { FaArrowDownWideShort, FaShirt } from "react-icons/fa6";
 import { GiSandal } from "react-icons/gi";
 import logo from "../assets/FIRDAOUS STORE.png";
 import { FaHome, FaSignOutAlt } from "react-icons/fa";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "./api";
 import { MdLanguage, MdOutlineSettings } from "react-icons/md";
 import { useLangContext } from "../Contexts/languageContext";
 import { useTranslation } from "react-i18next";
 import { ImStatsDots } from "react-icons/im";
 import { goTo, selectedLang } from "./functions";
+import { useAuth } from "./Contexts/Authentication";
+import { useNavigate } from "react-router-dom";
 
 
 const Sidebar : React.FC = () => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
+    const {signOut} = useAuth();
     const {currentLang, setCurrentLang} = useLangContext();
     const actual = window.location.pathname.slice(1);
-    
-    const signOut = () => {
-        localStorage.setItem(ACCESS_TOKEN, '')
-        localStorage.setItem(REFRESH_TOKEN,'')
-        goTo('Login');
-    };
+
+    const SignOut = () => {
+        signOut();
+        navigate('/Dashboard/Login');
+    }
+
 
     return(<>
     <div className={`${selectedLang(currentLang)=='ar'?'db-sidebar-rtl rtl':'db-sidebar'} shadow justify-content-between`}>
@@ -59,7 +62,7 @@ const Sidebar : React.FC = () => {
             <li className={`my-3 rounded ${actual.toLowerCase()=='dashboard/pant'&&'DbIsClicked'}`} onClick={()=>{goTo('/Dashboard/Pant')}}><PiPantsBold className="me-2"/> {t('pants')}</li>
             <div className="my-2 rounded db-statistics-btn shadow " onClick={()=>goTo("/Dashboard/Statistics")}><ImStatsDots  className="me-2"/> {t('statistics')}</div>
             <div className="my-2 rounded db-settings-btn shadow " onClick={()=>goTo("/Dashboard/Settings")}><MdOutlineSettings  className="me-2"/> {t('settings')}</div>
-            <div className="my-2 rounded db-signout shadow " onClick={signOut}><FaSignOutAlt className="me-2"/> {t('signOut')}</div>
+            <div className="my-2 rounded db-signout shadow " onClick={SignOut}><FaSignOutAlt className="me-2"/> {t('signOut')}</div>
         </ul>
     </div>
     </>)

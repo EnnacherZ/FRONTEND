@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Sidebar from "../sidebar";
-import ProtectedRoute from "../ProtectedRoute";
 import DbHeader from "../DbHeader";
 import "../Styles/Statistics.css";
 import { selectedLang } from "../functions";
@@ -19,7 +18,7 @@ const Statistics : React.FC = () => {
 
 
     return(<>
-    <ProtectedRoute>
+
         <Sidebar/>
         <div className={`db-home ${selectedLang(currentLang)=='ar'&&'rtl'}`} >
             <DbHeader/>
@@ -27,8 +26,7 @@ const Statistics : React.FC = () => {
                 {t('notDevelopedYet')}
             </div>        
         </div>
-    
-    </ProtectedRoute>
+
 
     </>)
 

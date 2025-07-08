@@ -26,7 +26,7 @@ import { ParametersContextProvider } from "./dashboard/Contexts/ParametersContex
 import OrderTracker from "./Components/OrderTracker";
 import Statistics from "./dashboard/pages/Statistics";
 import OrderDetails from "./dashboard/pages/OrderDetails";
-
+import { AuthProvider } from "./dashboard/Contexts/Authentication";
 
 // Définir vos routes
 const routes = [
@@ -74,7 +74,9 @@ const App: React.FC = () => {
         <PaymentProvider>
           <ProductsContextProvider><ParametersContextProvider>
             {isAdminInterface?
-            <RouterProvider router={router}   future={{v7_startTransition: true}} />
+            <AuthProvider>
+            <RouterProvider router={router}   future={{v7_startTransition: true}} />              
+            </AuthProvider>
             :
             <RouterProvider router={router}   future={{v7_startTransition: true}}/>
             }</ParametersContextProvider>

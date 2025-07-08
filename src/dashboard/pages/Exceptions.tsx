@@ -4,7 +4,6 @@ import DbHeader from "../DbHeader";
 import "../Styles/deficiency.css";
 import { FaSortAmountDown } from "react-icons/fa";
 import {getDeficiencies} from "../../Server/dashboard/deficiencies";
-import ProtectedRoute from "../ProtectedRoute";
 import { useLangContext } from "../../Contexts/languageContext";
 import NotFound from "../NotFound";
 import { hideInfos, selectedLang } from "../functions";
@@ -30,7 +29,7 @@ const ExceptionsPage : React.FC= () => {
 
 
 return(<>
-<ProtectedRoute>
+
 <Sidebar/>
 <div className={`db-deficiency ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
     <DbHeader/>
@@ -88,7 +87,7 @@ return(<>
         </AnimatePresence>
 
 <ToastContainer/>
-</ProtectedRoute>
+
 
 
 </>)

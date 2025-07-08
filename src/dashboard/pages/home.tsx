@@ -10,7 +10,6 @@ import { MdOutlineFileDownloadDone } from "react-icons/md";
 import Modals from "../modals";
 import { AnimatePresence } from "framer-motion";
 import {getDeficiencies} from "../../Server/dashboard/deficiencies";
-import ProtectedRoute from "../ProtectedRoute";
 import { useLangContext } from "../../Contexts/languageContext";
 import NotFound from "../NotFound";
 import { toast, ToastContainer, Zoom } from "react-toastify";
@@ -73,7 +72,7 @@ const DBHome : React.FC = () => {
     
 
     return(<>
-<ProtectedRoute>
+
 
 
         <Sidebar/>
@@ -192,7 +191,7 @@ const DBHome : React.FC = () => {
 
   
 <ToastContainer/>
-</ProtectedRoute>
+
   </>
     )
 }

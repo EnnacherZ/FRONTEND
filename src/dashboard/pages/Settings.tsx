@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ProtectedRoute from "../ProtectedRoute";
 import Sidebar from "../sidebar";
 import DbHeader from "../DbHeader";
 import "../Styles/settings.css";
 import Accordion from "react-bootstrap/esm/Accordion";
-import apiInstance from "../api";
+import apiInstance, { USER_ROLE } from "../api";
 import { useTranslation } from "react-i18next";
 import { useLangContext } from "../../Contexts/languageContext";
 import { toast, ToastContainer, Zoom } from "react-toastify";
@@ -31,7 +30,7 @@ const Settings : React.FC = () => {
 
 
 return(<>
-    <ProtectedRoute>
+
         <Sidebar/>
         <div className={`db-settings ${selectedLang(currentLang)=='ar'&&'rtl'}`} >
             <DbHeader/>
@@ -46,16 +45,28 @@ return(<>
               <Accordion.Item eventKey="1" className="my-3 rounded card shadow ">
                 <ProductParameters productType={productTypes?productTypes:[""]} param="categories"/>
               </Accordion.Item>
-              {/* <Accordion.Item eventKey="2" className="my-3 rounded card shadow ">
-                <Accordion.Header></Accordion.Header>
-                <Accordion.Body></Accordion.Body>
-              </Accordion.Item> */}
+
+
+{localStorage.getItem(USER_ROLE)=='admin'?
+<>
+            <hr/>
+            <div className="Prod-manage-title m-4 fw-bold">
+              <GiSettingsKnobs  size={20}/> <span className="mx-3">{t('usersManager')} </span>
+            </div>        
+
+              <Accordion.Item eventKey="2" className="my-3 rounded card shadow ">
+                <Accordion.Header><span className="fw-bold mx-2">{t('addUser')}</span></Accordion.Header>
+                <Accordion.Body>
+                  <AddUser/>
+                </Accordion.Body>
+              </Accordion.Item>
+</>
+:<></>
+}
             </Accordion>
-            
-            
         </div>
         
-    </ProtectedRoute>
+
 
 </>)
 
@@ -205,6 +216,149 @@ return(<>
 };
 
 
+const AddUser = () => {
+    const {t} = useTranslation();
+    const [username, setUsername] = useState<string>('');
+    const [role, setRole] = useState<string>('');
+    const [firstname, setFirstname] = useState<string>('');
+    const [lastname, setLastname] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [image, setImage] = useState<File>();
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const users_roles = ['admin', 'manager', 'delivery']
+
+        const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (e.target.files) {
+                setImage(e.target.files[0]);
+            }
+        };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        if(role == ''){
+            toast.error(t('categoryErrorMessage'), {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Zoom,
+                    });
+            
+        }else{
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('first_name', firstname);
+        formData.append('last_name', lastname);
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('role', role);
+        if (image) {
+            formData.append('image', image);
+        }
+
+        try {
+            const response = await connecter.post('db/user/register', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            console.log(response);
+            if (response.status === 201) {
+                window.location.reload();
+            }
+        } catch (error) {
+          console.log(error);
+            alert(`Erreur lors de la création du produit: ${error}`);
+        }
+        setLoading(false);
+    }};
+
+return(<form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">{t('firstN')} :</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">{t('lastN')} :</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">{t('userName')} :</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">{t('password')} :</label>
+                    <input
+                        type="password"
+                        className="form-control"
+                        id="name"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="category" className="form-label">{t('role')} :</label>
+                    <select
+                        id="category"
+                        className="form-select"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        required
+                    >
+                        <option value={''}>{t('selectUserRole')} </option>
+                        
+                        {users_roles.map((cat, index) => (
+                            <option value={cat} key={index}>
+                                {cat}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="mainImage" className="form-label">{t('image')} :</label>
+                    <input
+                        type="file"
+                        className="form-control"
+                        id="mainImage"
+                        onChange={handleImageChange}
+                        required
+                    />
+                </div>
+
+                <button className="btn btn-primary" type="submit">{loading ? 'Ajout en cours...' : t('submit')}</button>
+
+</form>)
+
+}
 
 
 
