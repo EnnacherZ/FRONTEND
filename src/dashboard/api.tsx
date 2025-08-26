@@ -10,6 +10,8 @@ const apiInstance = axios.create(
     {
         baseURL : apiUrl,
         withCredentials: true,
+        xsrfCookieName:"csrftoken",
+        xsrfHeaderName:'X-CSRFToken',
         headers: {
             'Content-Type': 'application/json',
         },

@@ -64,6 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem(USER_ROLE, res.data.user.role);
         localStorage.setItem(USER_USERNAME, res.data.user.username);
         localStorage.setItem(USER_IMAGE, res.data.user.image);
+        console.log(res)
       setIsAuthorized(true);
     } catch {
       alert("FORBIDDEN !!");
