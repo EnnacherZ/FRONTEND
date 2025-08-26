@@ -8,6 +8,7 @@ export const getRemainingOrders = () => {
     const [allOrders, setAllOrders] = useState<Array<any>>();
     const [remainingOrders, setRemainingOrders] = useState<Array<any>>();
     const [deliveredOrders, setDeliveredOrders] = useState<Array<any>>();
+    const [waitingDeliveryOrders, setWaitingDeliveryOrders] = useState<Array<any>>();
 
     useEffect(()=>{
         const getRemainingOrdersFunction = async () =>{
@@ -16,6 +17,7 @@ export const getRemainingOrders = () => {
                 setAllOrders(response.data.allOrders || []);
                 setRemainingOrders(response.data.remainingOrders || []);
                 setDeliveredOrders(response.data.deliveredOrders || []);
+                setWaitingDeliveryOrders(response.data.waitingDeliveryOrders || []);
 
             }
             catch{}
@@ -23,7 +25,7 @@ export const getRemainingOrders = () => {
         getRemainingOrdersFunction();
     },[])
 
-    return {remainingOrders, allOrders, deliveredOrders};
+    return {remainingOrders, allOrders, deliveredOrders, waitingDeliveryOrders};
 
 
 };

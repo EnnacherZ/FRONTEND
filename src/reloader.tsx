@@ -83,3 +83,6 @@ const AddProductTypeForm: React.FC = () => {
 };
 
 export default AddProductTypeForm;
+
+
+

@@ -191,7 +191,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const amount:number  = shirtsItems.reduce((acc, item)=>(acc +(item.price*(1-item.promo*0.01)*item.quantity)), 0)
       setCartTotalAmount((prevTotal) => ({
         ...prevTotal,
-        amountClothes: Math.round(amount * 100) / 100, 
+        amountShirts: Math.round(amount * 100) / 100, 
       }));
     } catch (error) {
       console.error('Error saving CartItems to localStorage:', error);

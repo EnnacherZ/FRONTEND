@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { connecter } from "../Server/connecter";
 import Header from "./header";
-// import icon from "../assets/FIRDAOUS STORE.png";
 import "../Styles/orderTracking.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faFlagCheckered, faGear, faSearch, faShippingFast, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +20,7 @@ const OrderTracker :React.FC = () => {
     const [client, setClient] = useState<any>();
     const [attempt, setAttempts] = useState<number>(() => {
       const att = localStorage.getItem('AlFirdaousStoreOrderTrackingLimitAttempts');
-      const lastReset = localStorage.getItem('AlFirdaousStoreOrderTrackingAttemptsLastReset5');
+      const lastReset = localStorage.getItem('AlFirdaousStoreOrderTrackingLimitAttemptsLastReset');
 
       const now = Date.now();
 
@@ -82,7 +81,7 @@ const OrderTracker :React.FC = () => {
             
           setAttempts((prev)=>prev+1);
         }
-        checkOrder()
+        checkOrder();
     }, [orderID])
 
 
@@ -172,7 +171,7 @@ return(<>
             </>
     
     }
-    <div className=""> {t('searchingAttempts')} : {`${attempt}/3`}</div>
+    <div className={attempt>3?'d-none':''}> {t('searchingAttempts')} : {`${attempt}/3`}</div>
     </div>    
 
 </>)

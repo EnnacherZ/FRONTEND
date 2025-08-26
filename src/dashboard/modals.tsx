@@ -129,7 +129,7 @@ return(
                     </>:<></>}
                 </div>
                 <div className="orders-actions-buttons m-3 d-flex justify-content-end">
-                    <button className="btn btn-warning mx-2" onClick={()=>goToNewBlank(`/Dashboard/OrderDetails/${item.order_id}`)}>{t('orderDetails')}</button>
+                    <button className="btn btn-warning mx-2" onClick={()=>{goToNewBlank(`/Dashboard/OrderDetails/${item.order_id}`);onBack()}}>{t('orderDetails')}</button>
                     <button className="btn btn-danger mx-2" onClick={onBack}>{t('back')}</button>
                 </div>
 </>}

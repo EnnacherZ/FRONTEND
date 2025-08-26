@@ -241,7 +241,6 @@ const Checkout :  React.FC = () => {
               }
             }
             
-            console.log(formData)
             const response = await connecter.post(`api/handlepay/`,formData,
             );
             setSuccessTransItems(response.data.ordered_products||[]);
@@ -258,12 +257,12 @@ const Checkout :  React.FC = () => {
                   code:"",
                   message:""
               }
-              console.log(response.data.paymentReaspone)
               setPaymentResponse(paymentRes);
             }
+            
             clearCart();
-            //setIsLoading(false);
             goTo("/Trans");
+            
             //console.log(response.data.ordered_products||[]);
         } catch (error) {
             setIsLoading(false);

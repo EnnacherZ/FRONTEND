@@ -22,8 +22,8 @@ import Loading from "../../Components/loading";
 const Orders : React.FC = () => {
     const {t} = useTranslation();
     const {currentLang} = useLangContext();
-    const {remainingOrders, allOrders, deliveredOrders} = getRemainingOrders();
-    const [isExpanded, setIsExpanded] = useState<{remaining:boolean, delivered:boolean, all:boolean}>({remaining:false, delivered:false, all:false});
+    const {remainingOrders, allOrders, deliveredOrders, waitingDeliveryOrders} = getRemainingOrders();
+    const [isExpanded, setIsExpanded] = useState<{remaining:boolean, delivered:boolean, all:boolean, waitingDelivery:boolean}>({waitingDelivery:false, remaining:false, delivered:false, all:false});
     const [isOrdModal, setIsOrdModal] = useState<boolean>(false);
     const [targetedItem, setTargetedItem] = useState<any>();
 
@@ -117,7 +117,47 @@ const Orders : React.FC = () => {
                     <NotFound message={t('noRemainingOrder')}/>
                     </>
                     :
-                    <Loading message={t('loading')}/>} 
+                    <Loading message={t('loading')}/>}
+                    <div className="fw-bold my-3"><FaWpforms  className="me-3" size={20}/>{t('deliveredOrders')} </div>
+                    {waitingDeliveryOrders?waitingDeliveryOrders.length>0?
+                    <>
+                    <table className="table table-bordred mt-2 orders-table rounded shadow-sm">
+                        <thead>
+                            <tr className="text-muted">
+                                <th className="text-muted">{t('orderId')}</th>
+                                <th className="text-muted">{t('deliveryMan')}</th>
+                                <th className="text-muted">{t('date')}</th>
+                                <th className="text-muted">{t('amount')}</th>
+                                <th className="text-muted">{t('status')}</th>
+                                <th className="text-muted">{t('deficiencies')}</th>
+                                <th className="text-muted">{t('action')} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {waitingDeliveryOrders.slice(0, isExpanded.waitingDelivery? waitingDeliveryOrders.length: 3).map((ord, index)=>(
+                                <tr key={index}>
+                                    <td className="fw-bold">{hideInfos(ord.order_id, 30)}</td>
+                                    <td className="fw-bold">{ord.delivery_man}</td>
+                                    <td>{ord.date}</td>
+                                    <td>{ord.amount}</td>
+                                    <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>
+                                    <td className="text-center">{ord.exception?orderExceptions[0]:orderExceptions[1]}</td>
+                                    <td><button className="btn btn-info fw-bold" onClick={()=>{processOrder(ord)}}>{t('details')}</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                        <div className={waitingDeliveryOrders.length>3?"orders-expansion text-center m-1 d-flex justify-content-center":'d-none'}>
+                            <button className="btn btn-outline-primary" onClick={()=>toggleExpand("waitingDelivery")}>
+                                {!isExpanded.waitingDelivery?`${t('readMore')} ${ waitingDeliveryOrders.length>=3?`(+ ${waitingDeliveryOrders.length - 3})`:''}`:t('readLess')}
+                            </button>
+                        </div>
+                    </>
+                    :<>
+                    <NotFound message={t('noDeliveredOrderFound')}/>
+                    </>
+                    :
+                    <Loading message={t('loading')}/>}
                     <div className="fw-bold my-3"><FaWpforms  className="me-3" size={20}/>{t('deliveredOrders')} </div>
                     {deliveredOrders?deliveredOrders.length>0?
                     <>
@@ -125,7 +165,7 @@ const Orders : React.FC = () => {
                         <thead>
                             <tr className="text-muted">
                                 <th className="text-muted">{t('orderId')}</th>
-                                <th className="text-muted">{t('transactionId')}</th>
+                                <th className="text-muted">{t('deliveryMan')}</th>
                                 <th className="text-muted">{t('date')}</th>
                                 <th className="text-muted">{t('amount')}</th>
                                 <th className="text-muted">{t('status')}</th>
@@ -137,7 +177,7 @@ const Orders : React.FC = () => {
                             {deliveredOrders.slice(0, isExpanded.delivered? deliveredOrders.length: 3).map((ord, index)=>(
                                 <tr key={index}>
                                     <td className="fw-bold">{hideInfos(ord.order_id, 30)}</td>
-                                    <td className="fw-bold">{hideInfos(ord.transaction_id, 30)}</td>
+                                    <td className="fw-bold">{ord.delivery_man}</td>
                                     <td>{ord.date}</td>
                                     <td>{ord.amount}</td>
                                     <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>
