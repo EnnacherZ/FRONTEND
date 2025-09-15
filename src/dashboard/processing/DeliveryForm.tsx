@@ -109,7 +109,7 @@ for (let y = 0; y < 3; y++) {
 }
 
 const formDoc = await formPdf.save();
-const pdfUrl = URL.createObjectURL(new Blob([formDoc], { type: 'application/pdf' }));
+const pdfUrl = URL.createObjectURL(new Blob([formDoc.buffer as ArrayBuffer], { type: 'application/pdf' }));
 return pdfUrl;
     
 

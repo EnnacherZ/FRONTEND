@@ -71,9 +71,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType,
     }
     return(
         <>
-        <div className={`filter-section ${dropOn?"extended":""} px-1 ${isPhone?'':'rounded'} shadow ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+        <div className={`filter-section ${dropOn&&"extended"} px-1 ${isPhone?'':'rounded'} shadow ${selectedLang(currentLang)=='ar'&&'rtl'}`}>
                 <div className="filter-title">
-                    <FaSearch /> <span>{t('search')}</span>
+                    <FaSearch /><span className="mx-2">{t('search')}</span>
                 </div>            
         {isDroppedFilter?
             (<>

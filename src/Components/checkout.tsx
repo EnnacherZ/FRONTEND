@@ -32,6 +32,9 @@ type FormValues = {
 
 }
 
+const isOnlinePaymentAvailable : boolean = import.meta.env.VITE_ONLINE_PAYMENT === 'true';
+console.log(isOnlinePaymentAvailable)
+
 const Checkout :  React.FC = () => {
     const date = new Date();
     const {t} = useTranslation();
@@ -686,9 +689,12 @@ const Checkout :  React.FC = () => {
       <button className={`cod ${isOnlinePayment==false&&"choosed"} rounded my-3 ${selectedLang(currentLang)=='ar'&&'rtl'}`} onClick={setCOD}>
         <HiOutlineCash className="mx-2"/> {t('cod')}
       </button>
-      <button className={`creditCard ${isOnlinePayment==true&&"choosed"} rounded my-3 ${selectedLang(currentLang)=='ar'&&'rtl'}`} onClick={handleYCPay} >
+
+      <button disabled={!isOnlinePaymentAvailable} className={`creditCard ${!isOnlinePaymentAvailable&&"is-disabled"} ${isOnlinePayment==true&&"choosed"} rounded my-3 ${selectedLang(currentLang)=='ar'&&'rtl'}`} onClick={handleYCPay} >
         <FaCreditCard className="mx-3"/> {t('creditCard')}
-      </button>
+      </button>        
+
+
       <div className={`mb-2 `} id="payment-container" ref={paymentForm}>
       </div>
       <div className="gateway-brand d-flex justify-content-end  p-2" >

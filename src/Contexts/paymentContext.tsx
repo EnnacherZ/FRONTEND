@@ -289,7 +289,7 @@ const linkAnnotation = invoicePdf.context.obj({
                 
 
                 const invoiceDoc = await invoicePdf.save();
-                const pdfUrl = URL.createObjectURL(new Blob([invoiceDoc], {type : 'application/pdf'}));
+                const pdfUrl = URL.createObjectURL(new Blob([invoiceDoc.buffer as ArrayBuffer], {type : 'application/pdf'}));
                 setInvoiceUrl(pdfUrl);
         }   
          createInvoice()

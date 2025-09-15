@@ -182,7 +182,7 @@ const Orders : React.FC = () => {
                                     <td>{ord.amount}</td>
                                     <td className="order-status">{ord.status?orderStatus[1]:orderStatus[0]}</td>
                                     <td className="text-center">{ord.exception?orderExceptions[0]:orderExceptions[1]}</td>
-                                    <td><button className="btn btn-info fw-bold" onClick={()=>{processOrder(ord)}}>{t('details')}</button></td>
+                                    <td><button className="btn btn-success fw-bold" onClick={()=>{processOrder(ord)}}>{t('details')}</button></td>
                                 </tr>
                             ))}
                         </tbody>

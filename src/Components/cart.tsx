@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useLangContext } from "../Contexts/languageContext.tsx";
 import { usePayment } from '../Contexts/paymentContext.tsx';
 import { goTo, selectedLang } from './functions.tsx';
-const apiUrl = import.meta.env.VITE_IMG_URL;
+
 
 const toCheckout = () => {window.location.href="/Checkout"}
 
@@ -268,7 +268,7 @@ const Cart: React.FC = () => {
                       className='p-0'
                       >
                       <div className='imgCart py-2 pe-2'>
-                        <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+                        <img src={`${item.image}`} className='imgCartImg rounded' />
                       </div>  
                       <div className='cart-price text-start'>
                         <div className='vertical-align-top' style={{wordSpacing:5}}>
@@ -337,7 +337,7 @@ const Cart: React.FC = () => {
                       className='p-0'
                       >
                       <div className='imgCart py-2 pe-2'>
-                        <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+                        <img src={`${item.image}`} className='imgCartImg rounded' />
                       </div>  
                       <div className='cart-price text-start'>
                         <div className='vertical-align-top' style={{wordSpacing:5}}>
@@ -405,7 +405,7 @@ const Cart: React.FC = () => {
                       className='p-0'
                       >
                       <div className='imgCart py-2 pe-2'>
-                        <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+                        <img src={`${item.image}`} className='imgCartImg rounded' />
                       </div>  
                       <div className='cart-price text-start'>
                         <div className='vertical-align-top' style={{wordSpacing:5}}>
@@ -473,7 +473,7 @@ const Cart: React.FC = () => {
                       className='p-0'
                       >
                       <div className='imgCart py-2 pe-2'>
-                        <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+                        <img src={`${item.image}`} className='imgCartImg rounded' />
                       </div>  
                       <div className='cart-price text-start'>
                         <div className='vertical-align-top' style={{wordSpacing:5}}>
@@ -542,7 +542,7 @@ const Cart: React.FC = () => {
             {shoesItems.map((item, index)=>(
             <div  style={{fontSize:13, width:"100%", height:130}} className='py-1 ' key={index}>
             <div className='imgCart py-2 pe-2'>
-              <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+              <img src={`${item.image}`} className='imgCartImg rounded' />
             </div>
             <div className="d-flex flex-column justify-content-between cartPriceSM">
               <div className='text-center' style={{wordSpacing:3, textTransform: 'capitalize'}}>
@@ -595,7 +595,7 @@ const Cart: React.FC = () => {
         {sandalsItems.map((item, index)=>(
             <div  style={{fontSize:13, width:"100%", height:130}} className='py-1 ' key={index}>
             <div className='imgCart py-2 pe-2'>
-              <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+              <img src={`${item.image}`} className='imgCartImg rounded' />
             </div>
             <div className="d-flex flex-column justify-content-between cartPriceSM">
               <div className='text-center' style={{wordSpacing:3, textTransform: 'capitalize'}}>
@@ -648,7 +648,7 @@ const Cart: React.FC = () => {
         {shirtsItems.map((item, index)=>(
             <div  style={{fontSize:13, width:"100%", height:130}} className='py-1 ' key={index}>
             <div className='imgCart py-2 pe-2'>
-              <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+              <img src={`${item.image}`} className='imgCartImg rounded' />
             </div>
             <div className="d-flex flex-column justify-content-between cartPriceSM">
               <div className='text-center' style={{wordSpacing:3, textTransform: 'capitalize'}}>
@@ -701,7 +701,7 @@ const Cart: React.FC = () => {
         {pantsItems.map((item, index)=>(
             <div  style={{fontSize:13, width:"100%", height:130}} className='py-1 ' key={index}>
             <div className='imgCart py-2 pe-2'>
-              <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
+              <img src={`${item.image}`} className='imgCartImg rounded' />
             </div>
             <div className="d-flex flex-column justify-content-between cartPriceSM">
               <div className='text-center' style={{wordSpacing:3, textTransform: 'capitalize'}}>

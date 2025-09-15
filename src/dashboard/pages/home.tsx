@@ -31,7 +31,8 @@ const DBHome : React.FC = () => {
     const [isOrdModal, setIsOrdModal] = useState<boolean>(false);
     const [targetedOrder, setTargetedOrder] = useState<any>();
     const [targetedDeficiency, setTargetedDeficiency] = useState<any>();
-    const [isDeficiencyModal, setIsDeficiencyModal] = useState<boolean>()
+    const [isDeficiencyModal, setIsDeficiencyModal] = useState<boolean>();
+
 
     const deficiencyOnClick = (ord: any) => {
         setTargetedDeficiency(ord);
@@ -69,6 +70,7 @@ const DBHome : React.FC = () => {
   const toggleExpand = (product:string) => {
     setIsExpanded((prev)=>({...prev, [product]:!prev[product as keyof {orders:boolean, deficiencies:boolean}]}));
   };
+
     
 
     return(<>
@@ -82,6 +84,8 @@ const DBHome : React.FC = () => {
                 <span><FaWpforms className="m-3" size={20}/>{t('remainingOrders')} </span>
                 <a href="Orders" onClick={()=>goTo("Orders")}>{t('showAllOrders')} </a>
             </div>
+            
+            
                     {remainingOrders?remainingOrders.length>0?
                     <>
                     <table className="table table-bordred mt-2 orders-table rounded shadow-sm">

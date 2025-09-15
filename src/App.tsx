@@ -27,6 +27,7 @@ import OrderTracker from "./Components/OrderTracker";
 import Statistics from "./dashboard/pages/Statistics";
 import OrderDetails from "./dashboard/pages/OrderDetails";
 import { AuthProvider } from "./dashboard/Contexts/Authentication";
+import Policies from "./Components/PrivacyPolicy";
 
 // Définir vos routes
 const routes = [
@@ -42,7 +43,8 @@ const routes = [
   { path: "/Checkout", element: <Checkout /> },
   { path: "/Trans", element: <SuccessTrans /> },
   { path: "/testy", element : <AddProductTypeForm/>},
-  { path: "/MyOrder/:orderID", element : <OrderTracker/>}
+  { path: "/MyOrder/:orderID", element : <OrderTracker/>},
+  { path: "/Policies/:option", element: <Policies/>}
 ];
 
 const dbRoutes = [

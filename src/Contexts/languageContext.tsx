@@ -203,6 +203,11 @@ i18n
           reset: 'Reset',
           enterName: 'Enter a name',
           enterRef: "enter a ref",
+          privacyPolicy: "Privacy policy",
+          usePolicy: "General conditions of use",
+          policies: "Policies",
+          followUs: 'Follow us',
+          contactUs: 'Contact us'
           
           
 
@@ -343,7 +348,7 @@ i18n
           deliveredOrders : 'Commandes livrées',
           allOrders: 'Toutes les commandes',       
           back : 'Retour',   
-          extractDeliveryForm: 'استخراج نموذج التسليم',
+          extractDeliveryForm: 'Extraire le formulaire de livraison',
           date: 'Date',
           process : 'Traiter',
           waiting: 'En attente',
@@ -410,6 +415,11 @@ i18n
           reset: 'Réinitialiser',
           enterName: 'Saisir un nom',
           enterRef: "Saisir une référence",
+          privacyPolicy:"Politique de confidentialité",
+          usePolicy: "Conditions générales d'utilisation",
+          policies: "Politiques",
+          followUs: 'Suivez-nous',
+          contactUs: 'Contactez-nous'
 
 
 
@@ -622,6 +632,11 @@ i18n
           reset: 'تحيين',
           enterName:  "أدخل اسمًا",
           enterRef: "أدخل مرجعًا",
+          privacyPolicy: "سياسة الخصوصية",
+          usePolicy: "الشروط العامة للاستخدام",
+          policies: "السياسات",
+          followUs: 'تابعنا',
+          contactUs: 'اتصل بنا'
 
 
           

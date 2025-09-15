@@ -24,7 +24,7 @@ interface productsShow {
 }
 
 const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,handleFilter, handleReset }) => {
-    const apiUrl = import.meta.env.VITE_IMG_URL
+
     const { addItem } = useCart();
     const {t} = useTranslation();
     const {currentLang} = useLangContext();
@@ -134,7 +134,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,h
                                 transition={{ duration: 0.8 }}>
                                 <div className="productCard p-0 card rounded-3 d-flex flex-column ">
                                     <div className="imgContainer rounded-" onClick={() => getProductDetail(pro)}>
-                                        <img src={`${apiUrl}${pro.image}`} />
+                                        <img src={`${pro.image}`} />
                                     </div>
                                     <div className="text-center product-infos"
                                         style={{ wordSpacing: 2, gap: 2, textTransform: 'capitalize' }}

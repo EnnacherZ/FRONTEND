@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // ✅ Try to refresh token using the cookie
   const tryRefreshToken = async () => {
     try {
-      await apiInstance.post("db/refresh-cookie");
+      await apiInstance.post("db/refreshcookie");
       setIsAuthorized(true);
     } catch {
       setIsAuthorized(false);

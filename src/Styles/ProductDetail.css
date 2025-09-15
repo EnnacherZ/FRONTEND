@@ -62,9 +62,9 @@
 }
 
 .ProductDetailName{
-    font-size:1.5vw;
+    font-size:2vw;
     padding-left: 6%;
-    word-spacing: 0.3em;
+    word-spacing: 0.1em;
     letter-spacing: 4px;
     font-weight: bold;
 }
@@ -92,12 +92,12 @@
     font-weight: bold;
     text-decoration: line-through;
     text-decoration-color: red;
-    font-size:1.4vw;
+    font-size:1.6vw;
     vertical-align: baseline;
 }
 
 .ProductDetailDP.phone{
-    font-size: 3vw;
+    font-size: 4vw;
 }
 
 .ProductDetailDC{

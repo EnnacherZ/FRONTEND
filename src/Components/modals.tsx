@@ -53,7 +53,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
     const [reviewText, setReviewText] = useState<string>();
     const {t} = useTranslation();
     const {currentLang} = useLangContext();
-    const apiImg = import.meta.env.VITE_IMG_URL
+
 
     useLayoutEffect(()=>{
         if(window.innerWidth<600){
@@ -216,7 +216,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
                     <div className=" d-flex flex-column align-items-center justify-content-between card-body px-0 mb-2"
                      style={{width:"100%", aspectRatio:18, marginTop:"3%",paddingTop:"5%"}}>
                     <div className='col-md-4 imgCartConf py-1 px-1' >
-                        <img src={`${apiImg}${item?.image}`} className='imgCartImgConf rounded' />
+                        <img src={`${item?.image}`} className='imgCartImgConf rounded' />
                         
                     </div> 
                     <div className={`d-flex justify-content-around g-0 mt-2 ${selectedLang(currentLang)=='ar'?'rtl':''}`}

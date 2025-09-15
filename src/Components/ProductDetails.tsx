@@ -41,7 +41,7 @@ import img from "../assets/review-guest.jpg";
 import TextReducer from "./TextReducer";
 import { selectedLang } from "./functions";
 
-const apiUrl = import.meta.env.VITE_IMG_URL
+
 
 const dropIn = {
     hidden: { y: "-100vh", opacity: 0 },
@@ -85,7 +85,6 @@ const ProductDetails: React.FC = () => {
                  setPro(respo);
                  setData(respo1);
                  setReviews(respo2)
-                 console.log(res)
          };
          getPro();
      },[ref, category, id, product])
@@ -286,7 +285,7 @@ const ProductDetails: React.FC = () => {
                   >
                       {proImg(pro).map((ig, index) => (
                           <SwiperSlide className="ProductDetailImgDiv" key={index}>
-                              <img src={`${apiUrl}${ig}`} alt="" className="rounded" />
+                              <img src={`${ig}`} alt="" className="rounded" />
                           </SwiperSlide>
                       ))}
                   </Swiper>
@@ -300,25 +299,26 @@ const ProductDetails: React.FC = () => {
                       className="zero mt-2">
                       {proImg(pro).map((ig, index)=>(
                           <SwiperSlide key={index} className="thunme">
-                              <img src={`${apiUrl}${ig}`} alt="" />
+                              <img src={`${ig}`} alt="" />
                           </SwiperSlide>
                       ))}
                   </Swiper>
               </div>
               <div className={`mt-2 ProductDetailNP ${isPhone?'phone':''}`}>
-                  <div className={`ProductDetailInfos1 mt-2 mb-4 text-center 
+                  {/* <div className={`ProductDetailInfos1 mt-2 mb-4 text-center 
                                   ProductDetailName ${isPhone?'d-none':''} 
                                   ${selectedLang(currentLang)=='ar'?'rtl':''}`}>
                       {t('productPreview')}
-                  </div>
-                  <div className={`ProductDetailName mt-1 mb-3 text-muted ${isPhone?'phone':''}`}>
+                  </div> */}
+                  <div className={`ProductDetailName mt-2 mb-3  ${isPhone?'phone':''}`}>
                       {(pro?.category).toUpperCase()} {(pro?.productType).toUpperCase()} : {pro?.ref}
                   </div>
-                  <div className={`ProductDetailName mt-1 mb-3 text-muted ${isPhone?'phone':''}`}>
+                  <div className={`ProductDetailName mt-1 mb-3  ${isPhone?'phone':''}`}>
                       {(pro?.name).toUpperCase()}
                   </div>
+                  <hr/>
                   {pro?.promo !== 0 && (
-                      <div    className={`${selectedLang(currentLang)=='ar'?'rtl text-center':""}`}
+                      <div    className={`${selectedLang(currentLang)=='ar'?'rtl':""} `}
                               style={{
                                   color: 'red',
                                   paddingLeft: '6%',
@@ -335,10 +335,10 @@ const ProductDetails: React.FC = () => {
                       <div className={`ProductDetailDP text-muted d-flex ${isPhone?'phone':''}`}>
                           {(pro?.price).toFixed(2)} {t('mad')}
                       </div>
-                      <div className={`ProductDetailDC ${isPhone?'phone':''} 
+                      {/* <div className={`ProductDetailDC ${isPhone?'phone':''} 
                                       ${selectedLang(currentLang)=='ar'?'rtl':''}`}>
                           {(pro?.promo)} % {t('off')}
-                      </div>
+                      </div> */}
                   </div>
                   <div className={`my-2 ${selectedLang(currentLang)=='ar'?'rtl':""}`} style={{
                       paddingLeft: '6%',

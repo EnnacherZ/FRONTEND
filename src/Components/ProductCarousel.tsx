@@ -14,7 +14,7 @@ interface ProductCarouselProps {
 }
 
 const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, productType}) => {
-  const apiUrl = import.meta.env.VITE_IMG_URL
+
   const {t} = useTranslation();
   const navigate = useNavigate();
   const [productsData, setProductsData] = useState<Product[]>();
@@ -82,7 +82,7 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, productType}) =
             <div className="productCarouselCard card text-center d-flex flex-column  " 
                   key={index}  onClick={()=>getProductDetail(item)}>
             <div className="productCImgCont rounded-">
-              <img src={`${apiUrl}${item.image}`} className="rounded-top" alt="" />
+              <img src={`${item.image}`} className="rounded-top" alt="" />
             </div>
             <div className="productCInfos1 my-1 fw-bold" >
               {(item.category).toLowerCase()} {item.ref}
