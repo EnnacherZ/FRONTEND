@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect} from "react";
 import Header from "./header";
 import { useParams } from "react-router-dom";
 import Footer from "./footer";
 import Loading from "./loading";
 import { useLangContext } from "../Contexts/languageContext";
-import { useTranslation } from "react-i18next";
 import { selectedLang } from "./functions";
+import { motion } from "framer-motion";
 
 
 
@@ -14,15 +14,11 @@ import { selectedLang } from "./functions";
 
 const Policies : React.FC = () => {
     const {option} = useParams<{option:string}>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const {t} = useTranslation();
     const {currentLang} = useLangContext();
 
 
     useEffect(()=>{
-        if(option){
-            setIsLoading(false);
-        }
+      window.scrollTo(0,0)
         
     }, [option])
 
@@ -30,17 +26,25 @@ const Policies : React.FC = () => {
     
      return (<>
      <Header/>
-
+              <Suspense fallback={<Loading message="loading"/>}>
+                <motion.div
+    key={window.location.pathname}
+    initial={{ opacity: 0, y: 5 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    onAnimationStart={() => window.scrollTo(0, 0)}
+  >
 <div className={`${selectedLang(currentLang)=="ar"&&"rtl"}`}>
-        {isLoading?<Loading message={t('loading')}/>
-        :option==="General-terms-of-use"?
+        {option==="General-terms-of-use"?
         <GeneralUse/>
         :option=="Privacy-policy"?<PrivacyPolicy/>:<></>
         }
 
 </div>
      <Footer/>
-    
+    </motion.div>
+    </Suspense>
     </>)   
 }
 
