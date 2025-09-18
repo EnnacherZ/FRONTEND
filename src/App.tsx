@@ -1,4 +1,5 @@
-import React, { Suspense, lazy } from "react";
+import React from "react";
+import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 import { CartProvider } from "./Contexts/cartContext";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -7,33 +8,36 @@ import { ProductsContextProvider } from "./Contexts/ProductsContext";
 import { LangContextProvider } from "./Contexts/languageContext";
 import { ParametersContextProvider } from "./dashboard/Contexts/ParametersContext";
 import { AuthProvider } from "./dashboard/Contexts/Authentication";
-import Loading from "./Components/loading";
+// import Loading from "./Components/loading";
 import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next";
+import { ToastContainer } from "react-toastify";
+import Toasti from "./reloader";
+// import { useTranslation } from "react-i18next";
 
 
 // Lazy load des composants
-const HomePage = lazy(() => import("./Components/HomePage"));
-const Shoes = lazy(() => import("./Components/Shoes"));
-const Sandales = lazy(() => import("./Components/Sandales"));
-const TShirts = lazy(() => import("./Components/TShirts"));
-const Cart = lazy(() => import("./Components/cart"));
-const Test = lazy(() => import("./Components/test"));
-const Checkout = lazy(() => import("./Components/checkout"));
-const SuccessTrans = lazy(() => import("./Components/successTrans"));
-const Pants = lazy(() => import("./Components/Pants"));
-const ProductDetails = lazy(() => import("./Components/ProductDetails"));
-const Login = lazy(() => import("./dashboard/LogIn"));
-const DBHome = lazy(() => import("./dashboard/pages/home"));
-const ProductsManager = lazy(() => import("./dashboard/pages/ProductsManager"));
-const ExceptionsPage = lazy(() => import("./dashboard/pages/Exceptions"));
-const AddProductTypeForm = lazy(() => import("./reloader"));
-const Orders = lazy(() => import("./dashboard/pages/Orders"));
-const Settings = lazy(() => import("./dashboard/pages/Settings"));
-const OrderTracker = lazy(() => import("./Components/OrderTracker"));
-const Statistics = lazy(() => import("./dashboard/pages/Statistics"));
-const OrderDetails = lazy(() => import("./dashboard/pages/OrderDetails"));
-const Policies = lazy(() => import("./Components/Policies"));
+import  HomePage from "./Components/HomePage";
+import Shoes from "./Components/Shoes";
+import Sandales from "./Components/Sandales";
+import TShirts from "./Components/TShirts";
+import Cart from "./Components/cart";
+import Test from "./Components/test";
+import Checkout from "./Components/checkout";
+import SuccessTrans from "./Components/successTrans";
+import Pants from "./Components/Pants";
+import ProductDetails from "./Components/ProductDetails";
+import Login from "./dashboard/LogIn";
+import DBHome from "./dashboard/pages/home";
+import ProductsManager from "./dashboard/pages/ProductsManager";
+import ExceptionsPage from "./dashboard/pages/Exceptions";
+import AddProductTypeForm from "./reloader";
+import Orders from "./dashboard/pages/Orders";
+import Settings from "./dashboard/pages/Settings";
+import OrderTracker from "./Components/OrderTracker";
+import Statistics from "./dashboard/pages/Statistics";
+import OrderDetails from "./dashboard/pages/OrderDetails";
+import Policies from "./Components/Policies";
+
 
 // Routes clients
 const routes = [
@@ -51,6 +55,7 @@ const routes = [
   { path: "/testy", element: <AddProductTypeForm /> },
   { path: "/MyOrder/:orderID", element: <OrderTracker /> },
   { path: "/Policies/:option", element: <Policies /> },
+  { path: "/Toast", element: <Toasti/>}
 ];
 
 // Routes admin
@@ -64,6 +69,7 @@ const dbRoutes = [
   { path: "/Dashboard/Settings", element: <Settings /> },
   { path: "/Dashboard/Statistics", element: <Statistics /> },
   { path: "/Dashboard/OrderDetails/:orderID", element: <OrderDetails /> },
+  
 ];
 
 const isAdminInterface =
@@ -75,14 +81,14 @@ const router = isAdminInterface
   : createBrowserRouter(routes, { future: { v7_relativeSplatPath: true } });
 
 const App: React.FC = () => {
-  const {t} = useTranslation();
+  // const {t} = useTranslation();
     return (
     <LangContextProvider>
       <CartProvider>
         <PaymentProvider>
           <ProductsContextProvider>
             <ParametersContextProvider>
-              <Suspense fallback={<Loading message={t("loading")}/>}>
+              {/* <Suspense fallback={<Loading message={t("loading")}/>}> */}
                 <motion.div
     key={window.location.pathname}
     initial={{ opacity: 0, y: 5 }}
@@ -98,7 +104,8 @@ const App: React.FC = () => {
                   <RouterProvider router={router} future={{ v7_startTransition: true }} />
                 )}
                 </motion.div>
-              </Suspense>
+                   <ToastContainer />
+              {/* </Suspense> */}
             </ParametersContextProvider>
           </ProductsContextProvider>
         </PaymentProvider>

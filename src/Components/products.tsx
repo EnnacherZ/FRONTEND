@@ -3,7 +3,7 @@ import '../Styles/products.css';
 import { useCart } from "../Contexts/cartContext";
 import { FaCartPlus } from "react-icons/fa6";
 import { RiErrorWarningLine } from "react-icons/ri";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import FilterSection, { DataToFilter } from "./FilterSection";
 import { motion } from "framer-motion";
 import { Product, ProductDetail } from "../Contexts/ProductsContext";
@@ -192,8 +192,6 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed,h
                         
                     </div>
                 ):(<NotFound onReset={handleReset}/>)}
-                
-                <ToastContainer style={{ width: "70%", marginLeft:'15%' }} />
                 
             </div>
             {products.length > 0 && (

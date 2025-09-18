@@ -11,6 +11,7 @@ import usePantsData from "../Server/pantsData.tsx";
 import { Product } from "../Contexts/ProductsContext.tsx";
 import "../Styles/test.css"
 import pant from "../assets/pants.png";
+import { pantsCategories } from "./functions.tsx";
 
 const Pants: React.FC = () => {
   const {pantsData, pantsDataDetails} = usePantsData();
@@ -78,18 +79,9 @@ const Pants: React.FC = () => {
     </div>
     <div className="ShoesAnnouncement ">
       <Marquee speed={50} gradient={false} >
-        <span>
-        <FaCircleDot /> Mocassins 
-        </span>
-        <span>
-        <FaCircleDot /> Classics
-        </span>
-        <span>
-        <FaCircleDot /> Baskets
-        </span>
-        <span>
-        <FaCircleDot /> Medical
-        </span>
+        {pantsCategories.map((cat, index)=>(
+          <span key={index}><FaCircleDot /> {cat} </span>
+        ))}
 
       </Marquee>
     </div>

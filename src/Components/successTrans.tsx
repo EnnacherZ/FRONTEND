@@ -14,22 +14,37 @@ import { useTranslation } from "react-i18next";
 import { useLangContext } from "../Contexts/languageContext";
 import Header from "./header";
 import { selectedLang } from "./functions";
+import createInvoice from "../Contexts/CreateInvoice";
+import Loading from "./loading";
 
 const SuccessTrans: React.FC = () => {
   const {currentLang} = useLangContext();
   const {successTransItems} = useCart();
-  const {paymentResponse, invoiceUrl, clientForm } = usePayment();
+  const {paymentResponse, clientForm } = usePayment();
   const {t} = useTranslation();
+  //const [isLoading, setIsLoading] = useState<boolean>();
+  const [invoiceURL, setInvoiceURL] = useState<string>();
   const [fileName, setFileName] = useState<string>(clientForm?.FirstName+"_"+clientForm?.LastName)
   const [isExpanded, setIsExpanded] = useState<{Shoes:boolean,Sandals:boolean,Shirts:boolean, Pants:boolean}>(
     {Shoes:false, Sandals:false, Shirts:false, Pants:false}
   ); // État pour gérer l'extension
 
+
+
   useEffect(()=>{
     if(clientForm){
       setFileName(clientForm?.FirstName+"_"+clientForm?.LastName)
     }
-  }, [clientForm])
+  }, [clientForm]);
+  useEffect(()=>{
+    if(paymentResponse && clientForm){
+    const getInvoice = async () =>  {
+      const invoice = await createInvoice(paymentResponse, clientForm);
+      setInvoiceURL(invoice);
+    };
+    getInvoice();      
+    }
+  },[paymentResponse, clientForm])
 
   const toggleExpand = (product:string) => {
     setIsExpanded((prev)=>({...prev, [product]:!prev[product as keyof {Shoes:boolean,Sandals:boolean,Shirts:boolean, Pants:boolean}]}));
@@ -42,6 +57,11 @@ const SuccessTrans: React.FC = () => {
       if(successTransItems[p as keyof AllItems].length>0){keys.push(p)}
     }return keys;
   } 
+
+    if(!invoiceURL){
+      return <Loading message={t("loading")}/>
+    }
+
     return (
     <>
     <Header/>
@@ -72,7 +92,7 @@ const SuccessTrans: React.FC = () => {
       </div>
 
       <div className="trans-ticket d-flex justify-content-center">
-        <a href={invoiceUrl || ''} download={fileName}>
+        <a href={invoiceURL|| ''} download={`${fileName}.pdf`}>
         <button className="ticket-generator btn btn-warning fw-bold" >
           <GiTicket size={25} /> {t('downloadTicket')}
         </button>
@@ -113,9 +133,11 @@ const SuccessTrans: React.FC = () => {
             </li>
           </ul>
           <div className="trans-ticket d-flex justify-content-center mb-1">
-            <button className="ticket-generator btn btn-warning fw-bold">
-                <GiTicket size={25} /> {t('downloadTicket')}
-            </button>
+        <a href={invoiceURL|| ''} download={`${fileName}.pdf`}>
+        <button className="ticket-generator btn btn-warning fw-bold" >
+          <GiTicket size={25} /> {t('downloadTicket')}
+        </button>
+        </a>
       </div>
         </div>
 

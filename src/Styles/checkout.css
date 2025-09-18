@@ -57,6 +57,7 @@
 .paymentGateway .creditCard.choosed{
     border: 3px solid #073194;
     box-shadow: 0 0 1em #00D4FF;
+    font-weight: bold;
 }
 
 .paymentGateway .cod {
@@ -72,7 +73,7 @@
 .paymentGateway .cod.choosed {
     border: 3px solid #57C785;
     box-shadow: 0 0 1em #D8DA5A;
-
+    font-weight: bold;
 }
 
 .paymentGateway .paypal{
@@ -125,7 +126,7 @@
     object-fit: fill;
 }
 
-.paymentGateway.is-disabled, .pay-button.is-disabled, .creditCard.is-disabled{
+.is-disabled{
     opacity: .5;
     pointer-events: none;
 }

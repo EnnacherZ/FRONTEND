@@ -10,6 +10,7 @@ import { FaCircleDot } from "react-icons/fa6";
 import useShoesData from "../Server/shoesData.tsx";
 import { Product } from "../Contexts/ProductsContext.tsx";
 import shoes from '../assets/shoes.png'
+import { shoesCategories } from "./functions.tsx";
 
 
 const Shoes: React.FC = () => {
@@ -77,18 +78,9 @@ const Shoes: React.FC = () => {
     </div>
     <div className="ShoesAnnouncement ">
       <Marquee speed={50} gradient={false} >
-        <span>
-        <FaCircleDot /> Mocassins 
-        </span>
-        <span>
-        <FaCircleDot /> Classics
-        </span>
-        <span>
-        <FaCircleDot /> Baskets
-        </span>
-        <span>
-        <FaCircleDot /> Medical
-        </span>
+        {shoesCategories.map((cat, index)=>(
+          <span key={index}><FaCircleDot /> {cat} </span>
+        ))}
 
       </Marquee>
     </div>

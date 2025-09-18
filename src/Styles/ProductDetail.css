@@ -157,11 +157,11 @@
 .ProductDetailComButton:hover{
     width: 80%;
     height : 2.5em;
-    font-size: 20px;
+    font-size: 18px;
     background-color: black;
     color: #ffc107;
     margin-left: 10%;
-    border : 2px solid #ffc107;
+    border : 4px solid #ffc107;
     border-radius: 5px;
 }
 
@@ -179,11 +179,11 @@
 .ProductDetailDirectComButton:hover{
     width: 80%;
     height : 2.5em;
-    font-size: 20px;
+    font-size: 18px;
     background-color: white;
     color: #0e92e4;
     margin-left: 10%;
-    border : 2px solid #0e92e4;
+    border : 4px solid #0e92e4;
     border-radius: 5px;
 }
 .rtl{

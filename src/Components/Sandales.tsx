@@ -9,7 +9,8 @@ import Marquee from "react-fast-marquee"
 import { FaCircleDot } from "react-icons/fa6";
 import useSandalsData from "../Server/sandalsData.tsx";
 import { Product } from "../Contexts/ProductsContext.tsx";
-
+import "../Styles/Shoes.css"
+import { sandalsCategories } from "./functions.tsx";
 
 const Sandals: React.FC = () => {
   const {sandalsData, sandalsDataDetails} = useSandalsData();
@@ -77,18 +78,9 @@ const Sandals: React.FC = () => {
     </div>
     <div className="ShoesAnnouncement ">
       <Marquee speed={50} gradient={false} >
-        <span>
-        <FaCircleDot /> Mocassins 
-        </span>
-        <span>
-        <FaCircleDot /> Classics
-        </span>
-        <span>
-        <FaCircleDot /> Baskets
-        </span>
-        <span>
-        <FaCircleDot /> Medical
-        </span>
+        {sandalsCategories.map((cat, index)=>(
+          <span key={index}><FaCircleDot /> {cat} </span>
+        ))}
 
       </Marquee>
     </div>

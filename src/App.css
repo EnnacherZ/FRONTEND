@@ -41,7 +41,16 @@
   color: #888;
 } */
 
+.rtl{
+  direction: rtl;
+}
 
+.rtl .form-check-input {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  text-align: right;
+}
 
 .Toastify{
   z-index: 1000000000;

@@ -18,7 +18,7 @@ const Footer : React.FC = () => {
             <div className="iconStoreWDiv mb-4">
                 <img src={iconStoreWhite}  />
             </div>
-            <div className="d-flex flex-wrap justify-content-around ">
+            <div className="d-flex flex-wrap justify-content-around">
 
 
             <div className="p-3">
@@ -52,7 +52,7 @@ const Footer : React.FC = () => {
               </div>
             </div>
             </div>
-            <div className="copyrightTitle fw-bold mt-1 d-flex justify-content-center ltr">
+            <div className="copyrightTitle fw-bold mt-1 d-flex justify-content-center">
               AL FIRDAOUS STORE <FaRegCopyright style={{margin:5}}/> 2025
             </div>
 

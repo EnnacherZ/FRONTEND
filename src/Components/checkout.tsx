@@ -12,13 +12,13 @@ import { MdAlternateEmail, MdRemoveShoppingCart} from 'react-icons/md';
 import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
 import { useLangContext } from "../Contexts/languageContext"; 
-import {toast, ToastContainer, Zoom } from "react-toastify";
+import {toast, Zoom } from "react-toastify";
 import { useCart } from "../Contexts/cartContext";
 import Loading from "./loading";
 import Footer from "./footer";
 import { connecter } from "../Server/connecter";
 import { HiOutlineCash } from "react-icons/hi";
-import { goTo, selectedLang } from "./functions";
+import { cities, goTo, policiesAcceptanceText, selectedLang } from "./functions";
 
 
 type FormValues = {
@@ -33,14 +33,13 @@ type FormValues = {
 }
 
 const isOnlinePaymentAvailable : boolean = import.meta.env.VITE_ONLINE_PAYMENT === 'true';
-console.log(isOnlinePaymentAvailable)
 
 const Checkout :  React.FC = () => {
     const date = new Date();
     const {t} = useTranslation();
     const {total, cartChecker, clearCart, allItems, setSuccessTransItems} = useCart();
     const {currentLang} = useLangContext();
-    const {setClientForm, clientForm, setPaymentResponse, setCurrentCurrency, currentCurrency} = usePayment();
+    const {setClientForm, clientForm, setPaymentResponse, setCurrentCurrency, currentCurrency, currencyIsAvailable} = usePayment();
     const [isPhone, setIsPhone]= useState<boolean>()
     const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
     const [tokenId, setTokenId] = useState<string|null>(null);
@@ -48,6 +47,8 @@ const Checkout :  React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [orderId, setOrderId] =useState<string>();
     const [isOnlinePayment, setIsOnlinePayment] = useState<boolean>();
+    const [arePoliciesAccepted, setArePoliciesAccepted] = useState<boolean>(false);
+    const [policiesError, setPoliciesError] = useState<boolean>();
     const paymentForm = useRef<HTMLDivElement>(null);
     const Clientform = useForm<FormValues>({
       defaultValues:clientForm
@@ -83,6 +84,22 @@ const Checkout :  React.FC = () => {
 
           
       const validateCommand = async () =>{
+        if(!arePoliciesAccepted){
+          setPoliciesError(true);
+          toast.error(t('policiesNotAccepted'), {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Zoom,
+          });
+          return
+        }
+        setPoliciesError(false);
          if(isClt(clientForm)){
           }
          const clientCoord : clientData = {
@@ -94,9 +111,10 @@ const Checkout :  React.FC = () => {
            Address : getValues('Address'),
            Amount : total,
            Currency : 'MAD',
+          
          }
          setClientForm(clientCoord)
-         setIsModify(true)
+         setIsModify(true);
          await new Promise ((resolve)=>setTimeout(resolve, 1000))
        }
 
@@ -309,6 +327,12 @@ const Checkout :  React.FC = () => {
     }
 
 
+
+//     function filterLatin(input) {
+//   input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+// }
+
+
     if(!cartChecker){;return(<>
     <Header/>
     <div
@@ -366,8 +390,11 @@ const Checkout :  React.FC = () => {
                     onChange={(e)=>setCurrentCurrency(e.target.value)}
                     defaultValue={currentCurrency}>
                 <option value={'MAD'} style={{fontWeight:500}}>MAD</option>
-                <option style={{fontWeight:500}} value={'USD'}>USD $</option>
-                <option style={{fontWeight:500}} value={'EUR'}>EUR €</option>
+                {currencyIsAvailable&& <>
+                 <option style={{fontWeight:500}} value={'USD'}>USD $</option>
+                <option style={{fontWeight:500}} value={'EUR'}>EUR €</option>               
+                </>}
+
             </select>
         </div> 
 
@@ -388,7 +415,7 @@ const Checkout :  React.FC = () => {
                   <div className="input-group">
                     <span className="input-group-text" ><FaRegUserCircle /></span> 
                     <input  {...register("FirstName",{
-                            required:t('fnreq')+' !'
+                            required:t('fnreq')+' !',
                             })}
                           type="text" 
                           className={(selectedLang(currentLang)=='ar')?
@@ -434,7 +461,7 @@ const Checkout :  React.FC = () => {
     
                   <div className={`form-label ${selectedLang(currentLang)=='ar'&&'rtl'}`}>{t('email')}:</div>
                   <div className="input-group">
-                    <span className="input-group-text" ><FaRegUserCircle /></span> 
+                    <span className="input-group-text" ><MdAlternateEmail /></span> 
                     <input  {...register("Email",{
                             required:t('emlreq')+' !'
                           })}
@@ -453,7 +480,7 @@ const Checkout :  React.FC = () => {
                 <div className="input-group flex-column px-1">
                   <div className={`form-label ${selectedLang(currentLang)=='ar'&&'rtl'}`}>{t('phN')}:</div>
                   <div className="input-group">
-                    <span className="input-group-text"><FaRegUserCircle/></span> 
+                    <span className="input-group-text"><FaPhone/></span> 
                     <input  {...register("Phone",{
                             required:t('telreq')+' !',
                             minLength : {
@@ -476,30 +503,42 @@ const Checkout :  React.FC = () => {
                 </div>
             </div>
             <div className="form-third-line d-flex mb-2">
-              <div className="input-group flex-column px-1">
-    
-                  <div className={`form-label ${selectedLang(currentLang)=='ar'&&'rtl'}`}>{t('city')}:</div>
-                  <div className="input-group">
-                      <span className="input-group-text" ><FaRegUserCircle /></span> 
-                      <input  {...register("City",{
-                                  required:t('cityreq')+' !'
-                              })}
-                              type="text" 
-                              className={errors.City?"form-control is-invalid":"form-control"} 
-                              placeholder={t('city')}
-                              readOnly={isModify}
-                              disabled={isModify}/>
-                  </div>
-                    {errors.City && (
-                      <span style={{color:"red",fontSize:"1.25vw"}}
-                            className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
-                        {`${errors.City.message}`}</span>
-                    )}
-              </div>
+<div className="input-group flex-column px-1">
+  <div className={`form-label ${selectedLang(currentLang) === 'ar' && 'rtl'}`}>
+    {t('city')}:
+  </div>
+  
+  <div className="input-group">
+    <span className="input-group-text"><FaCity /></span> 
+    <select
+      {...register("City", {
+        required: t('cityreq') + ' !'
+      })}
+      className={errors.City ? "form-select is-invalid" : "form-select"}
+      disabled={isModify}
+      id="autoSizingSelect idCategory"
+      
+    >
+      <option value={""} >{t('selectcity')}</option>
+      {cities.map((city,index)=>(
+        <option value={city} key={index}>{city}</option>
+      ))}
+      
+    </select>
+  </div>
+
+  {errors.City && (
+    <span style={{ color: "red", fontSize: "1.25vw" }}
+          className={`${selectedLang(currentLang) === 'ar' && 'rtl'}`}>
+      {errors.City.message}
+    </span>
+  )}
+</div>
+
               <div className="input-group flex-column px-1">
                   <div className={`form-label ${selectedLang(currentLang)=='ar'&&'rtl'}`}>{t('address')}:</div>
                   <div className="input-group">
-                    <span className="input-group-text"><FaRegUserCircle/></span> 
+                    <span className="input-group-text"><BsGeoAltFill/></span> 
                     <input  {...register("Address",{
                             required:t('addressreq')+' !'
                           })} 
@@ -516,6 +555,18 @@ const Checkout :  React.FC = () => {
                             {`${errors.Address.message}`}</span>
                         )}
               </div>
+            </div>
+            <div className={`form-check d-flex mx-2 my-3 p-0 ${selectedLang(currentLang)=="ar"?'rtl':''} ${isModify?"is-disabled":""}`}>
+              
+              <input className={`form-check-input mx-2 ${policiesError?"is-invalid":""}`} 
+                     type="checkbox" 
+                     readOnly={isModify} disabled={isModify}
+                     checked={arePoliciesAccepted} onChange={()=>setArePoliciesAccepted(!arePoliciesAccepted)}
+                     id="flexCheckDefault" style={{width:20, height:20}}/>
+              <label className="form-check-label" htmlFor="flexCheckDefault">
+                {policiesAcceptanceText(selectedLang(currentLang))}
+              </label>
+              
             </div>
 
         <button type='submit' 
@@ -665,6 +716,19 @@ const Checkout :  React.FC = () => {
         {`${errors.Address.message}`}</span>
     )}
 
+          <div className={`form-check d-flex mx-2 my-3 p-0 ${selectedLang(currentLang)=="ar"&&'rtl'} ${isModify?"is-disabled":""}`}>
+              
+              <input className={`form-check-input mx-2 ${policiesError?"is-invalid":""}`} 
+                      type="checkbox"
+                      readOnly={isModify} disabled={isModify}
+                      checked={arePoliciesAccepted} onChange={()=>setArePoliciesAccepted(!arePoliciesAccepted)}
+                      id="flexCheckDefault" style={{width:20, height:20}}/>
+              <label className="form-check-label" htmlFor="flexCheckDefault">
+                {policiesAcceptanceText(selectedLang(currentLang))}
+              </label>
+              
+          </div>
+
       <button type='submit' 
               disabled={isSubmitting}
               className={`btn btn-success my-2 rounded ${isModify?"d-none":''}`}
@@ -715,10 +779,11 @@ const Checkout :  React.FC = () => {
 
     </div>
     </div>
-    <ToastContainer />
+ 
         </>:<><Loading message="Your command is being treated"/>
-        <Footer/>
+        
         </>}
+<Footer/>
     </>)
 
 

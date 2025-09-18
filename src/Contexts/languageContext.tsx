@@ -207,7 +207,8 @@ i18n
           usePolicy: "General conditions of use",
           policies: "Policies",
           followUs: 'Follow us',
-          contactUs: 'Contact us'
+          contactUs: 'Contact us',
+          policiesNotAccepted: "Please accept the terms and privacy policy."
           
           
 
@@ -419,7 +420,10 @@ i18n
           usePolicy: "Conditions générales d'utilisation",
           policies: "Politiques",
           followUs: 'Suivez-nous',
-          contactUs: 'Contactez-nous'
+          contactUs: 'Contactez-nous',
+          policiesNotAccepted: "Veuillez accepter les conditions d’utilisation et la politique de confidentialité."
+
+
 
 
 
@@ -636,8 +640,8 @@ i18n
           usePolicy: "الشروط العامة للاستخدام",
           policies: "السياسات",
           followUs: 'تابعنا',
-          contactUs: 'اتصل بنا'
-
+          contactUs: 'تواصل معنا',
+          policiesNotAccepted: "يرجى قبول الشروط وسياسة الخصوصية.",
 
           
        

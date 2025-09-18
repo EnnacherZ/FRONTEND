@@ -20,3 +20,16 @@ declare module 'swiper/css/bundle';
 declare module 'swiper/css/navigation';
 declare module 'swiper/css/free-mode';
 declare module 'swiper/css/thumbs';
+
+
+declare module 'bidi-js' {
+  export function getVisualString(input: string): string;
+}
+
+declare module 'arabic-reshaper' {
+  const arabicReshaper: {
+    convertArabic(text: string): string;
+    convertArabicBack(text: string): string;
+  };
+  export = arabicReshaper;
+}

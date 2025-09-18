@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState } from 'react';
 import { CartItem, useCart } from '../Contexts/cartContext.tsx';
-import {ToastContainer, Zoom, toast } from 'react-toastify';
+import {Zoom, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 import Header from './header.tsx';
 import '../Styles/cart.css';
@@ -35,7 +35,7 @@ const undefinedItem : CartItem ={
 
 const Cart: React.FC = () => {
   const {t} = useTranslation();
-  const {setCurrentCurrency, currentCurrency,} = usePayment()
+  const {setCurrentCurrency, currentCurrency, currencyIsAvailable} = usePayment()
   const {total, cartChecker, sandalsItems, shirtsItems, pantsItems} = useCart();
   const {currentLang} = useLangContext();
   const [isPhoneScreen, setIsPhoneScreen] = useState<boolean>(false);
@@ -136,8 +136,10 @@ const Cart: React.FC = () => {
               onChange={(e)=>setCurrentCurrency(e.target.value)}
               defaultValue={currentCurrency}>
           <option value={'MAD'} style={{fontWeight:500}}>MAD</option>
-          <option style={{fontWeight:500}} value={'USD'}>USD $</option>
-          <option style={{fontWeight:500}} value={'EUR'}>EUR €</option>
+                {currencyIsAvailable&& <>
+                 <option style={{fontWeight:500}} value={'USD'}>USD $</option>
+                <option style={{fontWeight:500}} value={'EUR'}>EUR €</option>               
+                </>}
       </select>
       <ReactCountryFlag
                   className="checkFlag"
@@ -781,7 +783,7 @@ const Cart: React.FC = () => {
 />)}
 </AnimatePresence>
 
-<ToastContainer/>
+
 
 <Footer/>
     

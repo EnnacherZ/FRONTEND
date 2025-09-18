@@ -111,7 +111,7 @@ const OrderDetails : React.FC = () => {
                             'Content-Type': 'multipart/form-data',
                         }}
             );
-            console.log(response)
+            
             if(response.status ==200){
             const link = document.createElement('a');
             link.href = pdfUrl;

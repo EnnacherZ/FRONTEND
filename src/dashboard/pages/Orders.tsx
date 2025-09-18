@@ -186,7 +186,7 @@ const Orders : React.FC = () => {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                 </table>
                         <div className={deliveredOrders.length>3?"orders-expansion text-center m-1 d-flex justify-content-center":'d-none'}>
                             <button className="btn btn-outline-primary" onClick={()=>toggleExpand("delivered")}>
                                 {!isExpanded.delivered?`${t('readMore')} ${ deliveredOrders.length>=3?`(+ ${deliveredOrders.length - 3})`:''}`:t('readLess')}
